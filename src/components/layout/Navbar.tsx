@@ -97,7 +97,8 @@ export default function Navbar({ mode = "floating" }: { mode?: "floating" | "sid
                         key={item.name}
                         href={item.href}
                         onClick={(e) => {
-                            if (item.href === pathname) {
+                            const normalize = (p: string) => p === "/" ? "/" : p.replace(/\/+$/, "");
+                            if (normalize(item.href) === normalize(pathname)) {
                                 e.preventDefault();
                                 window.scrollTo({ top: 0, behavior: "smooth" });
                                 return;
@@ -148,7 +149,8 @@ export default function Navbar({ mode = "floating" }: { mode?: "floating" | "sid
                         key={item.name}
                         href={item.href}
                         onClick={(e) => {
-                            if (item.href === pathname) {
+                            const normalize = (p: string) => p === "/" ? "/" : p.replace(/\/+$/, "");
+                            if (normalize(item.href) === normalize(pathname)) {
                                 e.preventDefault();
                                 window.scrollTo({ top: 0, behavior: "smooth" });
                                 return;
