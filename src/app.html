@@ -1,11 +1,36 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		%sveltekit.head%
-	</head>
-	<body data-sveltekit-preload-data="hover">
-		<div style="display: contents">%sveltekit.body%</div>
-	</body>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<!-- Blocking theme script - MUST run before any rendering -->
+	<script>
+		// This script runs synchronously before any CSS or content renders
+		// It prevents the white flash (FOUC) by applying the theme immediately
+		(function () {
+			// Get theme from localStorage, default to 'dark'
+			const theme = localStorage.getItem('theme') || 'dark';
+
+			// Apply light class if needed (dark is the default)
+			if (theme === 'light') {
+				document.documentElement.classList.add('light');
+			}
+
+			// Store the theme for consistency
+			localStorage.setItem('theme', theme);
+		})();
+	</script>
+
+	<!-- Favicon -->
+	<link rel="icon" href="/logo.png" />
+
+	%sveltekit.head%
+</head>
+
+<body data-sveltekit-preload-data="hover">
+	<div style="display: contents">%sveltekit.body%</div>
+</body>
+
 </html>

@@ -17,10 +17,10 @@ export const theme = writable<Theme>(getInitialTheme());
 if (browser) {
     theme.subscribe((value) => {
         localStorage.setItem('theme', value);
-        if (value === 'dark') {
-            document.documentElement.classList.add('dark');
+        if (value === 'light') {
+            document.documentElement.classList.add('light');
         } else {
-            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.remove('light');
         }
     });
 }

@@ -57,7 +57,7 @@ export const now = {
                     text: "Currently working as a Software Developer at Eurobliz, contributing to production systems and adopting modern tech stacks.",
                 },
                 {
-                    text: "Built Portfolio V2 — migrated from Next.js to React + Vite + TanStack Router for greater control, stability, and long-term flexibility.\nTracking industry trends via State of JS 2025:",
+                    text: "Built Portfolio V2 — migrated from Next.js to SvelteKit for better performance, simpler state management, and an exceptional developer experience.",
                     links: [
                         { label: "State of JS 2025: Front-end Frameworks", url: "https://2025.stateofjs.com/en-US/libraries/front-end-frameworks/#front_end_frameworks_ratios" },
                         { label: "State of JS 2025: Meta Frameworks", url: "https://2025.stateofjs.com/en-US/libraries/meta-frameworks/#meta_frameworks_others" },

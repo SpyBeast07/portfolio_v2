@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  /* Light Mode Variables */
-  --background: #fdfbf7;
-  --foreground: #171717;
-  --icon-color: #000000; /* Black in light mode */
-}
-
-/* Dark Mode Variables - Applied when 'dark' class is present on root */
-:root.dark {
+  /* Dark Mode Variables - DEFAULT */
   --background: #0f0f0f;
   --foreground: #ededed;
   --icon-color: #ffffff; /* White in dark mode */
+}
+
+/* Light Mode Variables - Applied when 'light' class is present on root */
+:root.light {
+  --background: #fdfbf7;
+  --foreground: #171717;
+  --icon-color: #000000; /* Black in light mode */
 }
 
 @theme inline {
@@ -35,14 +35,14 @@ body {
 .bg-grid-pattern {
   background-size: 80px 80px;
   background-image:
-    linear-gradient(to right, rgba(0, 0, 0, 0.15) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 1px, transparent 1px);
-}
-
-.dark .bg-grid-pattern {
-  background-image:
     linear-gradient(to right, rgba(255, 255, 255, 0.15) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+}
+
+.light .bg-grid-pattern {
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 1px, transparent 1px);
 }
 
 html.lenis, html.lenis body {

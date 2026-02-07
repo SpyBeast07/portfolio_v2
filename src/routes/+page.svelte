@@ -25,7 +25,12 @@
 	const sidebarOpacity = useTransform(scrollY, [400, 600], [0, 1]);
 	const sidebarY = useTransform(scrollY, [400, 600], [20, 0]);
 
-	/* Name animation - placeholder for future implementation */
+	/* Name animation */
+	const t = useTransform(scrollY, [0, 600], [0, 1]);
+	const nameScale = useTransform(t, [0, 1], [1, 0.25]);
+	const nameX = useTransform(t, [0, 1], ['-50%', '-37%']);
+	const nameLeft = useTransform(t, (v) => `calc(50% * ${1 - v} + 8rem * ${v})`);
+	const nameTop = useTransform(t, [0, 1], ['35vh', '22vh']);
 
 	/* Content animation */
 	const contentY = useTransform(scrollY, [0, 120], ['0vh', '-45vh']);
@@ -66,11 +71,21 @@
 
 	<!-- Desktop Name -->
 	<div class="pointer-events-none fixed inset-0 z-10 hidden md:block">
-		<Motion style={{ top: '25vh', opacity: heroOpacity }} let:motion>
-			<div use:motion class="pointer-events-auto absolute top-[20%] left-1/2 -translate-x-1/2">
+		<Motion
+			style={{
+				top: nameTop,
+				left: nameLeft,
+				scale: nameScale,
+				x: nameX,
+				transformOrigin: 'left top',
+				zIndex: 40
+			}}
+			let:motion
+		>
+			<div use:motion class="pointer-events-auto absolute -translate-y-[8vw]">
 				<HeroTitle
 					class="text-[14vw]"
-					spanClassName="left-[77%] top-[45%] translate-y-[2vw] text-[7vw]"
+					spanClassName="left-[77%] top-[48%] translate-y-[2vw] text-[7vw]"
 				/>
 			</div>
 		</Motion>
@@ -166,7 +181,7 @@
 	<!-- Main Content -->
 	<Motion style={{ y: isMobile ? contentY : 0 }} let:motion>
 		<div use:motion class="relative z-20 w-full">
-			<div style="height: 100vh" />
+			<div style="height: 100vh"></div>
 			<main class="px-6 pt-24 pb-24 md:ml-[40%] md:w-[60%] md:px-16">
 				<section class="mb-24 pt-10 lg:mb-40">
 					<h2
