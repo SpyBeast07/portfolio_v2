@@ -1,0 +1,12 @@
+export { default as GithubIcon } from './GithubIcon.svelte';
+export { default as LinkedinIcon } from './LinkedinIcon.svelte';
+export { default as EmailIcon } from './EmailIcon.svelte';
+export { default as FileTextIcon } from './FileTextIcon.svelte';
+export { default as StackIcon } from './StackIcon.svelte';
+export { default as ExternalLinkIcon } from './ExternalLinkIcon.svelte';
+export { default as MapPinIcon } from './MapPinIcon.svelte';
+export { default as BriefcaseIcon } from './BriefcaseIcon.svelte';
+export { default as DownloadIcon } from './DownloadIcon.svelte';
+export { default as HomeIcon } from './HomeIcon.svelte';
+export { default as UserIcon } from './UserIcon.svelte';
+export { default as BookOpenIcon } from './BookOpenIcon.svelte';

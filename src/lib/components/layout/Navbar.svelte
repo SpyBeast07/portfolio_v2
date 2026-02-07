@@ -1,0 +1,150 @@
+<script lang="ts">
+	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
+	import { navItems, sideNavItems } from '$lib/data';
+
+	// Props
+	let { mode = 'floating' }: { mode?: 'floating' | 'sidebar' } = $props();
+
+	let activeSection = $state('');
+	let container: HTMLElement;
+
+	// Derived state for pathname
+	let pathname = $derived($page.url.pathname);
+
+	// Floating Mode: Active based on current route
+	let navItemsWithActive = $derived(
+		navItems.map((item) => ({
+			...item,
+			active: pathname === item.href
+		}))
+	);
+
+	// Sidebar Mode: Active based on scroll position (Spy)
+	// Logic remains same, just mapping over sideNavItems
+	let sideNavItemsWithActive = $derived(
+		sideNavItems.map((item) => ({
+			...item,
+			active:
+				(activeSection === '' && item.href === '#') || activeSection === item.href.replace('#', '')
+		}))
+	);
+
+	onMount(() => {
+		if (mode !== 'sidebar') return;
+
+		const sections = document.querySelectorAll('section[id]');
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						activeSection = entry.target.id;
+					}
+				});
+			},
+			{
+				rootMargin: '-20% 0px -70% 0px', // Trigger when section is near top/center
+				threshold: 0
+			}
+		);
+
+		sections.forEach((section) => observer.observe(section));
+
+		// Handle "Home" being active when near top
+		const handleScroll = () => {
+			if (window.scrollY < 100) activeSection = ''; // Empty string maps to Home in our logic below
+		};
+		window.addEventListener('scroll', handleScroll);
+
+		return () => {
+			sections.forEach((section) => observer.unobserve(section));
+			window.removeEventListener('scroll', handleScroll);
+		};
+	});
+
+	function handleLinkClick(e: MouseEvent, item: { href: string }) {
+		if (item.href === pathname) {
+			e.preventDefault();
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+			return;
+		}
+		if (item.href.startsWith('#')) {
+			e.preventDefault();
+			const id = item.href.replace('#', '');
+			if (id === '') window.scrollTo({ top: 0, behavior: 'smooth' });
+			else document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+		}
+	}
+
+	function handleSidebarMouseEnter(e: MouseEvent, active: boolean) {
+		if (!active) (e.currentTarget as HTMLElement).style.color = 'var(--foreground)';
+	}
+
+	function handleSidebarMouseLeave(e: MouseEvent, active: boolean) {
+		if (!active)
+			(e.currentTarget as HTMLElement).style.color =
+				'color-mix(in oklab, var(--foreground) 55%, transparent)';
+	}
+
+	function handleFloatingMouseEnter(e: MouseEvent, active: boolean) {
+		if (!active) {
+			(e.currentTarget as HTMLElement).style.backgroundColor =
+				'color-mix(in oklab, var(--foreground) 8%, transparent)';
+			(e.currentTarget as HTMLElement).style.color = 'var(--foreground)';
+		}
+	}
+
+	function handleFloatingMouseLeave(e: MouseEvent, active: boolean) {
+		if (!active) {
+			(e.currentTarget as HTMLElement).style.backgroundColor = 'transparent';
+			(e.currentTarget as HTMLElement).style.color =
+				'color-mix(in oklab, var(--foreground) 60%, transparent)';
+		}
+	}
+</script>
+
+{#if mode === 'sidebar'}
+	<nav class="flex flex-col items-start gap-6">
+		{#each sideNavItemsWithActive as item (item.name)}
+			<a
+				href={item.href}
+				onclick={(e) => handleLinkClick(e, item)}
+				class="group flex items-center gap-5 text-base font-medium tracking-widest uppercase transition-colors duration-300"
+				style="color: {item.active
+					? 'var(--foreground)'
+					: 'color-mix(in oklab, var(--foreground) 560%, transparent)'};"
+				onmouseenter={(e) => handleSidebarMouseEnter(e, item.active)}
+				onmouseleave={(e) => handleSidebarMouseLeave(e, item.active)}
+			>
+				<span
+					class={`block h-[1px] transition-all duration-300 ${item.active ? 'w-8' : 'w-0 group-hover:w-4'}`}
+					style="background-color: var(--foreground);"
+				></span>
+				{item.name}
+			</a>
+		{/each}
+	</nav>
+{:else}
+	<div class="fixed left-1/2 z-50 -translate-x-1/2">
+		<nav
+			class="flex items-center gap-1 rounded-full p-1 shadow-lg ring-1 ring-black/5 backdrop-blur-md"
+			style="background-color: color-mix(in oklab, var(--background) 70%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);"
+		>
+			{#each navItemsWithActive as item (item.name)}
+				<a
+					href={item.href}
+					onclick={(e) => handleLinkClick(e, item)}
+					class={`relative rounded-full px-3 py-2 text-sm font-medium transition-all duration-300 min-[375px]:px-6 min-[375px]:py-2.5 ${item.active ? 'shadow-sm' : ''}`}
+					style={`
+            color: ${item.active ? 'var(--background)' : 'color-mix(in oklab, var(--foreground) 60%, transparent)'};
+            background-color: ${item.active ? 'var(--foreground)' : 'transparent'};
+          `}
+					onmouseenter={(e) => handleFloatingMouseEnter(e, item.active)}
+					onmouseleave={(e) => handleFloatingMouseLeave(e, item.active)}
+				>
+					{item.name}
+				</a>
+			{/each}
+		</nav>
+	</div>
+{/if}
