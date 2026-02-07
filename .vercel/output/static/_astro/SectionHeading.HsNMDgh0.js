@@ -1,1 +1,0 @@
-import{j as r}from"./jsx-runtime.D_zvdyIk.js";function n({children:o,className:t=""}){return r.jsx("h2",{className:`font-playfair text-3xl font-bold mb-8 ${t}`,style:{color:"var(--foreground)"},children:o})}export{n as S};
