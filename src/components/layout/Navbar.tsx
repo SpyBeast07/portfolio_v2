@@ -6,59 +6,79 @@ import {
 
 import { navItems, sideNavItems } from "@/data";
 
-const usePathname = () => {
-    const [pathname, setPathname] = useState("");
-    useEffect(() => {
-        setPathname(window.location.pathname);
-    }, []);
-    return pathname;
-};
-
 export default function Navbar({ mode = "floating" }: { mode?: "floating" | "sidebar" }) {
-    const pathname = usePathname();
+    const [pathname, setPathname] = useState("");
+
+    useEffect(() => {
+        // Set initial path
+        setPathname(window.location.pathname);
+
+        // Listen for View Transition (Astro) navigation updates
+        const handleNavigation = () => {
+            setPathname(window.location.pathname);
+        };
+
+        document.addEventListener("astro:page-load", handleNavigation);
+        window.addEventListener("popstate", handleNavigation);
+
+        return () => {
+            document.removeEventListener("astro:page-load", handleNavigation);
+            window.removeEventListener("popstate", handleNavigation);
+        };
+    }, []);
+
     const [activeSection, setActiveSection] = useState("");
 
     // --- Active State Logic ---
 
     // Floating Mode: Active based on current route
-    const navItemsWithActive = navItems.map(item => ({
-        ...item,
-        active: pathname === item.href
-    }));
+    const navItemsWithActive = navItems.map(item => {
+        const normalize = (path: string) => path === "/" ? "/" : path.replace(/\/+$/, "");
+        const currentPath = normalize(pathname);
+        const itemPath = normalize(item.href);
 
-    // Sidebar Mode: Active based on scroll position (Spy)
-    // ... logic remains same, just mapping over sideNavItems ...
-
+        return {
+            ...item,
+            active: pathname !== "" && (currentPath === itemPath)
+        };
+    });
 
     // Sidebar Mode: Active based on scroll position (Spy)
     useEffect(() => {
         if (mode !== "sidebar") return;
 
-        const sections = document.querySelectorAll("section[id]");
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        setActiveSection(entry.target.id);
-                    }
-                });
-            },
-            {
-                rootMargin: "-20% 0px -70% 0px", // Trigger when section is near top/center
-                threshold: 0,
-            }
-        );
+        // Small delay to ensure DOM is fully populated despite sync imports
+        const timeoutId = setTimeout(() => {
+            const sections = document.querySelectorAll("section[id]");
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            setActiveSection(entry.target.id);
+                        }
+                    });
+                },
+                {
+                    rootMargin: "-20% 0px -70% 0px", // Trigger when section is near top/center
+                    threshold: 0,
+                }
+            );
 
-        sections.forEach((section) => observer.observe(section));
+            sections.forEach((section) => observer.observe(section));
+
+            return () => {
+                sections.forEach((section) => observer.unobserve(section));
+            };
+        }, 100);
 
         // Handle "Home" being active when near top
         const handleScroll = () => {
-            if (window.scrollY < 100) setActiveSection(""); // Empty string maps to Home in our logic below
+            if (window.scrollY < 100) setActiveSection("");
         };
         window.addEventListener("scroll", handleScroll);
 
         return () => {
-            sections.forEach((section) => observer.unobserve(section));
+            clearTimeout(timeoutId);
             window.removeEventListener("scroll", handleScroll);
         };
     }, [mode]);

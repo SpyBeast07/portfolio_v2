@@ -1,11 +1,12 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useState, useEffect } from "react";
-import VerticalEmail from "@/components/layout/VerticalEmail";
-import Navbar from "@/components/layout/Navbar";
+// Keep imports synchronous to ensure IntersectionObserver works for Navbar
 import BlogsSection from "@/components/home/BlogsSection";
 import NowSection from "@/components/home/NowSection";
 import Footer from "@/components/layout/Footer";
+import Navbar from "@/components/layout/Navbar";
+import VerticalEmail from "@/components/layout/VerticalEmail";
 import SocialPill from "@/components/shared/SocialPill";
 import HeroTitle from "@/components/home/HeroTitle";
 import HeroLogo from "@/components/home/HeroLogo";

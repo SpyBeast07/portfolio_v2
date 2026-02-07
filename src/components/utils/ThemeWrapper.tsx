@@ -8,7 +8,7 @@ export default function ThemeWrapper() {
         <ThemeProvider
             attribute="class"
             defaultTheme="dark"
-            enableSystem
+            enableSystem={false}
             disableTransitionOnChange
         >
             <SmoothScroll />
