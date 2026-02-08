@@ -6,8 +6,22 @@
 </script>
 
 <svelte:head>
-	<title>Blogs | Kushagra</title>
-	<meta name="description" content="Read the latest thoughts and essays by Kushagra." />
+	<title>Blogs | Kushagra Gupta</title>
+	<meta name="description" content="Thoughts, tutorials, and insights by Kushagra Gupta - Developer & AI Enthusiast." />
+	
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://kushagra.dev/blogs" />
+	<meta property="og:title" content="Blogs | Kushagra Gupta" />
+	<meta property="og:description" content="Thoughts, tutorials, and insights by Kushagra Gupta - Developer & AI Enthusiast." />
+	<meta property="og:image" content="https://kushagra.dev/logo.png" />
+	
+	<!-- Twitter -->
+	<meta property="twitter:card" content="summary_large_image" />
+	<meta property="twitter:url" content="https://kushagra.dev/blogs" />
+	<meta property="twitter:title" content="Blogs | Kushagra Gupta" />
+	<meta property="twitter:description" content="Thoughts, tutorials, and insights by Kushagra Gupta - Developer & AI Enthusiast." />
+	<meta property="twitter:image" content="https://kushagra.dev/logo.png" />
 </svelte:head>
 
 <div class="bg-background text-foreground relative min-h-screen selection:bg-yellow-500/30">

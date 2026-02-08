@@ -1,3 +1,7 @@
+<script lang="ts" module>
+	let visitCount = 0;
+</script>
+
 <script lang="ts">
 	import { Motion, useViewportScroll, useTransform } from 'svelte-motion';
 	import { onMount } from 'svelte';
@@ -10,10 +14,12 @@
 	import SocialPill from '$lib/components/shared/SocialPill.svelte';
 	import HeroTitle from '$lib/components/home/HeroTitle.svelte';
 	import HeroLogo from '$lib/components/home/HeroLogo.svelte';
+	import PageLoader from '$lib/components/ui/PageLoader.svelte';
 	import { role, quote } from '$lib/data';
 	import { StackIcon } from '$lib/components/ui/icons';
 
 	let isMobile = $state(false);
+	let isLoading = $state(visitCount++ === 0);
 
 	const { scrollY } = useViewportScroll();
 
@@ -43,11 +49,44 @@
 		checkMobile();
 		window.addEventListener('resize', checkMobile);
 
+		if (isLoading) {
+			Promise.all([
+				new Promise((resolve) => setTimeout(resolve, 900)),
+				document.readyState === 'complete'
+					? Promise.resolve()
+					: new Promise((resolve) => window.addEventListener('load', resolve))
+			]).then(() => {
+				isLoading = false;
+			});
+		}
+
 		return () => {
 			window.removeEventListener('resize', checkMobile);
 		};
 	});
 </script>
+
+<svelte:head>
+	<title>Kushagra Gupta | Developer & AI Enthusiast</title>
+	<meta name="description" content="Portfolio of Kushagra Gupta - Developer & AI Enthusiast. Explore my work, projects, and journey in software development and artificial intelligence." />
+	
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://kushagra.dev/" />
+	<meta property="og:title" content="Kushagra Gupta | Developer & AI Enthusiast" />
+	<meta property="og:description" content="Portfolio of Kushagra Gupta - Developer & AI Enthusiast. Explore my work, projects, and journey in software development and artificial intelligence." />
+	<meta property="og:image" content="https://kushagra.dev/logo.png" />
+	
+	<!-- Twitter -->
+	<meta property="twitter:card" content="summary_large_image" />
+	<meta property="twitter:url" content="https://kushagra.dev/" />
+	<meta property="twitter:title" content="Kushagra Gupta | Developer & AI Enthusiast" />
+	<meta property="twitter:description" content="Portfolio of Kushagra Gupta - Developer & AI Enthusiast. Explore my work, projects, and journey in software development and artificial intelligence." />
+	<meta property="twitter:image" content="https://kushagra.dev/logo.png" />
+</svelte:head>
+
+<!-- Loading Screen - Only visible while loading -->
+<PageLoader isVisible={isLoading} />
 
 <div
 	class="bg-background text-foreground relative min-h-screen w-full transition-colors duration-300 selection:bg-yellow-500/30"

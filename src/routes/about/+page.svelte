@@ -45,8 +45,22 @@
 </script>
 
 <svelte:head>
-	<title>About | Kushagra</title>
-	<meta name="description" content="Learn more about Kushagra, a Developer and AI Enthusiast." />
+	<title>About | Kushagra Gupta</title>
+	<meta name="description" content="Learn more about Kushagra Gupta, a Developer and AI Enthusiast." />
+	
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://kushagra.dev/about" />
+	<meta property="og:title" content="About | Kushagra Gupta" />
+	<meta property="og:description" content="Learn more about Kushagra Gupta, a Developer and AI Enthusiast." />
+	<meta property="og:image" content="https://kushagra.dev/logo.png" />
+	
+	<!-- Twitter -->
+	<meta property="twitter:card" content="summary_large_image" />
+	<meta property="twitter:url" content="https://kushagra.dev/about" />
+	<meta property="twitter:title" content="About | Kushagra Gupta" />
+	<meta property="twitter:description" content="Learn more about Kushagra Gupta, a Developer and AI Enthusiast." />
+	<meta property="twitter:image" content="https://kushagra.dev/logo.png" />
 </svelte:head>
 
 <div class="bg-background text-foreground relative min-h-screen selection:bg-yellow-500/30">
@@ -78,7 +92,7 @@
 							<div class="relative h-48 w-48 md:h-64 md:w-64">
 								<img
 									src={about.photo}
-									alt="Profile Photo"
+									alt="Kushagra"
 									class="h-full w-full rounded-2xl object-cover shadow-sm transition-all duration-500"
 									style="border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);"
 								/>
