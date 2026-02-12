@@ -104,7 +104,7 @@ export const now = {
 
 export const about = {
     headline: "Nice to meet you. I'm Kushagra.",
-    photo: "/logo.png",
+    photo: "/about.jpg",
     long: [
         "I'm a Developer & AI Enthusiast who enjoys combining technology with everything around it. I'm curious about how modern problems can be solved using today's tools — sometimes inspired by ideas and transitions that happened long before our time, when new technologies reshaped the world in similar ways.",
         "Currently, I work as a Software Developer at Eurobliz, where I focus on full-stack development and integrating AI into production systems. I care deeply about writing clean, readable, and maintainable code — the kind that still makes sense when someone else reads it months later. I believe good systems should last, not just work.",
