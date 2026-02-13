@@ -39,7 +39,7 @@
 	const nameTop = useTransform(t, [0, 1], ['35vh', '22vh']);
 
 	/* Content animation */
-	const contentY = useTransform(scrollY, [0, 120], ['0vh', '-45vh']);
+	const spacerHeight = useTransform(scrollY, [0, 120], ['100vh', '55vh']);
 
 	onMount(() => {
 		const checkMobile = () => {
@@ -218,9 +218,10 @@
 	</Motion>
 
 	<!-- Main Content -->
-	<Motion style={{ y: isMobile ? contentY : 0 }} let:motion>
-		<div use:motion class="relative z-20 w-full">
-			<div style="height: 100vh"></div>
+	<div class="relative z-20 w-full">
+		<Motion style={{ height: isMobile ? spacerHeight : '100vh' }} let:motion>
+			<div use:motion></div>
+		</Motion>
 			<main class="px-6 pt-24 pb-24 md:ml-[40%] md:w-[60%] md:px-16">
 				<section class="mb-24 pt-10 lg:mb-40">
 					<h2
@@ -236,5 +237,5 @@
 				<Footer />
 			</main>
 		</div>
-	</Motion>
+
 </div>
