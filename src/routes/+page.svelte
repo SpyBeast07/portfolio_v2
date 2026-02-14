@@ -154,10 +154,10 @@
 
 	<!-- Sidebar -->
 	<div
-		class="pointer-events-none fixed top-0 left-0 z-30 hidden h-screen w-[40%] flex-col pt-[25vh] pl-32 md:flex"
+		class="pointer-events-none fixed top-0 left-0 z-40 hidden h-screen w-[40%] flex-col pt-[25vh] pl-32 md:flex"
 	>
 		<Motion style={{ opacity: sidebarOpacity, y: sidebarY, pointerEvents: 'auto' }} let:motion>
-			<div use:motion class="mt-4 flex flex-col items-start gap-10">
+			<div use:motion class="pointer-events-auto mt-4 flex flex-col items-start gap-10">
 				<div class="flex flex-col items-center text-xl leading-tight font-medium text-neutral-400">
 					<h2>{role.line1}</h2>
 					<h2
@@ -219,9 +219,13 @@
 
 	<!-- Main Content -->
 	<div class="relative z-20 w-full">
-		<Motion style={{ height: isMobile ? spacerHeight : '100vh' }} let:motion>
-			<div use:motion></div>
-		</Motion>
+		{#if isMobile}
+			<Motion style={{ height: spacerHeight }} let:motion>
+				<div use:motion></div>
+			</Motion>
+		{:else}
+			<div style="height: 100vh"></div>
+		{/if}
 			<main class="px-6 pt-24 pb-24 md:ml-[40%] md:w-[60%] md:px-16">
 				<section class="mb-24 pt-10 lg:mb-40">
 					<h2
