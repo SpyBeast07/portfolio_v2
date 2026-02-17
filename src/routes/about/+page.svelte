@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import TimelineItem from '$lib/components/shared/TimelineItem.svelte';
 	import { about, education, experiences, socialLinks } from '$lib/data';
 	import PageHeading from '$lib/components/shared/PageHeading.svelte';
@@ -72,9 +71,7 @@
 
 	<div class="relative z-10 container mx-auto max-w-4xl px-6 py-24">
 		<div class="mb-12">
-			<div class="fixed top-8 left-1/2 z-50 -translate-x-1/2">
-				<Navbar mode="floating" />
-			</div>
+			<!-- Navbar removed - in layout -->
 			<div class="mt-24">
 				<h1 class="font-playfair mb-12 text-5xl font-bold" style="color: var(--foreground);">
 					{about.headline}

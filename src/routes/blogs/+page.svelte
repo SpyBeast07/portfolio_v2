@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import PageHeading from '$lib/components/shared/PageHeading.svelte';
 	import BlogItem from '$lib/components/shared/BlogItem.svelte';
 	import { blogs, pageHeadings } from '$lib/data';
@@ -33,9 +32,7 @@
 
 	<div class="relative z-10 container mx-auto max-w-4xl px-6 py-24">
 		<div class="mb-12">
-			<div class="fixed top-8 left-1/2 z-50 -translate-x-1/2">
-				<Navbar mode="floating" />
-			</div>
+			<!-- Navbar removed - in layout -->
 			<div class="mt-24">
 				<PageHeading
 					title={pageHeadings.blogs.title}

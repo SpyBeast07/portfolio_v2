@@ -2,6 +2,7 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import ThemeBulb from '$lib/components/ui/ThemeBulb.svelte';
+	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import Lenis from 'lenis';
 
 	onMount(() => {
@@ -30,6 +31,9 @@
 </svelte:head>
 
 <div class="text-foreground bg-background min-h-screen antialiased">
+	<div class="fixed top-8 left-1/2 z-50 -translate-x-1/2">
+		<Navbar mode="floating" />
+	</div>
 	<ThemeBulb />
 	<slot />
 </div>

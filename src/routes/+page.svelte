@@ -175,12 +175,7 @@
 		</Motion>
 	</div>
 
-	<!-- Floating Navbar -->
-	<div class="pointer-events-none fixed top-0 left-0 z-30 h-full w-full">
-		<div class="pointer-events-auto absolute top-8 left-1/2 -translate-x-1/2">
-			<Navbar mode="floating" />
-		</div>
-	</div>
+	<!-- Floating Navbar - Removed as it is now in layout -->
 
 	<!-- Hero Role -->
 	<Motion style={{ opacity: heroOpacity }} let:motion>
