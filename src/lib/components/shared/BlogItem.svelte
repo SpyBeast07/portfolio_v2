@@ -31,7 +31,7 @@
 </script>
 
 <a
-	href={slug}
+	href={`/blog/${slug}`}
 	class="group -mx-4 mb-12 flex cursor-pointer flex-col items-center gap-6 rounded-xl p-4 transition-colors md:flex-row-reverse"
 	onmouseenter={handleMouseEnter}
 	onmouseleave={handleMouseLeave}

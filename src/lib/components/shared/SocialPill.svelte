@@ -25,7 +25,7 @@
 </script>
 
 <div
-  class="flex items-center gap-8 px-8 py-4 rounded-full backdrop-blur-md shadow-lg transition-colors duration-300"
+  class="flex w-fit items-center gap-8 px-8 py-4 rounded-full backdrop-blur-md shadow-lg transition-colors duration-300"
   style="background-color: color-mix(in oklab, var(--background) 70%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 30%, transparent);"
 >
   {#each socialLinks as link}
