@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import PageHeading from '$lib/components/shared/PageHeading.svelte';
 	import { pageHeadings, projects, skills, projectCategories } from '$lib/data';
 	import ProjectCard from '$lib/components/shared/ProjectCard.svelte';
@@ -22,17 +23,17 @@
 	
 	<!-- Open Graph / Facebook -->
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://kushagra.dev/work" />
+	<meta property="og:url" content={$page.url.href} />
 	<meta property="og:title" content="Work & Projects | Kushagra Gupta" />
 	<meta property="og:description" content="A collection of projects and work by Kushagra Gupta - Developer & AI Enthusiast." />
-	<meta property="og:image" content="https://kushagra.dev/logo.png" />
+	<meta property="og:image" content="{$page.url.origin}/logo.png" />
 	
 	<!-- Twitter -->
 	<meta property="twitter:card" content="summary_large_image" />
-	<meta property="twitter:url" content="https://kushagra.dev/work" />
+	<meta property="twitter:url" content={$page.url.href} />
 	<meta property="twitter:title" content="Work & Projects | Kushagra Gupta" />
 	<meta property="twitter:description" content="A collection of projects and work by Kushagra Gupta - Developer & AI Enthusiast." />
-	<meta property="twitter:image" content="https://kushagra.dev/logo.png" />
+	<meta property="twitter:image" content="{$page.url.origin}/logo.png" />
 </svelte:head>
 
 <div class="bg-background text-foreground relative min-h-screen selection:bg-yellow-500/30">

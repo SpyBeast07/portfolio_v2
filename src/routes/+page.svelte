@@ -3,6 +3,7 @@
 </script>
 
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { Motion, useViewportScroll, useTransform } from 'svelte-motion';
 	import { onMount } from 'svelte';
 
@@ -72,17 +73,17 @@
 	
 	<!-- Open Graph / Facebook -->
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://kushagra.dev/" />
+	<meta property="og:url" content={$page.url.href} />
 	<meta property="og:title" content="Kushagra Gupta | Developer & AI Enthusiast" />
 	<meta property="og:description" content="Portfolio of Kushagra Gupta - Developer & AI Enthusiast. Explore my work, projects, and journey in software development and artificial intelligence." />
-	<meta property="og:image" content="https://kushagra.dev/logo.png" />
+	<meta property="og:image" content="{$page.url.origin}/logo.png" />
 	
 	<!-- Twitter -->
 	<meta property="twitter:card" content="summary_large_image" />
-	<meta property="twitter:url" content="https://kushagra.dev/" />
+	<meta property="twitter:url" content={$page.url.href} />
 	<meta property="twitter:title" content="Kushagra Gupta | Developer & AI Enthusiast" />
 	<meta property="twitter:description" content="Portfolio of Kushagra Gupta - Developer & AI Enthusiast. Explore my work, projects, and journey in software development and artificial intelligence." />
-	<meta property="twitter:image" content="https://kushagra.dev/logo.png" />
+	<meta property="twitter:image" content="{$page.url.origin}/logo.png" />
 </svelte:head>
 
 <!-- Loading Screen - Only visible while loading -->
