@@ -20,6 +20,33 @@
   } = $props();
 
   let activeId = $state('');
+  let tocWrapper: HTMLDivElement | undefined = $state();
+
+  $effect(() => {
+    if (activeId && tocWrapper) {
+      // Find the active <li> wrapper to get correct offset relative to tocWrapper
+      const activeLink = tocWrapper.querySelector(`a[href="#${activeId}"]`);
+      const activeLi = activeLink?.closest('li') as HTMLElement;
+      
+      if (activeLi) {
+        const wrapperTop = tocWrapper.scrollTop;
+        const wrapperHeight = tocWrapper.clientHeight;
+        const wrapperBottom = wrapperTop + wrapperHeight;
+        
+        const elTop = activeLi.offsetTop;
+        const elHeight = activeLi.clientHeight;
+        const elBottom = elTop + elHeight;
+        
+        // Check if the element is outside the visible scroll area
+        if (elTop < wrapperTop || elBottom > wrapperBottom) {
+          tocWrapper.scrollTo({
+            top: elTop - wrapperHeight / 2 + elHeight / 2,
+            behavior: 'smooth'
+          });
+        }
+      }
+    }
+  });
 
   onMount(() => {
     if (!toc || toc.length === 0) return;
@@ -57,9 +84,9 @@
   }
 </script>
 
-<aside class="blog-sidebar grid h-full max-h-full overflow-hidden" style="grid-template-rows: auto minmax(0, 1fr) auto;" aria-label="Article sidebar">
+<aside class="blog-sidebar flex flex-1 min-h-0 h-full flex-col overflow-hidden" aria-label="Article sidebar">
   <!-- Top: About & Meta -->
-  <div class="pb-4">
+  <div class="flex-none pb-4">
     <div class="mb-5">
       <BlogAuthorCard />
     </div>
@@ -72,7 +99,7 @@
 
   <!-- Middle: Scrollable TOC -->
   {#if toc && toc.length > 0}
-    <div class="toc-wrapper overflow-y-auto pb-4 pt-2 my-2 relative overscroll-contain" style="scrollbar-width: thin; scrollbar-color: color-mix(in oklab, var(--foreground) 20%, transparent) transparent;">
+    <div bind:this={tocWrapper} class="toc-wrapper flex-1 min-h-0 overflow-y-auto pb-4 pt-2 my-2 relative overscroll-contain no-scrollbar">
       <ul class="flex flex-col items-start gap-4">
         {#each toc as item}
           <li style="padding-left: {(item.level - 2) * 1}rem;" class="w-full min-w-0">
@@ -97,7 +124,7 @@
   {/if}
 
   <!-- Bottom: Social Pill -->
-  <div class="pt-2 pb-6 pointer-events-auto z-10">
+  <div class="flex-none pt-2 pb-6 pointer-events-auto z-10">
     <SocialPill />
     
     <div class="mt-6">
@@ -134,4 +161,12 @@
     );
   }
 
+  /* Hide scrollbar completely while maintaining scroll functionality */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
 </style>

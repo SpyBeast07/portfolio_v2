@@ -28,10 +28,8 @@ export const blogs: Blog[] = [
         date: "Feb 28, 2026",
         readTime: "5 min read",
         slug: "why-i-switched-to-sveltekit",
-        image: "/test.png",
+        image: "/svelte_switch.png",
         content: `
-<article class="blog-article">
-
   <p>
     Choosing a tech stack feels easy at first. You pick what’s popular, what everyone recommends, and what trends suggest is “the best.” But real understanding only comes after building, breaking, migrating, and rebuilding again.
   </p>
@@ -359,8 +357,6 @@ export const blogs: Blog[] = [
     In the end, the best framework isn’t the most popular one.
     It’s the one that lets you build with confidence.
   </blockquote>
-
-</article>
 `,
     },
 ];
