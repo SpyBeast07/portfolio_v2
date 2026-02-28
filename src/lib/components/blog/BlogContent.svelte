@@ -192,12 +192,21 @@
     border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);
   }
 
+  .prose :global(.table-wrapper) {
+    width: 100%;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
   .prose :global(table) {
     width: 100%;
+    min-width: 600px; /* Forces scrolling on small screens instead of squishing */
     border-collapse: collapse;
     font-family: var(--font-outfit), sans-serif;
     font-size: 0.925rem;
-    margin: 1.5rem 0;
+    margin: 0;
   }
 
   .prose :global(th) {

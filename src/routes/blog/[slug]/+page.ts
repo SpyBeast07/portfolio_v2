@@ -20,7 +20,7 @@ export const load: PageLoad = async ({ params }) => {
     const toc: TocItem[] = [];
 
     // Replace h2/h3 tags and capture content to build TOC
-    const parsedContent = blog.content.replace(/<h([23])>(.*?)<\/h\1>/g, (match, levelChar, text) => {
+    let parsedContent = blog.content.replace(/<h([23])>(.*?)<\/h\1>/g, (match, levelChar, text) => {
         // Create a URL-friendly ID from the heading text
         const id = text
             .toLowerCase()
@@ -35,6 +35,12 @@ export const load: PageLoad = async ({ params }) => {
 
         return `<h${levelChar} id="${id}">${text}</h${levelChar}>`;
     });
+
+    // Wrap tables in a responsive scrolling container
+    parsedContent = parsedContent.replace(
+        /<table[\s\S]*?<\/table>/g,
+        (match) => `<div class="table-wrapper">${match}</div>`
+    );
 
     return { blog, parsedContent, toc };
 };

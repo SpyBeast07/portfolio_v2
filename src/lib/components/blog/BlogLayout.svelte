@@ -27,7 +27,7 @@
   <!-- Full-Width Native Scrolling Cover Image -->
   {#if blog.image}
     <div class="w-full relative z-10">
-      <div class="h-[60vh] min-h-[500px] w-full lg:h-[75vh]">
+      <div class="h-[40vh] min-h-[300px] sm:h-[50vh] sm:min-h-[400px] md:h-[60vh] md:min-h-[500px] lg:h-[75vh] w-full">
         <img 
           src={blog.image} 
           alt={blog.title} 
@@ -41,7 +41,7 @@
   {/if}
 
   <!-- Main Content Grid -->
-  <div class="relative z-20 mx-auto w-full max-w-[1400px] px-6 md:px-12 lg:px-16 pb-24 -mt-32 md:-mt-48">
+  <div class="relative z-20 mx-auto w-full max-w-[1400px] px-6 md:px-12 lg:px-16 pb-24 -mt-16 sm:-mt-24 md:-mt-32 lg:-mt-48">
     <div class="flex flex-col md:flex-row gap-8 lg:gap-16">
       
       <!-- Sticky Sidebar (approx 20%) - Hidden on mobile -->

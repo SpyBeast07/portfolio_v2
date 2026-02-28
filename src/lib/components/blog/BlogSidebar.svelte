@@ -37,8 +37,10 @@
         const elHeight = activeLi.clientHeight;
         const elBottom = elTop + elHeight;
         
-        // Check if the element is outside the visible scroll area
-        if (elTop < wrapperTop || elBottom > wrapperBottom) {
+        // Trigger scroll if element is within 2 elements of the visible edges
+        const buffer = elHeight * 3;
+        
+        if (elTop < wrapperTop + buffer || elBottom > wrapperBottom - buffer) {
           tocWrapper.scrollTo({
             top: elTop - wrapperHeight / 2 + elHeight / 2,
             behavior: 'smooth'
