@@ -1,42 +1,141 @@
-# sv
+# Kushagra Gupta — Personal Portfolio
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+> **Live at:** [kushagragupta.co.in](https://kushagragupta.co.in)
 
-## Creating a project
+A fast, animated personal portfolio built with **SvelteKit 5**, **Tailwind CSS v4**, and **TypeScript**. It showcases my work, writing, experience, and story as a Developer & AI Enthusiast.
 
-If you're seeing this, you've probably already done this step. Congrats!
+---
 
-```sh
-# create a new project
-npx sv create my-app
+## ✨ Highlights
+
+- **Animated hero** — scroll-driven name transform, logo fade, and parallax sidebar powered by `svelte-motion`
+- **Smooth scrolling** — powered by `lenis` for a silky page feel
+- **Dark / Light theme** — CSS variable-based theming with auto system preference detection
+- **PDF Resume viewer** — rendered in-browser via `pdfjs-dist`
+- **Responsive** — Fully optimized for mobile and desktop with a fixed sidebar layout on wider screens
+- **Page sections** — Home (Now + Blogs), About, Work/Projects, Blogs listing, Resume
+- **SEO-ready** — Open Graph and Twitter Card meta tags on every page
+
+---
+
+## 🛠 Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | [SvelteKit](https://kit.svelte.dev/) v2 (Svelte 5) |
+| Styling | [Tailwind CSS](https://tailwindcss.com/) v4 via `@tailwindcss/vite` |
+| Language | TypeScript |
+| Build | Vite 7 |
+| Animations | `svelte-motion`, CSS transitions |
+| Scroll | `lenis` |
+| PDF | `pdfjs-dist` |
+| Linting | ESLint 9 + Prettier |
+| Adapter | `@sveltejs/adapter-auto` |
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+├── lib/
+│   ├── components/
+│   │   ├── home/       # HeroTitle, HeroLogo, NowSection, BlogsSection
+│   │   ├── layout/     # Navbar, Footer, VerticalEmail
+│   │   ├── shared/     # SocialPill, reusable UI
+│   │   └── ui/         # PageLoader, icons, etc.
+│   ├── data/
+│   │   ├── index.ts    # Nav, identity, social links, resume — shared constants
+│   │   ├── about.ts    # Bio, experiences, education, skills
+│   │   ├── work.ts     # Projects list and categories
+│   │   ├── now.ts      # "Now" section content
+│   │   └── blogs.ts    # Blog posts
+│   └── stores/
+└── routes/
+    ├── +page.svelte    # Home (animated hero, Now, Blogs)
+    ├── about/          # About page
+    ├── work/           # Projects page
+    ├── blogs/          # Blogs listing
+    ├── blog/           # Individual blog post
+    └── resume/         # PDF resume viewer
 ```
 
-To recreate this project with the same configuration:
+---
 
-```sh
-# recreate this project
-npx sv create --template minimal --types ts --add sveltekit-adapter="adapter:auto" eslint prettier tailwindcss="plugins:none" --install npm ./
-```
+## 🚀 Getting Started
 
-## Developing
+### Prerequisites
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+- Node.js ≥ 18
+- npm (or pnpm / yarn)
 
-```sh
+### Install & Run
+
+```bash
+# Clone the repo
+git clone https://github.com/SpyBeast07/portfolio_v2.git
+cd portfolio_v2
+
+# Install dependencies
+npm install
+
+# Start the development server
 npm run dev
-
-# or start the server and open the app in a new browser tab
+# or open directly in browser
 npm run dev -- --open
 ```
 
-## Building
+### Build for Production
 
-To create a production version of your app:
-
-```sh
+```bash
 npm run build
+
+# Preview the production build locally
+npm run preview
 ```
 
-You can preview the production build with `npm run preview`.
+---
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## 🗂 Content Management
+
+All site content is co-located in `src/lib/data/`. No CMS required — just edit the TypeScript files:
+
+| File | What to edit |
+|---|---|
+| `index.ts` | Name, role, email, quote, resume URL, social links, nav items |
+| `about.ts` | Bio paragraphs, work experience, education, skills |
+| `work.ts` | Projects (title, description, tags, GitHub/demo links, category) |
+| `now.ts` | "What I'm doing right now" section |
+| `blogs.ts` | Blog posts |
+
+---
+
+## 🎯 Featured Projects
+
+| Project | Category | Stack |
+|---|---|---|
+| SME AI Agent | AI | RAG, LangChain, Elasticsearch, FastAPI, Docker |
+| Legal Redline Sandbox | AI | Python, FastAPI, React, Google Cloud, Gemini API |
+| Multilingual Language Model | AI | PyTorch, LoRA, SentencePiece |
+| Byte-Latent Transformer | Research | PyTorch, NLP, Transformers |
+| ALPR System | AI | Computer Vision, PyTorch, EasyOCR, CNN |
+| Malware Detection AI | Research | ML, Wireshark, Docker |
+| Netflix Clone | Web | React.js, Frontend |
+| Spardha Website | Web | HTML, CSS, JavaScript |
+
+---
+
+## 🧑‍💼 About Me
+
+I'm **Kushagra Gupta** — a Developer & AI Enthusiast currently working as a Software Development Intern at **Eurobliz**. I've done internships at Dobby Ads (MERN + Cypress + Prometheus/Grafana) and Vedic Bodhi (Android/Kotlin/Firebase), and I've had semester exchanges at **IIT Gandhinagar** and **IIIT Hyderabad**.
+
+- 📧 [kggupta.work@gmail.com](mailto:kggupta.work@gmail.com)
+- 💼 [LinkedIn](https://www.linkedin.com/in/spybeast07/)
+- 🐙 [GitHub](https://github.com/SpyBeast07)
+- 🌐 [kushagragupta.co.in](https://kushagragupta.co.in)
+
+---
+
+## 📜 License
+
+This project is open-source and available under the [MIT License](LICENSE).
