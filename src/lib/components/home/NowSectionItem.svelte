@@ -1,5 +1,5 @@
 <script lang="ts">
-	let { section } = $props();
+	let { section, index } = $props();
 </script>
 
 <div>
