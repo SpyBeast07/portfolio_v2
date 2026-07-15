@@ -47,15 +47,6 @@ export const projects: Project[] = [
         category: "Research",
     },
     {
-        title: "Netflix Clone",
-        description: "Designed a scalable frontend architecture with reusable React components and managed state effectively. Built a fully responsive UI, optimizing for cross-device compatibility.",
-        tags: ["React.js", "Frontend", "UI/UX"],
-        image: "",
-        githubLink: "https://github.com/SpyBeast07/netflix-clone-react",
-        demoLink: "https://netlix-clone-react.netlify.app/",
-        category: "Web Development",
-    },
-    {
         title: "ALPR System",
         description: "End-to-end ALPR pipeline using a custom 5-layer CNN (71.48% IoU) and EasyOCR. Optimized for real-time inference with TTA. Trained on a curated dataset of ~9,600 images.",
         tags: ["Computer Vision", "PyTorch", "EasyOCR", "CNN"],

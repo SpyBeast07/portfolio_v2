@@ -120,7 +120,6 @@ All site content is co-located in `src/lib/data/`. No CMS required — just edit
 | Byte-Latent Transformer | Research | PyTorch, NLP, Transformers |
 | ALPR System | AI | Computer Vision, PyTorch, EasyOCR, CNN |
 | Malware Detection AI | Research | ML, Wireshark, Docker |
-| Netflix Clone | Web | React.js, Frontend |
 | Spardha Website | Web | HTML, CSS, JavaScript |
 
 ---
