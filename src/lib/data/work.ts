@@ -28,6 +28,7 @@ export const projects: Project[] = [
         tags: ["Python", "FastAPI", "React.js", "Google Cloud", "Gemini API"],
         image: "",
         githubLink: "https://github.com/IshitaAgarwal05/Legal_Redline_Sandbox",
+        demoLink: "https://legal-redline-ai.vercel.app",
         category: "Artificial Intelligence",
     },
     {
@@ -77,6 +78,15 @@ export const projects: Project[] = [
         image: "",
         githubLink: "https://github.com/SpyBeast07/Spardha_Website_25",
         demoLink: "https://spardha-jklu.vercel.app",
+        category: "Web Development",
+    },
+    {
+        title: "LILCO STEM Augmented Reality Studio",
+        description: "Streaming platform and repository for STEM Education resources with browser-based WebAR experience. Features real-time camera-based image tracking powered by MindAR and Three.js, curriculum-aligned STEM modules, interactive 2D video & 3D GLTF model overlays, and Capacitor 7 native mobile wrapper for Android/iOS.",
+        tags: ["React 18", "Vite 5", "MindAR", "Three.js", "Capacitor 7", "WebGL", "WebAR", "GLTFLoader"],
+        image: "",
+        githubLink: "https://github.com/SpyBeast07/lilco-ar",
+        demoLink: "https://lilco-ar.vercel.app",
         category: "Web Development",
     },
 ];
