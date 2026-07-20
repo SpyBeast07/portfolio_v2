@@ -89,6 +89,15 @@ export const projects: Project[] = [
         demoLink: "https://lilco-ar.vercel.app",
         category: "Web Development",
     },
+    {
+        title: "Tarkify Platform",
+        description: "Full-stack business automation platform with production-grade checkout and entitlement delivery for digital products using Razorpay. Built SvelteKit frontend on Vercel, Hono/Bun backend with PostgreSQL in Docker, Cloudflare Tunnel for secure VPS deployment, and automated migrations. Marketing site for an experimental business venture — didn't achieve commercial traction but delivered a robust, production-ready system with secure payment flows, entitlement management, and zero-touch deployments.",
+        tags: ["SvelteKit 5", "Hono", "Bun", "PostgreSQL", "Docker", "Razorpay", "Cloudflare Tunnel", "Vercel", "Tailwind CSS v4"],
+        image: "",
+        githubLink: "https://github.com/SpyBeast07/tarkify",
+        demoLink: "https://tarkify.qzz.io",
+        category: "Web Development",
+    },
 ];
 
 // ─── Page Headings ────────────────────────────────────────────────────────────
