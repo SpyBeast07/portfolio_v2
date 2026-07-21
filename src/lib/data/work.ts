@@ -6,7 +6,7 @@ export interface Project {
     description: string;
     tags: string[];
     image?: string;
-    githubLink: string;
+    githubLink?: string;
     demoLink?: string;
     category: "Artificial Intelligence" | "Web Development" | "Research";
 }
@@ -96,6 +96,14 @@ export const projects: Project[] = [
         image: "",
         githubLink: "https://github.com/SpyBeast07/tarkify",
         demoLink: "https://tarkify.qzz.io",
+        category: "Web Development",
+    },
+    {
+        title: "DueDesk",
+        description: "Premium financial tracking and automated reminder system for treasury and asset management — first commercial client project. Tracks Bank Guarantees, Fixed Deposits, Treasury Securities, and Insurance Policies with unified document management, occurrence-based Email/WhatsApp alerts, and bank limit monitoring. Built with Svelte 5 (Runes), Supabase Edge Functions (Deno), PostgreSQL with strict Row Level Security, and private Supabase Storage. Zero direct database access from client — all operations proxied via secure Edge Functions.",
+        tags: ["Svelte 5", "Supabase", "Edge Functions", "Deno", "PostgreSQL", "Row Level Security", "TailwindCSS", "WhatsApp API"],
+        image: "",
+        demoLink: "https://due-desk.vercel.app",
         category: "Web Development",
     },
 ];
