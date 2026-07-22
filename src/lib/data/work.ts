@@ -86,7 +86,7 @@ export const projects: Project[] = [
         tags: ["React 18", "Vite 5", "MindAR", "Three.js", "Capacitor 7", "WebGL", "WebAR", "GLTFLoader"],
         image: "",
         githubLink: "https://github.com/SpyBeast07/lilco-ar",
-        demoLink: "https://lilco-ar.vercel.app",
+        demoLink: "https://ar.lilco.eu",
         category: "Web Development",
     },
     {
@@ -104,6 +104,14 @@ export const projects: Project[] = [
         tags: ["Svelte 5", "Supabase", "Edge Functions", "Deno", "PostgreSQL", "Row Level Security", "TailwindCSS", "WhatsApp API"],
         image: "",
         demoLink: "https://due-desk.vercel.app",
+        category: "Web Development",
+    },
+    {
+        title: "Local Dev UI",
+        description: "Local-first DevOps control plane giving developers structural visibility and high-speed control over their entire development stack — containers, databases, and services — in a single pane of glass. Features live dependency mesh visualization, schema-aware SQL autocomplete with alias resolution, impact analysis (blast radius) before commits, and idempotent backup/restore with one-click snapshots. Built to eliminate context switching between Portainer, pgAdmin, and terminal.",
+        tags: ["SvelteKit", "Svelte 5", "FastAPI", "Python", "Docker", "PostgreSQL", "CodeMirror 6", "Vis-Network", "Tailwind CSS v4", "Pandas", "PyDBML"],
+        image: "",
+        githubLink: "https://github.com/SpyBeast07/local_dev",
         category: "Web Development",
     },
 ];
