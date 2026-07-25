@@ -114,6 +114,14 @@ export const projects: Project[] = [
         githubLink: "https://github.com/SpyBeast07/local_dev",
         category: "Web Development",
     },
+    {
+        title: "Celeb Lookalike",
+        description: "Real-time celebrity lookalike detection built for a European client to boost stadium audience engagement — fans scan their face and instantly get matched to a celebrity doppelgänger with streaming results. Uses InsightFace for high-performance face detection and embedding extraction, cosine similarity for initial matching, CLIP semantic ranking for visual accuracy, and perceptual hashing for diversity filtering. Dual-phase SSE streaming pipeline delivers progressive results. Client ultimately passed on the concept, but the project showcases end-to-end computer vision pipeline with real-time web deployment.",
+        tags: ["InsightFace", "CLIP", "Cosine Similarity", "Perceptual Hashing", "SSE", "Svelte", "Computer Vision", "Real-time"],
+        image: "",
+        githubLink: "https://github.com/SpyBeast07/celeb-lookalike",
+        category: "Artificial Intelligence",
+    },
 ];
 
 // ─── Page Headings ────────────────────────────────────────────────────────────
