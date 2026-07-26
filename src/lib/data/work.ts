@@ -122,6 +122,14 @@ export const projects: Project[] = [
         githubLink: "https://github.com/SpyBeast07/celeb-lookalike",
         category: "Artificial Intelligence",
     },
+    {
+        title: "SnapTag",
+        description: "Mobile app that lets small shop owners ditch pen-and-paper stock logs by scanning product tags with their phone camera. Built for local retailers who manually track inventory — SnapTag uses on-device OCR (ML Kit) to instantly extract price, product name, and barcode from price tags, then auto-populates a local inventory database. No cloud, no accounts, no internet required. Jetpack Compose UI with CameraX for fast, reliable capture. Turns a 5-minute manual entry into a 3-second scan.",
+        tags: ["Kotlin", "Jetpack Compose", "CameraX", "ML Kit", "OCR", "Android", "Local-first"],
+        image: "",
+        githubLink: "https://github.com/SpyBeast07/SnapTag",
+        category: "Web Development",
+    },
 ];
 
 // ─── Page Headings ────────────────────────────────────────────────────────────
