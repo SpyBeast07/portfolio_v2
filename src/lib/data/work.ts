@@ -130,6 +130,14 @@ export const projects: Project[] = [
         githubLink: "https://github.com/SpyBeast07/SnapTag",
         category: "Web Development",
     },
+    {
+        title: "Is It Open? - JKLU",
+        description: "Campus-born frustration turned into a polished full-stack product. Students at JKLU kept trekking across campus to food stalls only to find shutters down or menus sold out. I built 'Is It Open?' so they could check live status, daily specials, and full menus from their phones before leaving their desks. The owner side is a multi-tenant dashboard where stall managers set weekly schedules, fire off timed overrides ('Closed for 1 hour'), and bulk-toggle item availability — all reflected instantly via TanStack Query. Ships as a PWA with emerald branding, persistent dark mode that never flashes, and token-based auth via Better Auth. Built for my own campus, now running in production for the student body.",
+        tags: ["SvelteKit", "Svelte 5", "Bun", "Hono", "Drizzle ORM", "PostgreSQL", "TanStack Query", "TailwindCSS v4", "Better Auth", "PWA", "Shadcn/ui"],
+        image: "",
+        githubLink: "https://github.com/SpyBeast07/Is-It-Open",
+        category: "Web Development",
+    },
 ];
 
 // ─── Page Headings ────────────────────────────────────────────────────────────
