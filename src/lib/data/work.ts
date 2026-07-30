@@ -138,6 +138,15 @@ export const projects: Project[] = [
         githubLink: "https://github.com/SpyBeast07/Is-It-Open",
         category: "Web Development",
     },
+    {
+        title: "LMS System",
+        description: "Multi-tenant Learning Management System built during an internship — months of work on a production-grade platform that could serve educational institutions at scale. Enforces school-based data isolation via school_id scoping across PostgreSQL (Neon) and Cloudflare R2 storage, with subscription-gated access and a strict role hierarchy. Ships a course community portal with real-time threaded discussions, drag-and-drop questionnaire builder for teachers, unified submissions for MCQ/TEXT/FILE assessments, Google OAuth SSO, and a teacher evaluation dashboard. Fully dockerized with Caddy reverse proxy, auto-seeded super admin, and automated background jobs via APScheduler. Deployed on Vercel (frontend), Render (backend), with Upstash Redis for caching and rate limiting. A system ready to sell to institutes needing a modern, isolated LMS.",
+        tags: ["React 18", "TypeScript", "Vite", "TanStack Router", "TanStack Query", "Zustand", "TailwindCSS", "FastAPI", "Python 3.12", "SQLAlchemy", "PostgreSQL", "Cloudflare R2", "Redis", "Upstash", "Docker", "Caddy", "APScheduler", "Google OAuth", "Multitenancy"],
+        image: "",
+        githubLink: "https://github.com/SpyBeast07/lms-system",
+        demoLink: "https://lms.kushagragupta.co.in",
+        category: "Web Development",
+    },
 ];
 
 // ─── Page Headings ────────────────────────────────────────────────────────────
