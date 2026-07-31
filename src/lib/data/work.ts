@@ -147,6 +147,14 @@ export const projects: Project[] = [
         demoLink: "https://lms.kushagragupta.co.in",
         category: "Web Development",
     },
+    {
+        title: "Love Passport",
+        description: "A digital passport for couples to collect memories, redeem stamps, and share moments — built as a fun side project to learn Convex and its real-time sync magic. Create a couple profile, invite your partner, and unlock stamps for shared activities like 'Honmei Chocolate Night' with photo memories attached. No manual sync code needed: Convex handles instant data propagation across devices automatically. Built with React Native (Expo) and TypeScript. Incomplete but a joy to build — proved how delightful developer experience can be when the backend just works.",
+        tags: ["React Native", "Expo", "Convex", "TypeScript", "Real-time", "Mobile"],
+        image: "",
+        githubLink: "https://github.com/SpyBeast07/love-passport",
+        category: "Web Development",
+    },
 ];
 
 // ─── Page Headings ────────────────────────────────────────────────────────────
