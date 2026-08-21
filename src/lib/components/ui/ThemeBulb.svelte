@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { theme } from '../../stores/theme';
-	import { fade } from 'svelte/transition';
 
 	let mounted = $state(false);
+	let transitioning = $state(false);
 
-	// Subscribe to theme store
 	let isDark = $derived($theme === 'dark');
 
 	onMount(() => {
@@ -13,7 +12,11 @@
 	});
 
 	const toggleTheme = () => {
-		// Animate the pull
+		const bulbButton = document.querySelector('[aria-label="Toggle Theme"]') as HTMLElement | null;
+		const pageWrapper = document.getElementById('page-wrapper');
+		const body = document.body;
+
+		// Animate the pull rope
 		const rope = document.getElementById('bulb-rope');
 		if (rope) {
 			rope.animate(
@@ -22,14 +25,43 @@
 					{ transform: 'translateY(10px)' },
 					{ transform: 'translateY(0)' }
 				],
-				{
-					duration: 300,
-					easing: 'ease-in-out'
-				}
+				{ duration: 300, easing: 'ease-in-out' }
 			);
 		}
 
+		if (!bulbButton || !pageWrapper) {
+			theme.update((current) => (current === 'dark' ? 'light' : 'dark'));
+			return;
+		}
+
+		transitioning = true;
+
+		// Disable body CSS transition so theme change is instant
+		const prevBodyTransition = body.style.transition;
+		body.style.transition = 'none';
+
+		// Toggle the theme — new colors apply immediately
 		theme.update((current) => (current === 'dark' ? 'light' : 'dark'));
+
+		// Get bulb center position relative to the viewport
+		const rect = bulbButton.getBoundingClientRect();
+		const x = Math.round(rect.left + rect.width / 2);
+		const y = Math.round(rect.top + rect.height / 2);
+
+		// Animate clip-path circle expanding from bulb center
+		const animation = pageWrapper.animate(
+			[
+				{ clipPath: `circle(0% at ${x}px ${y}px)` },
+				{ clipPath: `circle(150% at ${x}px ${y}px)` }
+			],
+			{ duration: 500, easing: 'cubic-bezier(0.4, 0, 0.2, 1)' }
+		);
+
+		animation.onfinish = () => {
+			pageWrapper.style.clipPath = '';
+			body.style.transition = prevBodyTransition;
+			transitioning = false;
+		};
 	};
 </script>
 
