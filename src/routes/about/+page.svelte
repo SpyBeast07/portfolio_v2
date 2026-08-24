@@ -100,10 +100,6 @@
 		<VerticalEmail />
 	</div>
 
-	<div class="block md:hidden">
-		<VerticalEmail />
-	</div>
-
 	<!-- Desktop Left Panel: matches Home page sidebar -->
 	<aside class="hidden md:block">
 		<div
@@ -160,49 +156,8 @@
 		</div>
 	</aside>
 
-	<!-- Mobile Page Header -->
-	<header class="relative z-10 px-6 pt-32 md:hidden">
-		<h1
-			class="font-playfair mb-6 text-5xl leading-none font-bold tracking-tighter"
-			style="color: var(--foreground);"
-		>
-			About
-		</h1>
-
-		<div class="flex flex-col text-xl leading-tight font-medium text-neutral-400">
-			<h2>{introLine1}</h2>
-			<h2 class="text-xl font-medium transition-colors duration-300" style="color: var(--icon-color)">
-				{introLine2}
-			</h2>
-		</div>
-
-		<nav class="mt-8 flex flex-row flex-wrap items-start gap-x-8 gap-y-5">
-			{#each sections as section (section.id)}
-				{@const isActive = activeSection === section.id}
-				<a
-					href="#{section.id}"
-					onclick={(e) => handleNavClick(e, section.id)}
-					class="group flex items-center gap-5 text-base font-medium tracking-widest uppercase transition-colors duration-300"
-					style="color: {isActive
-						? 'var(--foreground)'
-						: 'color-mix(in oklab, var(--foreground) 55%, transparent)'};"
-				>
-					<span
-						class={`block h-[1px] transition-all duration-300 ${isActive ? 'w-8' : 'w-0 group-hover:w-4'}`}
-						style="background-color: var(--foreground);"
-					></span>
-					{section.name}
-				</a>
-			{/each}
-		</nav>
-
-		<div class="mt-10">
-			<SocialPill />
-		</div>
-	</header>
-
 	<!-- Right Panel: Content Sections -->
-	<main class="relative z-20 px-6 pt-12 pb-24 md:ml-[40%] md:w-[60%] md:px-16 md:pt-24 lg:pr-32">
+	<main class="relative z-20 px-6 pt-28 pb-24 md:ml-[40%] md:w-[60%] md:px-16 md:pt-24 lg:pr-32">
 		<!-- About -->
 		<section id="about" class="mb-24 scroll-mt-28 pt-4 md:pt-16 lg:pt-24 lg:mb-40">
 				<div
