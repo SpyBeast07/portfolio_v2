@@ -1,7 +1,7 @@
 <div class="author-card" aria-label="Author information">
   <div class="author-avatar-wrap">
     <img
-      src="/about.jpg"
+      src="/about.webp"
       alt="Kushagra Gupta"
       class="author-avatar"
       loading="lazy"

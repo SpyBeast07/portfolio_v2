@@ -100,7 +100,7 @@ Links:
 - Project GitHub/repo links
 - Resume PDF
 Images: 
-- Logo at top of page (/logo.png)
+- Logo at top of page (/logo.webp)
 - Hero avatar/character imagery
 - Now section doesn't have direct images but has visual styling
 - Background grid pattern
@@ -193,7 +193,7 @@ Buttons:
 - "View Resume" (on About section of home)
 - "View More Blogs" (if >2 blogs)
 Links: GitHub, LinkedIn, Email in footer
-Images: Logo (/logo.png), Now section icons, blog cover images
+Images: Logo (/logo.webp), Now section icons, blog cover images
 Icons: GithubIcon, LinkedinIcon, EmailIcon, ExternalLinkIcon
 Interactive Components: Navbar (floating/sidebar), ProjectCard hover, BlogItem hover, NowSectionItem links
 Animations: 
@@ -212,7 +212,7 @@ Purpose: Detailed biography, experience, education, skills
 Target Audience: Recruiters, people wanting to know the person behind the portfolio  
 Hero Section:
 - Headline: "Nice to meet you. I'm Kushagra."
-- Photo: /about.jpg circular portrait with decoration
+- Photo: /about.webp circular portrait with decoration
 Content Sections:
 1. Bio text: 4 paragraphs about personality, work philosophy, AI views, outside-of-code interests
 2. Where I Worked: Timeline of work experiences (3 internships)
@@ -225,7 +225,7 @@ Timeline Items:
 Cards: None specific (uses TimelineItem)
 Buttons: "View Resume"
 Links: Resume PDF download, social links
-Images: /about.jpg portrait, university logos (/jklu.jpg, /iitgn.png, /iiith.jpg)
+Images: /about.webp portrait, university logos (/jklu.webp, /iitgn.webp, /iiith.webp)
 Icons: FileTextIcon, GithubIcon, LinkedinIcon, EmailIcon, GithubIcon
 Interactive Components: 
 - TimelineItem expandable stories
@@ -287,7 +287,7 @@ Empty State: "Thoughtful essays coming soon..." placeholder
 Cards: BlogItem (each blog listing)
 Buttons: "Read Article →", "View More Blogs"
 Links: Each blog links to /blog/${slug}
-Images: Blog cover images (/svelte_switch.png for the one shown)
+Images: Blog cover images (/svelte_switch.webp for the one shown)
 Icons: ExternalLinkIcon (→ icon)
 Interactive Components: 
 - BlogItem hover (background color change)
@@ -360,7 +360,7 @@ Hero Section (Home)
 - Content hierarchy: Name (largest) > Role > Logo > CTA
 - Text: "Kushagra Gupta", "Developer & AI Enthusiast"
 - Buttons: Implicit via navbar links
-- Images: /logo.png
+- Images: /logo.webp
 - Interactions: Scroll-based animations (transform, opacity)
 - Responsive: Mobile name positioning changes, sidebar behavior changes
 Now Section
@@ -921,7 +921,7 @@ Only 1 article currently:
 - Date: Feb 28, 2026
 - Read time: 5 min read
 - Excerpt: "A practical guide to migrating from Next.js to SvelteKit, and why it might be the right move for your next project."
-- Image: /svelte_switch.png
+- Image: /svelte_switch.webp
 - Full content: Detailed migration story across 4 frameworks (Next.js → TanStack Start → Astro → SvelteKit)
 Metadata
 SEO Title (home /): "Kushagra Gupta | Developer & AI Enthusiast"
@@ -937,14 +937,14 @@ OpenGraph (all pages):
 - og:url: current page URL
 - og:title: page-specific or site title
 - og:description: page-specific or site description
-- og:image: {page.url.origin}/logo.png
+- og:image: {page.url.origin}/logo.webp
 - og:type: "article" for blog posts
 Twitter Cards:
 - twitter:card: "summary_large_image"
 - twitter:url: current page URL
 - twitter:title: page title
 - twitter:description: page description
-- twitter:image: logo.png
+- twitter:image: logo.webp
 Footer Text: 
 "Coded in Visual Studio Code by yours truly. Built with SvelteKit and Tailwind CSS, deployed with Vercel. Interested in working together? Feel free to reach out on LinkedIn or email."
 Additional Content
@@ -1287,13 +1287,13 @@ Screen Reader Support:
 Part 15 — Performance
 Largest Images
 Home Page:
-- Logo: /logo.png (small, likely <50KB)
+- Logo: /logo.webp (small, likely <50KB)
 - No other large images above the fold
 About Page:
-- Profile photo /about.jpg - portrait, likely moderate size
-- University logos (/jklu.jpg, /iitgn.png, /iiith.jpg)
+- Profile photo /about.webp - portrait, likely moderate size
+- University logos (/jklu.webp, /iitgn.webp, /iiith.webp)
 Blog Posts:
-- Cover images: /svelte_switch.png and potentially others
+- Cover images: /svelte_switch.webp and potentially others
 - All have loading="lazy" and size constraints (h-[40vh] min-h-[300px])
 Projects:
 - All project images currently empty/undefined in data
@@ -1639,14 +1639,14 @@ UI Components:
 Home Page Content:
 - Name: "Kushagra Gupta"
 - Role: "Developer & AI Enthusiast"
-- Logo: /logo.png
+- Logo: /logo.webp
 - "Now" section last updated: Feb 2026
 - 3 "Now" categories with items
 - 2 latest blog excerpts
 - Project counter: ${projects.length}+
 About Page Content:
 - Headline: "Nice to meet you. I'm Kushagra."
-- Photo: /about.jpg
+- Photo: /about.webp
 - 4 bio paragraphs
 - 3 work experiences with stories
 - 3 education entries (with exchange programs)

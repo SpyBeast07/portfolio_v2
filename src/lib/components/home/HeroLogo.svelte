@@ -8,7 +8,7 @@
 	class="group pointer-events-auto relative flex h-40 w-40 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-neutral-900 shadow-2xl ring-2 ring-white/5 transition-transform duration-500 hover:scale-105"
 >
 	<img
-		src="/logo.png"
+		src="/logo.webp"
 		alt="Logo"
 		width="160"
 		height="160"

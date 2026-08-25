@@ -61,14 +61,14 @@
 	<meta property="og:url" content={$page.url.href} />
 	<meta property="og:title" content="Blogs | Kushagra Gupta" />
 	<meta property="og:description" content="Thoughts, tutorials, and insights by Kushagra Gupta - Developer & AI Enthusiast." />
-	<meta property="og:image" content="{$page.url.origin}/logo.png" />
+	<meta property="og:image" content="{$page.url.origin}/logo.webp" />
 
 	<!-- Twitter -->
 	<meta property="twitter:card" content="summary_large_image" />
 	<meta property="twitter:url" content={$page.url.href} />
 	<meta property="twitter:title" content="Blogs | Kushagra Gupta" />
 	<meta property="twitter:description" content="Thoughts, tutorials, and insights by Kushagra Gupta - Developer & AI Enthusiast." />
-	<meta property="twitter:image" content="{$page.url.origin}/logo.png" />
+	<meta property="twitter:image" content="{$page.url.origin}/logo.webp" />
 </svelte:head>
 
 <div class="bg-background text-foreground relative min-h-screen selection:bg-yellow-500/30">

@@ -76,14 +76,14 @@
 	<meta property="og:url" content={$page.url.href} />
 	<meta property="og:title" content="Kushagra Gupta | Developer & AI Enthusiast" />
 	<meta property="og:description" content="Portfolio of Kushagra Gupta - Developer & AI Enthusiast. Explore my work, projects, and journey in software development and artificial intelligence." />
-	<meta property="og:image" content="{$page.url.origin}/logo.png" />
+	<meta property="og:image" content="{$page.url.origin}/logo.webp" />
 	
 	<!-- Twitter -->
 	<meta property="twitter:card" content="summary_large_image" />
 	<meta property="twitter:url" content={$page.url.href} />
 	<meta property="twitter:title" content="Kushagra Gupta | Developer & AI Enthusiast" />
 	<meta property="twitter:description" content="Portfolio of Kushagra Gupta - Developer & AI Enthusiast. Explore my work, projects, and journey in software development and artificial intelligence." />
-	<meta property="twitter:image" content="{$page.url.origin}/logo.png" />
+	<meta property="twitter:image" content="{$page.url.origin}/logo.webp" />
 </svelte:head>
 
 <!-- Loading Screen - Only visible while loading -->

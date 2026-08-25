@@ -28,7 +28,7 @@ export const blogs: Blog[] = [
         date: "Feb 28, 2026",
         readTime: "5 min read",
         slug: "why-i-switched-to-sveltekit",
-        image: "/svelte_switch.png",
+        image: "/svelte_switch.webp",
         content: `
   <p>
     Choosing a tech stack feels easy at first. You pick what’s popular, what everyone recommends, and what trends suggest is “the best.” But real understanding only comes after building, breaking, migrating, and rebuilding again.

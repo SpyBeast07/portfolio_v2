@@ -59,7 +59,7 @@
                    animation: logoScale 2s ease-in-out infinite;"
 				>
 					<img
-						src="/logo.png"
+						src="/logo.webp"
 						alt="Loading"
 						class="h-full w-full object-cover opacity-90"
 						style="animation: logoFade 2s ease-in-out infinite;"
