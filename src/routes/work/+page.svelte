@@ -190,7 +190,7 @@
 			</div>
 
 			<!-- Projects Grid -->
-			<div class="grid grid-cols-1 gap-12">
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4" style="grid-auto-rows: masonry; grid-auto-flow: dense;">
 				{#each filteredProjects as project (project.title)}
 					<ProjectCard {...project} />
 				{/each}
