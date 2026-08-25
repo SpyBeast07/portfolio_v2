@@ -228,7 +228,7 @@
 		</section>
 
 		<!-- GitHub Stats -->
-		<section id="github" class="scroll-mt-28">
+		<section id="github" class="scroll-mt-28 mb-52">
 			<SectionHeading class="mb-12 text-4xl lg:text-5xl">Github Stats</SectionHeading>
 			<GithubStats />
 		</section>
