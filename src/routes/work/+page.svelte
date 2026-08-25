@@ -12,7 +12,7 @@
 	const sections = [
 		{ id: 'projects', name: 'Projects' },
 		{ id: 'skills', name: 'Skills' },
-		{ id: 'github', name: 'GitHub' }
+		{ id: 'github', name: 'GitHub Activity' }
 	];
 
 	let activeCategory = $state('All');
@@ -114,12 +114,12 @@
 				<div
 					class="flex flex-col items-left text-xl leading-tight font-medium text-neutral-400"
 				>
-					<h2>{introLine1}</h2>
+					<h2>Crafting digital experiences</h2>
 					<h2
 						class="text-xl font-medium transition-colors duration-300"
 						style="color: var(--icon-color)"
 					>
-						{introLine2}
+						with passion & code.
 					</h2>
 				</div>
 
@@ -227,9 +227,9 @@
 			</div>
 		</section>
 
-		<!-- GitHub Stats -->
+		<!-- GitHub Activity && Open Source -->
 		<section id="github" class="scroll-mt-28 mb-52">
-			<SectionHeading class="mb-12 text-4xl lg:text-5xl">Github Stats</SectionHeading>
+			<SectionHeading class="mb-12 text-4xl lg:text-5xl">GitHub Activity</SectionHeading>
 			<GithubStats />
 		</section>
 	</main>
