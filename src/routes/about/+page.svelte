@@ -160,7 +160,7 @@
 	<main class="relative z-20 px-6 pt-28 pb-24 md:ml-[40%] md:w-[60%] md:px-16 md:pt-24 lg:pr-32">
 		<!-- About -->
 		<section id="about" class="mb-24 scroll-mt-28 pt-4 md:pt-16 lg:pt-24 lg:mb-40">
-				<SectionHeading class="mb-10 text-4xl lg:text-5xl">Nice to meet you. I'm Kushagra.</SectionHeading>
+				<SectionHeading class="mb-12 text-4xl lg:text-5xl">Nice to meet you. I'm Kushagra.</SectionHeading>
 				<div
 					class="font-outfit block space-y-6 text-lg leading-relaxed whitespace-pre-line"
 					style="color: color-mix(in oklab, var(--foreground) 70%, transparent);"
@@ -197,7 +197,7 @@
 				<!-- Resume Button -->
 				<a
 					href="/resume"
-					class="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-transform"
+					class="mt-10 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-transform"
 					style="color: var(--background); background-color: var(--foreground);"
 					onmouseenter={handleResumeMouseEnter}
 					onmouseleave={handleResumeMouseLeave}
