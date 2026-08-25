@@ -10,13 +10,13 @@
 
 	const sections = [
 		{ id: 'about', name: 'About' },
-		{ id: 'work', name: 'Work' },
-		{ id: 'study', name: 'Study' }
+		{ id: 'experience', name: 'Experience' },
+		{ id: 'education', name: 'Education' }
 	];
 
 	let activeSection = $state('about');
 
-	const [introLine1, introLine2] = about.headline.split(/(?<=\.)\s+/);
+	const [introLine1, introLine2] = about.headline.split('\n');
 
 	onMount(() => {
 		const sectionEls = document.querySelectorAll('section[id]');
@@ -119,7 +119,7 @@
 					<h2>{introLine1}</h2>
 					<h2
 						class="text-xl font-medium transition-colors duration-300"
-						style="color: var(--icon-color)"
+						style="color: var(--foreground)"
 					>
 						{introLine2}
 					</h2>
@@ -160,6 +160,7 @@
 	<main class="relative z-20 px-6 pt-28 pb-24 md:ml-[40%] md:w-[60%] md:px-16 md:pt-24 lg:pr-32">
 		<!-- About -->
 		<section id="about" class="mb-24 scroll-mt-28 pt-4 md:pt-16 lg:pt-24 lg:mb-40">
+				<SectionHeading class="mb-10 text-4xl lg:text-5xl">Nice to meet you. I'm Kushagra.</SectionHeading>
 				<div
 					class="font-outfit block space-y-6 text-lg leading-relaxed whitespace-pre-line"
 					style="color: color-mix(in oklab, var(--foreground) 70%, transparent);"
@@ -207,16 +208,16 @@
 			</section>
 
 			<!-- Work -->
-			<section id="work" class="mb-24 scroll-mt-28 lg:mb-40">
-				<SectionHeading class="mb-12 text-4xl lg:text-5xl">Where I Worked</SectionHeading>
+			<section id="experience" class="mb-24 scroll-mt-28 lg:mb-40">
+				<SectionHeading class="mb-12 text-4xl lg:text-5xl">Experience That Brings<br>Ideas to Life</SectionHeading>
 				{#each experiences as exp}
 					<TimelineItem {...exp} />
 				{/each}
 			</section>
 
-			<!-- Study -->
-			<section id="study" class="mb-24 scroll-mt-28 lg:mb-40">
-				<SectionHeading class="mb-12 text-4xl lg:text-5xl">Where I Studied</SectionHeading>
+			<!-- Education -->
+			<section id="education" class="mb-24 scroll-mt-28 lg:mb-40">
+				<SectionHeading class="mb-12 text-4xl lg:text-5xl">Education</SectionHeading>
 				{#each education as edu}
 					<TimelineItem {...edu} />
 			{/each}

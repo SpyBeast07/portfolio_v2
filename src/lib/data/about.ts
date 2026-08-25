@@ -14,7 +14,7 @@
 // F. Your AI philosophy line (keep this!)
 
 export const about = {
-    headline: "Nice to meet you. I'm Kushagra.",
+    headline: "Get to know more about\nwho I am.",
     photo: "/about.jpg",
     long: [
         "I'm a Developer & AI Enthusiast who enjoys combining technology with everything around it. I'm curious about how modern problems can be solved using today's tools — sometimes inspired by ideas and transitions that happened long before our time, when new technologies reshaped the world in similar ways.",
