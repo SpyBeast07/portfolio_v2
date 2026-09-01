@@ -20,17 +20,17 @@ A fast, animated personal portfolio built with **SvelteKit 5**, **Tailwind CSS v
 
 ## 🛠 Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Framework | [SvelteKit](https://kit.svelte.dev/) v2 (Svelte 5) |
-| Styling | [Tailwind CSS](https://tailwindcss.com/) v4 via `@tailwindcss/vite` |
-| Language | TypeScript |
-| Build | Vite 7 |
-| Animations | `svelte-motion`, CSS transitions |
-| Scroll | `lenis` |
-| PDF | `pdfjs-dist` |
-| Linting | ESLint 9 + Prettier |
-| Adapter | `@sveltejs/adapter-auto` |
+| Layer      | Technology                                                          |
+| ---------- | ------------------------------------------------------------------- |
+| Framework  | [SvelteKit](https://kit.svelte.dev/) v2 (Svelte 5)                  |
+| Styling    | [Tailwind CSS](https://tailwindcss.com/) v4 via `@tailwindcss/vite` |
+| Language   | TypeScript                                                          |
+| Build      | Vite 7                                                              |
+| Animations | `svelte-motion`, CSS transitions                                    |
+| Scroll     | `lenis`                                                             |
+| PDF        | `pdfjs-dist`                                                        |
+| Linting    | ESLint 9 + Prettier                                                 |
+| Adapter    | `@sveltejs/adapter-auto`                                            |
 
 ---
 
@@ -100,27 +100,27 @@ npm run preview
 
 All site content is co-located in `src/lib/data/`. No CMS required — just edit the TypeScript files:
 
-| File | What to edit |
-|---|---|
-| `index.ts` | Name, role, email, quote, resume URL, social links, nav items |
-| `about.ts` | Bio paragraphs, work experience, education, skills |
-| `work.ts` | Projects (title, description, tags, GitHub/demo links, category) |
-| `now.ts` | "What I'm doing right now" section |
-| `blogs.ts` | Blog posts |
+| File       | What to edit                                                     |
+| ---------- | ---------------------------------------------------------------- |
+| `index.ts` | Name, role, email, quote, resume URL, social links, nav items    |
+| `about.ts` | Bio paragraphs, work experience, education, skills               |
+| `work.ts`  | Projects (title, description, tags, GitHub/demo links, category) |
+| `now.ts`   | "What I'm doing right now" section                               |
+| `blogs.ts` | Blog posts                                                       |
 
 ---
 
 ## 🎯 Featured Projects
 
-| Project | Category | Stack |
-|---|---|---|
-| SME AI Agent | AI | RAG, LangChain, Elasticsearch, FastAPI, Docker |
-| Legal Redline Sandbox | AI | Python, FastAPI, React, Google Cloud, Gemini API |
-| Multilingual Language Model | AI | PyTorch, LoRA, SentencePiece |
-| Byte-Latent Transformer | Research | PyTorch, NLP, Transformers |
-| ALPR System | AI | Computer Vision, PyTorch, EasyOCR, CNN |
-| Malware Detection AI | Research | ML, Wireshark, Docker |
-| Spardha Website | Web | HTML, CSS, JavaScript |
+| Project                     | Category | Stack                                            |
+| --------------------------- | -------- | ------------------------------------------------ |
+| SME AI Agent                | AI       | RAG, LangChain, Elasticsearch, FastAPI, Docker   |
+| Legal Redline Sandbox       | AI       | Python, FastAPI, React, Google Cloud, Gemini API |
+| Multilingual Language Model | AI       | PyTorch, LoRA, SentencePiece                     |
+| Byte-Latent Transformer     | Research | PyTorch, NLP, Transformers                       |
+| ALPR System                 | AI       | Computer Vision, PyTorch, EasyOCR, CNN           |
+| Malware Detection AI        | Research | ML, Wireshark, Docker                            |
+| Spardha Website             | Web      | HTML, CSS, JavaScript                            |
 
 ---
 

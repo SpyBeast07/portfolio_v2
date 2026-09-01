@@ -1,6 +1,4 @@
 {
-  "recommendations": [
-    "svelte.svelte-vscode"
-  ],
-  "unwantedRecommendations": []
+	"recommendations": ["svelte.svelte-vscode"],
+	"unwantedRecommendations": []
 }
