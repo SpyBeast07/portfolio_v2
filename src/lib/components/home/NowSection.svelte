@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Motion } from 'svelte-motion';
 	import SectionHeading from '$lib/components/shared/SectionHeading.svelte';
-	import { now } from '$lib/data';
+	import { siteData } from '$lib/stores/site-data';
 	import NowSectionItem from './NowSectionItem.svelte';
 	import { inView } from '$lib/actions/inView';
 
@@ -31,11 +31,11 @@
 	<SectionHeading class="mb-8">{"What I'm Doing Now"}</SectionHeading>
 
 	<p class="font-outfit mb-12 text-neutral-500">
-		Last updated: {now.lastUpdated}
+		Last updated: {$siteData.now.lastUpdated}
 	</p>
 
 	<div class="space-y-12">
-		{#each now.sections as section, index}
+		{#each $siteData.now.sections as section, index}
 			<NowSectionItem {section} {index} />
 		{/each}
 	</div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { socialLinks } from '$lib/data';
+  import { siteData } from '$lib/stores/site-data';
   import { EmailIcon, GithubIcon, LinkedinIcon } from '$lib/components/ui/icons';
 
   const getIcon = (label: string) => {
@@ -28,7 +28,7 @@
   class="flex w-fit items-center gap-8 px-8 py-4 rounded-full backdrop-blur-md shadow-lg transition-colors duration-300"
   style="background-color: color-mix(in oklab, var(--background) 70%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 30%, transparent);"
 >
-  {#each socialLinks as link}
+  {#each $siteData.socialLinks as link}
     {@const Icon = getIcon(link.label)}
     <a
       href={link.href}

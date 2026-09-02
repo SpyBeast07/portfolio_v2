@@ -2,16 +2,16 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import BlogItem from '$lib/components/shared/BlogItem.svelte';
-	import { blogs, pageHeadings } from '$lib/data';
+	import { siteData } from '$lib/stores/site-data';
 	import SectionHeading from '$lib/components/shared/SectionHeading.svelte';
 	import SocialPill from '$lib/components/shared/SocialPill.svelte';
 	import VerticalEmail from '$lib/components/layout/VerticalEmail.svelte';
 
-	const sections = blogs.map((blog) => ({ id: blog.slug, name: blog.title }));
+	const sections = $derived($siteData.blogs.map((blog) => ({ id: blog.slug, name: blog.title })));
 
-	let activeSection = $state(blogs[0]?.slug ?? '');
+	let activeSection = $state($siteData.blogs[0]?.slug ?? '');
 
-	const [introLine1, introLine2] = pageHeadings.blogs.description.split(', ');
+	const introLines = $derived($siteData.pageHeadings.blogs.description.split(', '));
 
 	onMount(() => {
 		const sectionEls = document.querySelectorAll('section[id]');
@@ -99,12 +99,12 @@
 				<div
 					class="flex flex-col items-left text-xl leading-tight font-medium text-neutral-400"
 				>
-					<h2>{introLine1}</h2>
+					<h2>{introLines[0]}</h2>
 					<h2
 						class="text-xl font-medium transition-colors duration-300"
 						style="color: var(--icon-color)"
 					>
-						{introLine2}
+						{introLines[1]}
 					</h2>
 				</div>
 
@@ -146,8 +146,8 @@
 			<SectionHeading class="mb-12 text-4xl lg:text-5xl">Writing</SectionHeading>
 
 			<div class="space-y-4">
-				{#if blogs.length > 0}
-					{#each blogs as blog (blog.title)}
+				{#if $siteData.blogs.length > 0}
+					{#each $siteData.blogs as blog (blog.title)}
 						<div id={blog.slug} class="scroll-mt-28">
 							<BlogItem {...blog} />
 						</div>

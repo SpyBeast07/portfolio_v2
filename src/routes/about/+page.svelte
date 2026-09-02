@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import TimelineItem from '$lib/components/shared/TimelineItem.svelte';
-	import { about, education, experiences } from '$lib/data';
+	import { siteData } from '$lib/stores/site-data';
 	import SectionHeading from '$lib/components/shared/SectionHeading.svelte';
 	import SocialPill from '$lib/components/shared/SocialPill.svelte';
 	import VerticalEmail from '$lib/components/layout/VerticalEmail.svelte';
@@ -16,7 +16,7 @@
 
 	let activeSection = $state('about');
 
-	const [introLine1, introLine2] = about.headline.split('\n');
+	const introLines = $derived($siteData.about.headline.split('\n'));
 
 	onMount(() => {
 		const sectionEls = document.querySelectorAll('section[id]');
@@ -116,12 +116,12 @@
 				<div
 					class="flex flex-col items-left text-xl leading-tight font-medium text-neutral-400"
 				>
-					<h2>{introLine1}</h2>
+					<h2>{introLines[0]}</h2>
 					<h2
 						class="text-xl font-medium transition-colors duration-300"
 						style="color: var(--foreground)"
 					>
-						{introLine2}
+						{introLines[1]}
 					</h2>
 				</div>
 
@@ -166,13 +166,13 @@
 					style="color: color-mix(in oklab, var(--foreground) 70%, transparent);"
 				>
 					<!-- Photo -->
-					{#if about.photo}
+					{#if $siteData.about.photo}
 						<div
 							class="mb-8 flex w-full justify-center md:float-right md:mt-2 md:mb-4 md:ml-12 md:block md:w-auto"
 						>
 							<div class="relative h-48 w-48 md:h-64 md:w-64">
 								<img
-									src={about.photo}
+									src={$siteData.about.photo}
 									alt="Kushagra"
 									class="h-full w-full rounded-2xl object-cover shadow-sm transition-all duration-500"
 									style="border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);"
@@ -187,8 +187,8 @@
 					{/if}
 
 					<!-- Text Content -->
-					{#each about.long as paragraph, index}
-						<p class={index === about.long.length - 1 ? 'text-foreground/80 font-medium' : ''}>
+					{#each $siteData.about.long as paragraph, index}
+						<p class={index === $siteData.about.long.length - 1 ? 'text-foreground/80 font-medium' : ''}>
 							{paragraph}
 						</p>
 					{/each}
@@ -210,7 +210,7 @@
 			<!-- Work -->
 			<section id="experience" class="mb-24 scroll-mt-28 lg:mb-40">
 				<SectionHeading class="mb-12 text-4xl lg:text-5xl">Experience That Brings<br>Ideas to Life</SectionHeading>
-				{#each experiences as exp}
+				{#each $siteData.experiences as exp}
 					<TimelineItem {...exp} />
 				{/each}
 			</section>
@@ -218,7 +218,7 @@
 			<!-- Education -->
 			<section id="education" class="mb-24 scroll-mt-28 lg:mb-40">
 				<SectionHeading class="mb-12 text-4xl lg:text-5xl">Education</SectionHeading>
-				{#each education as edu}
+				{#each $siteData.education as edu}
 					<TimelineItem {...edu} />
 			{/each}
 		</section>

@@ -16,7 +16,7 @@
 	import HeroTitle from '$lib/components/home/HeroTitle.svelte';
 	import HeroLogo from '$lib/components/home/HeroLogo.svelte';
 	import PageLoader from '$lib/components/ui/PageLoader.svelte';
-	import { role, quote } from '$lib/data';
+	import { siteData } from '$lib/stores/site-data';
 	import { StackIcon } from '$lib/components/ui/icons';
 
 	let isMobile = $state(false);
@@ -160,12 +160,12 @@
 		<Motion style={{ opacity: sidebarOpacity, y: sidebarY, pointerEvents: 'auto' }} let:motion>
 			<div use:motion class="pointer-events-auto mt-4 flex flex-col items-start gap-10">
 				<div class="flex flex-col items-center text-xl leading-tight font-medium text-neutral-400">
-					<h2>{role.line1}</h2>
+					<h2>{$siteData.role.line1}</h2>
 					<h2
 						class="text-xl font-medium transition-colors duration-300"
 						style="color: var(--icon-color)"
 					>
-						{role.line2}
+						{$siteData.role.line2}
 					</h2>
 				</div>
 
@@ -191,9 +191,9 @@
 				style="color: var(--icon-color)"
 			/>
 			<div class="flex flex-col items-center text-xl leading-tight font-medium text-neutral-400">
-				<span>{role.line1}</span>
+				<span>{$siteData.role.line1}</span>
 				<span class="transition-colors duration-300" style="color: var(--icon-color)">
-					{role.line2}
+					{$siteData.role.line2}
 				</span>
 			</div>
 		</div>
@@ -228,7 +228,7 @@
 						class="font-playfair text-2xl leading-snug font-bold md:text-3xl"
 						style="color: var(--foreground)"
 					>
-						“{quote}”
+						“{$siteData.quote}”
 					</h2>
 				</section>
 

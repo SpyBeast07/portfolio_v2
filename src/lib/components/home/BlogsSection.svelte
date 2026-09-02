@@ -1,6 +1,6 @@
 <script lang="ts">
 	import BlogItem from '$lib/components/shared/BlogItem.svelte';
-	import { blogs } from '$lib/data';
+	import { siteData } from '$lib/stores/site-data';
 	import SectionHeading from '$lib/components/shared/SectionHeading.svelte';
 	import CustomButton from '$lib/components/ui/CustomButton.svelte';
 </script>
@@ -9,8 +9,8 @@
 	<SectionHeading>Latest Writing</SectionHeading>
 
 	<div class="space-y-2">
-		{#if blogs.length > 0}
-			{#each blogs.slice(0, 2) as blog}
+		{#if $siteData.blogs.length > 0}
+			{#each $siteData.blogs.slice(0, 2) as blog}
 				<BlogItem {...blog} showImage={false} />
 			{/each}
 		{:else}
@@ -29,7 +29,7 @@
 		{/if}
 	</div>
 
-	{#if blogs.length > 2}
+	{#if $siteData.blogs.length > 2}
 		<div class="mt-4">
 			<CustomButton href="/blogs">View More Blogs</CustomButton>
 		</div>

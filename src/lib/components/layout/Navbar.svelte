@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { onMount, tick } from 'svelte';
-	import { navItems, sideNavItems } from '$lib/data';
+	import { siteData } from '$lib/stores/site-data';
 
 	// Props
 	let { mode = 'floating' }: { mode?: 'floating' | 'sidebar' } = $props();
@@ -16,7 +16,7 @@
 
 	// Floating Mode: Active based on current route
 	let navItemsWithActive = $derived(
-		navItems.map((item) => ({
+		$siteData.navItems.map((item) => ({
 			...item,
 			active: pathname === item.href
 		}))
@@ -25,7 +25,7 @@
 	// Sidebar Mode: Active based on scroll position (Spy)
 	// Logic remains same, just mapping over sideNavItems
 	let sideNavItemsWithActive = $derived(
-		sideNavItems.map((item) => ({
+		$siteData.sideNavItems.map((item) => ({
 			...item,
 			active:
 				(activeSection === '' && item.href === '#') || activeSection === item.href.replace('#', '')

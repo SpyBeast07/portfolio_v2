@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import { pageHeadings, projects, skills, projectCategories } from '$lib/data';
+	import { siteData } from '$lib/stores/site-data';
 	import ProjectCard from '$lib/components/shared/ProjectCard.svelte';
 	import AnimatedCounter from '$lib/components/ui/AnimatedCounter.svelte';
 	import GithubStats from '$lib/components/shared/GithubStats.svelte';
@@ -18,11 +18,12 @@
 	let activeCategory = $state('All');
 	let activeSection = $state('projects');
 
-	const [introLine1, ...introRest] = pageHeadings.work.description.split(' built ');
-	const introLine2 = introRest.join(' built ');
+	const introParts = $derived($siteData.pageHeadings.work.description.split(' built '));
+	const introLine1 = $derived(introParts[0]);
+	const introLine2 = $derived(introParts.slice(1).join(' built '));
 
 	let filteredProjects = $derived(
-		projects.filter((project) => {
+		$siteData.projects.filter((project) => {
 			if (activeCategory === 'All') return true;
 			return project.category === activeCategory;
 		})
@@ -162,7 +163,7 @@
 				class="font-playfair mb-12 text-4xl font-bold"
 				style="color: var(--foreground);"
 			>
-				<span class="inline-flex"><AnimatedCounter value={projects.length} />+</span>{' '}
+				<span class="inline-flex"><AnimatedCounter value={$siteData.projects.length} />+</span>{' '}
 				<span
 					class="font-sans text-2xl font-normal"
 					style="color: color-mix(in oklab, var(--foreground) 60%, transparent);"
@@ -175,7 +176,7 @@
 			<div
 				class="scrollbar-none mb-12 flex touch-pan-x snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain pb-4"
 			>
-				{#each projectCategories as category}
+				{#each $siteData.projectCategories as category}
 					<button
 						onclick={() => (activeCategory = category)}
 						class={`flex-shrink-0 snap-center rounded-full border px-6 py-2 text-sm font-medium transition-all duration-300 ${
@@ -207,7 +208,7 @@
 				Things I’ve built with and experimented on.
 			</p>
 			<div class="grid grid-cols-1 gap-8 md:grid-cols-2">
-				{#each Object.entries(skills) as [category, items]}
+				{#each Object.entries($siteData.skills) as [category, items]}
 					<div>
 						<h5 class="mb-4 text-xl font-medium capitalize" style="color: var(--foreground);">
 							{category.replace(/([A-Z])/g, ' $1').trim()}

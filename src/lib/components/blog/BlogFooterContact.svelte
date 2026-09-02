@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { email } from '$lib/data';
+  import { siteData } from '$lib/stores/site-data';
 
   let name = $state('');
   let userEmail = $state('');
@@ -10,7 +10,7 @@
     e.preventDefault();
     const subject = encodeURIComponent(`Blog response from ${name}`);
     const body = encodeURIComponent(`Name: ${name}\nEmail: ${userEmail}\n\n${message}`);
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${$siteData.email}?subject=${subject}&body=${body}`;
     sent = true;
     setTimeout(() => {
       sent = false;

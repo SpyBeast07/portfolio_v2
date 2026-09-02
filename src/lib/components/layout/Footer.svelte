@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { socialLinks } from '$lib/data';
+	import { siteData } from '$lib/stores/site-data';
 	import { EmailIcon, GithubIcon, LinkedinIcon } from '$lib/components/ui/icons';
 
 	const getIcon = (label: string) => {
@@ -33,7 +33,7 @@
 	style="color: color-mix(in oklab, var(--foreground) 70%, transparent);"
 >
 	<div class="mb-8 flex gap-6 md:hidden">
-		{#each socialLinks as { href, label }}
+		{#each $siteData.socialLinks as { href, label }}
 			{@const Icon = getIcon(label)}
 			<a
 				{href}

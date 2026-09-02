@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { email } from '$lib/data';
+	import { siteData } from '$lib/stores/site-data';
 
 	let copied = $state(false);
 
 	async function handleCopy() {
 		try {
-			await navigator.clipboard.writeText(email);
+			await navigator.clipboard.writeText($siteData.email);
 			copied = true;
 			setTimeout(() => {
 				copied = false;
@@ -27,7 +27,7 @@
 		{#if copied}
 			<span class="font-bold text-green-400">Copied!!</span>
 		{:else}
-			{email}
+			{$siteData.email}
 		{/if}
 	</button>
 </div>

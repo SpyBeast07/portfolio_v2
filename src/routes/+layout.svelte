@@ -4,8 +4,11 @@
 	import ThemeBulb from '$lib/components/ui/ThemeBulb.svelte';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import Lenis from 'lenis';
+	import { loadSiteData } from '$lib/stores/site-data';
 
 	onMount(() => {
+		loadSiteData();
+
 		const lenis = new Lenis();
 
 		function raf(time: number) {

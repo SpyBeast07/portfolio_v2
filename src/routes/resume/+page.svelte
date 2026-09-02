@@ -1,6 +1,6 @@
 <script lang="ts">
 	import PdfViewer from '$lib/components/shared/PdfViewer.svelte';
-	import { resume } from '$lib/data';
+	import { siteData } from '$lib/stores/site-data';
 	import { DownloadIcon } from '$lib/components/ui/icons';
 
 	// The resume object from $lib/data has { url: string, filename: string }
@@ -24,8 +24,8 @@
 				Resume
 			</h1>
 			<a
-				href={resume.url}
-				download={resume.filename}
+				href={$siteData.resume.url}
+				download={$siteData.resume.filename}
 				class="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-medium transition-transform hover:scale-105"
 				style="color: var(--background); background-color: var(--foreground);"
 			>
@@ -38,7 +38,7 @@
 			class="overflow-hidden rounded-xl shadow-2xl"
 			style="background-color: color-mix(in oklab, var(--foreground) 5%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);"
 		>
-			<PdfViewer pdfUrl={resume.url} />
+			<PdfViewer pdfUrl={$siteData.resume.url} />
 		</div>
 	</div>
 </div>
