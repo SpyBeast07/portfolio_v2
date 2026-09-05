@@ -28,8 +28,15 @@ export const DATA_COLLECTION = 'data';
 // re-fetching — then re-checks the server in the background (via the onSnapshot
 // listeners in loadSiteData) and refreshes the cache when anything changed.
 // It also keeps the site working while offline. Only used client-side.
+//
+// experimentalAutoDetectLongPolling: automatically falls back to long-polling
+// (instead of the streaming WebChannel) whenever the streaming Listen requests
+// fail — the standard fix for "Fetch API cannot load .../Listen/channel ... due
+// to access control checks" errors that can be caused by networks/extensions
+// that break HTTP streaming.
 export const db: Firestore = initializeFirestore(app, {
-	localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() })
+	localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }),
+	experimentalAutoDetectLongPolling: true
 });
 
 export function docRef(docId: string) {
