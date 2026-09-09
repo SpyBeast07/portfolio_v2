@@ -65,40 +65,53 @@
 
 	// Check if the signed-in user has completed their display name setup
 	async function checkUserProfile(uid: string) {
-		profileChecked = false;
-		try {
-			// Check local cache first for instant response
-			const cached = localStorage.getItem(`guestbook_profile_${uid}`);
-			if (cached) {
-				try {
-					const parsed = JSON.parse(cached) as UserGuestbookProfile;
-					if (parsed?.completed && parsed?.displayName) {
-						userProfile = parsed;
-						showProfileModal = false;
-						profileChecked = true;
-						return;
-					}
-				} catch {
-					// Fall through to Firestore
-				}
-			}
+		// 1. Instant LocalStorage Check
+		const cacheKey = `guestbook_profile_${uid}`;
+		const cached = localStorage.getItem(cacheKey);
 
-			// Check Firestore
+		if (cached) {
+			try {
+				const parsed = JSON.parse(cached) as UserGuestbookProfile;
+				// Strict truthy check on completed and non-empty displayName
+				if (Boolean(parsed?.completed) && Boolean(parsed?.displayName?.trim())) {
+					userProfile = parsed;
+					showProfileModal = false;
+					profileChecked = true;
+					return; // Stop here, cached profile is valid!
+				}
+			} catch (e) {
+				console.warn('[guestbook] LocalStorage parse error:', e);
+				localStorage.removeItem(cacheKey);
+			}
+		}
+
+		// 2. Firestore Check (Fallback)
+		try {
 			const remoteProfile = await getGuestbookProfile(uid);
-			if (remoteProfile && remoteProfile.completed && remoteProfile.displayName) {
+			if (remoteProfile && Boolean(remoteProfile.completed) && Boolean(remoteProfile.displayName?.trim())) {
 				userProfile = remoteProfile;
-				localStorage.setItem(`guestbook_profile_${uid}`, JSON.stringify(remoteProfile));
+				localStorage.setItem(cacheKey, JSON.stringify(remoteProfile));
 				showProfileModal = false;
 			} else {
-				// Profile not completed! Prompt user to set up display name
+				// Profile truly incomplete: Show modal
 				tempDisplayName = $user?.displayName || '';
 				modalStep = 1;
 				showProfileModal = true;
 			}
 		} catch (err) {
-			console.warn('[guestbook] Error checking profile:', err);
-			if (!userProfile?.completed) {
-				tempDisplayName = $user?.displayName || '';
+			console.warn('[guestbook] Error fetching remote profile:', err);
+			// If fetch fails but we already have a display name from Google, don't block the user
+			if ($user?.displayName) {
+				const fallbackProfile: UserGuestbookProfile = {
+					displayName: $user.displayName,
+					completed: true,
+					updatedAt: Date.now()
+				};
+				userProfile = fallbackProfile;
+				localStorage.setItem(cacheKey, JSON.stringify(fallbackProfile));
+				showProfileModal = false;
+			} else {
+				tempDisplayName = '';
 				modalStep = 1;
 				showProfileModal = true;
 			}
@@ -107,16 +120,26 @@
 		}
 	}
 
+	let lastCheckedUid = $state<string | null>(null);
+		
 	// Trigger profile check whenever user auth state resolves
 	$effect(() => {
-		if ($user?.uid) {
-			checkUserProfile($user.uid);
+		const currentUid = $user?.uid;
+		
+		if (currentUid) {
+			// Only trigger check if the user ID actually changed
+			if (lastCheckedUid !== currentUid) {
+				lastCheckedUid = currentUid;
+				checkUserProfile(currentUid);
+			}
 		} else {
+			lastCheckedUid = null;
 			userProfile = null;
 			showProfileModal = false;
 			profileChecked = true;
 		}
 	});
+
 
 	async function handleGoogleSignIn() {
 		error = '';
@@ -137,6 +160,7 @@
 		if ($user?.uid) {
 			localStorage.removeItem(`guestbook_profile_${$user.uid}`);
 		}
+		lastCheckedUid = null;
 		userProfile = null;
 		showProfileModal = false;
 		await signOutUser();
@@ -294,9 +318,9 @@
 	<main class="relative z-20 mx-auto top-5 max-w-7xl px-4 pt-32 pb-28 sm:px-6 md:pt-[16vh] lg:px-8">
 		<!-- Top Section: Header & Sign-in / Welcome Tablet Pill -->
 		<div
-			class="mb-12 flex flex-col justify-between gap-8 md:flex-row ${
+			class={`mb-12 flex flex-col justify-between gap-8 md:flex-row ${
 				$user ? 'md:items-center' : 'md:items-start'
-			}"
+			}`}
 		>
 			<!-- Left: Title & description matching About, Work, Blogs style -->
 			<div class="flex flex-col">
