@@ -11,3 +11,4 @@ export { default as HomeIcon } from './HomeIcon.svelte';
 export { default as UserIcon } from './UserIcon.svelte';
 export { default as BookOpenIcon } from './BookOpenIcon.svelte';
 export { default as MediumIcon } from './MediumIcon.svelte';
+export { default as GmailIcon } from './GmailIcon.svelte';
