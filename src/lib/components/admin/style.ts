@@ -1,7 +1,5 @@
 export const inputClass =
-	'w-full rounded-xl border bg-transparent px-4 py-2.5 text-sm outline-none transition placeholder:opacity-40 focus:ring-2 focus:ring-yellow-500/40 overflow-wrap-anywhere';
-export const inputStyle =
-	'border-color: color-mix(in oklab, var(--foreground) 15%, transparent);';
+	'admin-input w-full rounded-xl border bg-transparent px-4 py-2.5 text-sm outline-none transition placeholder:opacity-40';
 export const cardStyle =
 	'background-color: color-mix(in oklab, var(--foreground) 4%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);';
 export const primaryButtonClass =

@@ -1,7 +1,8 @@
 <script lang="ts">
-	let { tags, placeholder = 'Add…', onTagsChange }: {
+	let { tags, placeholder = 'Add…', dirty = false, onTagsChange }: {
 		tags: string[];
 		placeholder?: string;
+		dirty?: boolean;
 		onTagsChange: (tags: string[]) => void;
 	} = $props();
 
@@ -21,8 +22,8 @@
 </script>
 
 <div
-	class="flex flex-wrap items-center gap-2 rounded-xl border px-3 py-2.5"
-	style="border-color: color-mix(in oklab, var(--foreground) 15%, transparent); background-color: transparent;"
+	class="admin-box flex flex-wrap items-center gap-2 rounded-xl border px-3 py-2.5{dirty ? ' ide-dirty' : ''}"
+	style="background-color: transparent;"
 	data-lenis-prevent
 >
 	{#each tags as tag, i}

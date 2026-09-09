@@ -3,7 +3,7 @@
 	import EditorHeader from '$lib/components/admin/EditorHeader.svelte';
 	import ItemListEditor from '$lib/components/admin/ItemListEditor.svelte';
 	import StringListEditor from '$lib/components/admin/StringListEditor.svelte';
-	import { inputClass, inputStyle, cardStyle } from '$lib/components/admin/style';
+	import { inputClass, cardStyle } from '$lib/components/admin/style';
 	import type { AdminFieldDef } from '$lib/components/admin/types';
 	import { siteData } from '$lib/stores/site-data';
 	import type { SiteData } from '$lib/stores/site-data';
@@ -140,8 +140,7 @@
 						bind:value={aboutState.headline}
 						rows={3}
 						placeholder="Get to know more about who I am."
-						class={inputClass}
-						style={inputStyle}
+						class="{inputClass}{lastSaved !== null && aboutState.headline !== lastSaved.about.headline ? ' ide-dirty' : ''}"
 						data-lenis-prevent
 					></textarea>
 				</AdminField>
@@ -150,8 +149,7 @@
 						type="text"
 						bind:value={aboutState.photo}
 						placeholder="/about.webp"
-						class={inputClass}
-						style={inputStyle}
+						class="{inputClass}{lastSaved !== null && aboutState.photo !== lastSaved.about.photo ? ' ide-dirty' : ''}"
 						data-lenis-prevent
 					/>
 				</AdminField>
@@ -161,6 +159,7 @@
 				hint="Each item is one paragraph. Empty paragraphs are shown as visual breaks on the page."
 				items={aboutState.long}
 				placeholder="A paragraph about you…"
+				savedItems={lastSaved ? lastSaved.about.long : null}
 				onItemsChange={(v) => (aboutState.long = v)}
 			/>
 		</div>
@@ -170,6 +169,7 @@
 			hint="Work history cards — ordered oldest to newest on the page."
 			items={experiences}
 			schema={experienceSchema}
+			savedItems={lastSaved ? lastSaved.experiences : null}
 			onItemsChange={(v) => (experiences = v)}
 			addLabel="Add experience"
 			emptyText="No experiences yet."
@@ -180,6 +180,7 @@
 			hint="Degrees and exchange programs. Use 'Related entries' to nest entries like the IIT/IIIT exchanges."
 			items={educationItems}
 			schema={educationEntryFields}
+			savedItems={lastSaved ? lastSaved.education : null}
 			onItemsChange={(v) => (educationItems = v)}
 			addLabel="Add education"
 			emptyText="No education entries yet."
@@ -190,6 +191,7 @@
 			hint="Each entry is a category with its list of skills."
 			items={skillsEntries}
 			schema={skillsSchema}
+			savedItems={lastSaved ? Object.entries(lastSaved.skills).map(([category, tags]) => ({ category, tags })) : null}
 			onItemsChange={(v) => (skillsEntries = v)}
 			addLabel="Add category"
 			emptyText="No skills yet."

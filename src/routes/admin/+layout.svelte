@@ -5,6 +5,7 @@
 	import { goto } from '$app/navigation';
 	import { signOutUser } from '$lib/auth';
 	import { user, authReady, initAuth } from '$lib/stores/auth';
+	import '$lib/components/admin/admin.css';
 
 	let { children }: { children: Snippet } = $props();
 

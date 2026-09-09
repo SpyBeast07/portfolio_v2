@@ -2,7 +2,8 @@
 	import AdminField from './AdminField.svelte';
 	import TagInput from './TagInput.svelte';
 	import ItemListEditor from './ItemListEditor.svelte';
-	import { inputClass, inputStyle, primaryButtonClass, iconButtonClass } from './style';
+	import { inputClass, primaryButtonClass, iconButtonClass } from './style';
+	import { jsonEqual } from './utils';
 	import type { AdminFieldDef, EditorItem, EditorItems } from './types';
 
 	let {
@@ -13,6 +14,7 @@
 		addLabel = 'Add item',
 		emptyText = 'No items yet.',
 		compact = false,
+		savedItems = null,
 		onItemsChange
 	}: {
 		label: string;
@@ -22,6 +24,7 @@
 		addLabel?: string;
 		emptyText?: string;
 		compact?: boolean;
+		savedItems?: EditorItems | null;
 		onItemsChange: (items: EditorItems) => void;
 	} = $props();
 
@@ -102,8 +105,10 @@
 	{:else}
 		<div class="grid grid-cols-1 gap-{compact ? '3' : '4'}">
 			{#each items as item, index}
+				{@const savedItem = savedItems !== null ? savedItems?.[index] : undefined}
+				{@const itemDirty = savedItems !== null && (savedItem === undefined || !jsonEqual(item, savedItem))}
 				<div
-					class="rounded-xl border p-{compact ? '4' : '5'}"
+					class="rounded-xl border p-{compact ? '4' : '5'}{itemDirty ? ' ide-item' : ''}"
 					style="background-color: color-mix(in oklab, var(--foreground) 3%, transparent); border-color: color-mix(in oklab, var(--foreground) 10%, transparent);"
 				>
 					<div class="mb-4 flex items-center justify-between gap-3">
@@ -141,6 +146,7 @@
 					<div class="grid grid-cols-1 gap-x-5 sm:grid-cols-2">
 						{#each schema as field}
 							{@const full = isFull(field)}
+							{@const dirty = savedItems !== null && !jsonEqual(item[field.key], savedItem?.[field.key])}
 							<div class="min-w-0 {full ? 'sm:col-span-2 sm:break-words' : ''}">
 								<AdminField label={field.label} hint={field.hint}>
 									{#if field.type === 'textarea'}
@@ -148,8 +154,7 @@
 											value={raw(item, field.key)}
 											rows={field.rows ?? 5}
 											placeholder={field.placeholder}
-											class="{inputClass} break-words"
-											style={inputStyle}
+											class="{inputClass} break-words{dirty ? ' ide-dirty' : ''}"
 											data-lenis-prevent
 											oninput={(e) => (item[field.key] = e.currentTarget.value)}
 										></textarea>
@@ -157,13 +162,14 @@
 										<TagInput
 											tags={list(item, field.key)}
 											placeholder={field.placeholder ?? 'Add…'}
+											dirty={dirty}
 											onTagsChange={(v) => (item[field.key] = v)}
 										/>
 									{:else if field.type === 'children'}
 										{#if list(item, field.key).length === 0}
 											<div
-												class="flex items-center justify-between gap-3 rounded-lg border px-3 py-2"
-												style="border-color: color-mix(in oklab, var(--foreground) 15%, transparent); background-color: color-mix(in oklab, var(--foreground) 3%, transparent);"
+												class="admin-box flex items-center justify-between gap-3 rounded-lg border px-3 py-2{dirty ? ' ide-dirty' : ''}"
+												style="background-color: color-mix(in oklab, var(--foreground) 3%, transparent);"
 											>
 												<span class="text-sm font-medium">{field.label}</span>
 												<button
@@ -183,14 +189,14 @@
 												schema={field.childrenSchema ?? []}
 												addLabel={field.addLabel ?? 'Add item'}
 												compact
+												savedItems={savedItem ? savedItem[field.key] : []}
 												onItemsChange={(v) => (item[field.key] = v)}
 											/>
 										{/if}
 									{:else if field.type === 'select'}
 										<select
 											value={raw(item, field.key)}
-											class={inputClass}
-											style={inputStyle}
+											class="{inputClass}{dirty ? ' ide-dirty' : ''}"
 											data-lenis-prevent
 											onchange={(e) => (item[field.key] = e.currentTarget.value)}
 										>
@@ -204,8 +210,7 @@
 											type="text"
 											value={raw(item, field.key)}
 											placeholder={field.placeholder}
-											class={inputClass}
-											style={inputStyle}
+											class="{inputClass}{dirty ? ' ide-dirty' : ''}"
 											data-lenis-prevent
 											oninput={(e) => (item[field.key] = e.currentTarget.value)}
 										/>

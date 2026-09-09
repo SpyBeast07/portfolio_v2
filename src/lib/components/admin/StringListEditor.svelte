@@ -1,12 +1,21 @@
 <script lang="ts">
-	import { inputClass, inputStyle, primaryButtonClass, iconButtonClass } from './style';
+	import { inputClass, primaryButtonClass, iconButtonClass } from './style';
 
-	let { label, hint, items, placeholder = '…', emptyText = 'No items yet.', onItemsChange }: {
+	let {
+		label,
+		hint,
+		items,
+		placeholder = '…',
+		emptyText = 'No items yet.',
+		savedItems = null,
+		onItemsChange
+	}: {
 		label: string;
 		hint?: string;
 		items: string[];
 		placeholder?: string;
 		emptyText?: string;
+		savedItems?: string[] | null;
 		onItemsChange: (items: string[]) => void;
 	} = $props();
 
@@ -55,8 +64,9 @@
 	{:else}
 		<div class="grid grid-cols-1 gap-4">
 			{#each items as value, index}
+				{@const dirty = savedItems !== null && value !== savedItems[index]}
 				<div
-					class="rounded-xl border p-5"
+					class="rounded-xl border p-5{dirty ? ' ide-item' : ''}"
 					style="background-color: color-mix(in oklab, var(--foreground) 3%, transparent); border-color: color-mix(in oklab, var(--foreground) 10%, transparent);"
 				>
 					<div class="mb-3 flex items-center justify-between">
@@ -94,8 +104,7 @@
 						value={value}
 						rows={4}
 						placeholder={placeholder}
-						class="{inputClass} break-words"
-						style={inputStyle}
+						class="{inputClass} break-words{dirty ? ' ide-dirty' : ''}"
 						data-lenis-prevent
 						oninput={(e) => (items[index] = e.currentTarget.value)}
 					></textarea>

@@ -3,7 +3,8 @@
 	import EditorHeader from '$lib/components/admin/EditorHeader.svelte';
 	import ItemListEditor from '$lib/components/admin/ItemListEditor.svelte';
 	import TagInput from '$lib/components/admin/TagInput.svelte';
-	import { inputClass, inputStyle, cardStyle } from '$lib/components/admin/style';
+	import { inputClass, cardStyle } from '$lib/components/admin/style';
+import { jsonEqual } from '$lib/components/admin/utils';
 	import type { AdminFieldDef } from '$lib/components/admin/types';
 	import { siteData } from '$lib/stores/site-data';
 	import type { SiteData } from '$lib/stores/site-data';
@@ -40,6 +41,8 @@
 	});
 
 	const dirty = $derived(lastSaved !== null && JSON.stringify(buildPayload()) !== JSON.stringify(lastSaved));
+
+	const categoriesDirty = $derived(lastSaved !== null && !jsonEqual(categories, lastSaved.projectCategories));
 
 	const projectSchema = $derived<AdminFieldDef[]>([
 		{ key: 'title', label: 'Title' },
@@ -97,8 +100,7 @@
 						<input
 							type="text"
 							bind:value={headings.work.title}
-							class={inputClass}
-							style={inputStyle}
+							class="{inputClass}{lastSaved !== null && headings.work.title !== lastSaved.pageHeadings?.work.title ? ' ide-dirty' : ''}"
 							data-lenis-prevent
 						/>
 					</AdminField>
@@ -106,8 +108,7 @@
 						<textarea
 							bind:value={headings.work.description}
 							rows={2}
-							class={inputClass}
-							style={inputStyle}
+							class="{inputClass}{lastSaved !== null && headings.work.description !== lastSaved.pageHeadings?.work.description ? ' ide-dirty' : ''}"
 							data-lenis-prevent
 						></textarea>
 					</AdminField>
@@ -117,8 +118,7 @@
 						<input
 							type="text"
 							bind:value={headings.blogs.title}
-							class={inputClass}
-							style={inputStyle}
+							class="{inputClass}{lastSaved !== null && headings.blogs.title !== lastSaved.pageHeadings?.blogs.title ? ' ide-dirty' : ''}"
 							data-lenis-prevent
 						/>
 					</AdminField>
@@ -126,8 +126,7 @@
 						<textarea
 							bind:value={headings.blogs.description}
 							rows={2}
-							class={inputClass}
-							style={inputStyle}
+							class="{inputClass}{lastSaved !== null && headings.blogs.description !== lastSaved.pageHeadings?.blogs.description ? ' ide-dirty' : ''}"
 							data-lenis-prevent
 						></textarea>
 					</AdminField>
@@ -135,7 +134,12 @@
 			</div>
 			<div class="border-t pt-4" style="border-color: color-mix(in oklab, var(--foreground) 10%, transparent);">
 				<AdminField label="Filter categories" hint="Used by the category filter on the Work page. Keep 'All' as the first item.">
-					<TagInput tags={categories} onTagsChange={(v) => (categories = v)} placeholder="Add category…" />
+					<TagInput
+						tags={categories}
+						dirty={categoriesDirty}
+						onTagsChange={(v) => (categories = v)}
+						placeholder="Add category…"
+					/>
 				</AdminField>
 			</div>
 		</div>
@@ -145,6 +149,7 @@
 			hint="Shown on the Work page, filtered by category."
 			items={projects}
 			schema={projectSchema}
+			savedItems={lastSaved ? lastSaved.projects : null}
 			onItemsChange={(v) => (projects = v)}
 			addLabel="Add project"
 			emptyText="No projects yet."

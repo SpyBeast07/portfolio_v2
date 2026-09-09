@@ -2,7 +2,7 @@
 	import AdminField from '$lib/components/admin/AdminField.svelte';
 	import EditorHeader from '$lib/components/admin/EditorHeader.svelte';
 	import ItemListEditor from '$lib/components/admin/ItemListEditor.svelte';
-	import { inputClass, inputStyle, cardStyle } from '$lib/components/admin/style';
+	import { inputClass, cardStyle } from '$lib/components/admin/style';
 	import type { AdminFieldDef } from '$lib/components/admin/types';
 	import { siteData } from '$lib/stores/site-data';
 	import type { SiteData } from '$lib/stores/site-data';
@@ -91,8 +91,7 @@
 					type="text"
 					bind:value={now.lastUpdated}
 					placeholder="February 2026"
-					class={inputClass}
-					style={inputStyle}
+					class="{inputClass}{lastSaved !== null && now.lastUpdated !== lastSaved.lastUpdated ? ' ide-dirty' : ''}"
 					data-lenis-prevent
 				/>
 			</AdminField>
@@ -103,6 +102,7 @@
 			hint="Each section groups a title with its bullet items (items can carry optional links)."
 			items={now.sections}
 			schema={sectionSchema}
+			savedItems={lastSaved ? lastSaved.sections : null}
 			onItemsChange={(v) => (now.sections = v)}
 			addLabel="Add section"
 			emptyText="No sections yet — add one to get started."

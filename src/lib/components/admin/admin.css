@@ -1,0 +1,36 @@
+/* Admin editor field highlighting.
+ *
+ * .admin-input        → base border color for single/textarea/select fields
+ * .admin-box          → base border color for composite boxes (tags, add-bars)
+ * :focus/:focus-within→ yellow (site secondary) while the box is focused
+ * .ide-dirty          → green border + ring for unsaved/edited fields
+ * .ide-item           → green border + tint for unsaved/edited item cards
+ */
+.admin-input,
+.admin-box {
+	border-color: color-mix(in oklab, var(--foreground) 15%, transparent);
+}
+
+.admin-input:focus,
+.admin-box:focus-within {
+	border-color: #facc15;
+	outline: none;
+	box-shadow: 0 0 0 3px color-mix(in oklab, #facc15 30%, transparent);
+}
+
+.admin-input.ide-dirty,
+.admin-box.ide-dirty {
+	border-color: #4ade80;
+	box-shadow: 0 0 0 2px color-mix(in oklab, #4ade80 30%, transparent);
+}
+
+.admin-input.ide-dirty:focus,
+.admin-box.ide-dirty:focus-within {
+	border-color: #facc15;
+	box-shadow: 0 0 0 3px color-mix(in oklab, #facc15 30%, transparent);
+}
+
+.ide-item {
+	border-color: #4ade80 !important;
+	background-color: color-mix(in oklab, #4ade80 7%, transparent) !important;
+}

@@ -75,6 +75,7 @@
 		hint="Ordered newest-first on the Blogs page."
 		items={blogPosts}
 		schema={blogSchema}
+		savedItems={lastSaved}
 		onItemsChange={(v) => (blogPosts = v)}
 		addLabel="Add blog post"
 		emptyText="No blog posts yet."
