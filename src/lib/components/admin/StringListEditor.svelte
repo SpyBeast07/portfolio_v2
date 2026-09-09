@@ -64,9 +64,9 @@
 	{:else}
 		<div class="grid grid-cols-1 gap-4">
 			{#each items as value, index}
-				{@const dirty = savedItems !== null && value !== savedItems[index]}
+				{@const newItem = savedItems !== null && index >= savedItems.length}
 				<div
-					class="rounded-xl border p-5{dirty ? ' ide-item' : ''}"
+					class="rounded-xl border p-5{newItem ? ' ide-item' : ''}"
 					style="background-color: color-mix(in oklab, var(--foreground) 3%, transparent); border-color: color-mix(in oklab, var(--foreground) 10%, transparent);"
 				>
 					<div class="mb-3 flex items-center justify-between">
@@ -104,7 +104,7 @@
 						value={value}
 						rows={4}
 						placeholder={placeholder}
-						class="{inputClass} break-words{dirty ? ' ide-dirty' : ''}"
+						class="{inputClass} break-words{savedItems !== null && value !== savedItems[index] ? ' ide-dirty' : ''}"
 						data-lenis-prevent
 						oninput={(e) => (items[index] = e.currentTarget.value)}
 					></textarea>

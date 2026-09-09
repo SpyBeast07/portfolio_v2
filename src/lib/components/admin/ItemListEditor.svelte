@@ -69,6 +69,10 @@
 		return Array.isArray(item[key]) ? item[key] : [];
 	}
 
+	function savedChildList(savedItem: EditorItem | undefined, key: string): EditorItems {
+		return savedItem && Array.isArray(savedItem[key]) ? savedItem[key] : [];
+	}
+
 	function isFull(field: AdminFieldDef): boolean {
 		return field.full ?? (field.type === 'textarea' || field.type === 'tags' || field.type === 'children');
 	}
@@ -106,7 +110,7 @@
 		<div class="grid grid-cols-1 gap-{compact ? '3' : '4'}">
 			{#each items as item, index}
 				{@const savedItem = savedItems !== null ? savedItems?.[index] : undefined}
-				{@const itemDirty = savedItems !== null && (savedItem === undefined || !jsonEqual(item, savedItem))}
+				{@const itemDirty = savedItems !== null && savedItem === undefined}
 				<div
 					class="rounded-xl border p-{compact ? '4' : '5'}{itemDirty ? ' ide-item' : ''}"
 					style="background-color: color-mix(in oklab, var(--foreground) 3%, transparent); border-color: color-mix(in oklab, var(--foreground) 10%, transparent);"
@@ -146,7 +150,8 @@
 					<div class="grid grid-cols-1 gap-x-5 sm:grid-cols-2">
 						{#each schema as field}
 							{@const full = isFull(field)}
-							{@const dirty = savedItems !== null && !jsonEqual(item[field.key], savedItem?.[field.key])}
+							{@const savedVal = field.type === 'children' || field.type === 'tags' ? savedChildList(savedItem, field.key) : savedItem?.[field.key]}
+							{@const dirty = savedItems !== null && !jsonEqual(item[field.key], savedVal)}
 							<div class="min-w-0 {full ? 'sm:col-span-2 sm:break-words' : ''}">
 								<AdminField label={field.label} hint={field.hint}>
 									{#if field.type === 'textarea'}
@@ -189,7 +194,7 @@
 												schema={field.childrenSchema ?? []}
 												addLabel={field.addLabel ?? 'Add item'}
 												compact
-												savedItems={savedItem ? savedItem[field.key] : []}
+												savedItems={savedChildList(savedItem, field.key)}
 												onItemsChange={(v) => (item[field.key] = v)}
 											/>
 										{/if}
