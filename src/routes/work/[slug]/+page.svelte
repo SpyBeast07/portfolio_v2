@@ -130,23 +130,21 @@
 								</p>
 							{/if}
 							{#if tags.length > 0}
-								<div>
+								<div class="flex flex-wrap items-center gap-2">
 									<span
 										class="font-semibold"
 										style="color: color-mix(in oklab, var(--foreground) 70%, transparent);"
 									>
 										Built with:
 									</span>
-									<div class="mt-2 flex flex-wrap gap-2">
-										{#each tags as tag (tag)}
-											<span
-												class="rounded-full px-3 py-1 text-xs"
-												style="color: color-mix(in oklab, var(--foreground) 85%, transparent); background-color: color-mix(in oklab, var(--foreground) 5%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent);"
-											>
-												{tag}
-											</span>
-										{/each}
-									</div>
+									{#each tags as tag (tag)}
+										<span
+											class="rounded-full px-3 py-1 text-xs"
+											style="color: color-mix(in oklab, var(--foreground) 85%, transparent); background-color: color-mix(in oklab, var(--foreground) 5%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent);"
+										>
+											{tag}
+										</span>
+									{/each}
 								</div>
 							{/if}
 						</div>
