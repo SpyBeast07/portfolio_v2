@@ -1,12 +1,13 @@
 <script lang="ts">
   import { siteData } from '$lib/stores/site-data';
-  import { EmailIcon, GithubIcon, LinkedinIcon } from '$lib/components/ui/icons';
+  import { EmailIcon, GithubIcon, LinkedinIcon, MediumIcon } from '$lib/components/ui/icons';
 
   const getIcon = (label: string) => {
     switch (label) {
       case "GitHub": return GithubIcon;
       case "LinkedIn": return LinkedinIcon;
       case "Email": return EmailIcon;
+      case "Medium": return MediumIcon;
       default: return null;
     }
   };

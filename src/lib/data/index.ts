@@ -61,6 +61,10 @@ export const socialLinks: SocialLink[] = [
         label: "Email",
         href: "mailto:kggupta.work@gmail.com",
     },
+    {
+        label: "Medium",
+        href: "https://medium.com/@SpyBeast07",
+    },
 ];
 
 // ─── Re-exports ───────────────────────────────────────────────────────────────
