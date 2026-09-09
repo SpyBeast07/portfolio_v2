@@ -36,20 +36,27 @@
 </script>
 
 <div
-  class="group relative rounded-3xl border border-foreground/30 transition-all duration-300 overflow-hidden flex flex-col h-full hover:border-yellow-500/70 hover:shadow-[0_0_35px_-12px_rgba(250,204,21,0.4)]"
+  class="group relative rounded-3xl border border-foreground/30 transition-all duration-500 ease-out overflow-hidden flex flex-col h-full hover:-translate-y-2 hover:border-yellow-500/60 hover:shadow-[0_20px_50px_-18px_rgba(250,204,21,0.45),0_25px_60px_-25px_rgba(0,0,0,0.5)]"
   style="background-color: color-mix(in oklab, var(--background) 85%, transparent);"
 >
   <!-- Link to the dedicated project page -->
   <a href={href} class="absolute inset-0 z-10" aria-label="View {title} details"></a>
 
+  <!-- Whole-card secondary tint on hover -->
+  <div
+    class="pointer-events-none absolute inset-0 z-0 bg-gradient-to-br from-yellow-500/15 via-yellow-500/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+  ></div>
+
   <!-- Project Image -->
   {#if image}
     <div class="w-full p-4 pb-0 flex items-center justify-center">
-      <div class="relative w-full h-36 md:h-44 rounded-2xl overflow-hidden">
+      <div
+        class="relative w-full h-36 md:h-44 rounded-2xl overflow-hidden transition-[background-color] duration-500 group-hover:bg-yellow-500/5"
+      >
         <img
           src={image}
           alt={title}
-          class="object-contain transition-transform duration-500 hover:scale-105 absolute inset-0 w-full h-full"
+          class="object-contain absolute inset-0 w-full h-full transition-transform duration-500 ease-out group-hover:scale-105"
         />
         <div class="absolute bottom-2 left-2 right-2 flex flex-wrap gap-1.5">
           {#each tags as tag}
@@ -65,7 +72,9 @@
     </div>
   {/if}
 
-  <div class="p-4 flex flex-col flex-1">
+  <div
+    class="p-4 flex flex-col flex-1 transition-transform duration-500 ease-out origin-bottom group-hover:scale-[1.035]"
+  >
     <h3
       class="text-lg font-bold font-playfair mb-1.5"
       style="color: var(--foreground);"

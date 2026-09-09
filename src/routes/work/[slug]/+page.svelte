@@ -94,7 +94,7 @@
 			</a>
 
 			<!-- Project Name + Cover image -->
-			<div class="grid grid-cols-1 items-start gap-10 md:grid-cols-[minmax(0,1fr)_auto]">
+			<div class="grid grid-cols-1 items-center gap-10 md:grid-cols-[minmax(0,1fr)_auto]">
 				<div>
 					<h1
 						class="font-playfair text-3xl leading-tight font-bold tracking-tight md:text-4xl"
