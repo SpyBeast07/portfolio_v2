@@ -11,9 +11,8 @@
 
 	const project = $derived($siteData.projects.find((p) => projectSlug(p) === $page.params.slug));
 
-	const techStack = $derived(project?.tags?.filter(Boolean).join(' • ') ?? '');
+	const tags = $derived(project?.tags ?? []);
 	const timeline = $derived(project?.timeline?.trim() ?? '');
-	const techLine = $derived([techStack, timeline].filter(Boolean).join(' • '));
 
 	const highlights = $derived(project?.highlights ?? []);
 	const screenshots = $derived(project?.screenshots ?? []);
@@ -61,11 +60,11 @@
 	</div>
 
 	<!-- Content -->
-	<main class="relative z-20 mx-auto max-w-3xl px-6 pt-28 pb-32 md:pt-36">
+	<main class="relative z-20 mx-auto max-w-[950px] px-6 pt-28 pb-32 md:pt-36">
 		{#if loading}
 			<span
 				class="text-sm"
-				style="color: color-mix(in oklab, var(--foreground) 50%, transparent);"
+				style="color: color-mix(in oklab, var(--foreground) 60%, transparent);"
 			>
 				Loading…
 			</span>
@@ -80,7 +79,7 @@
 				<a
 					href="/work"
 					class="mt-6 inline-flex items-center gap-2 text-sm font-medium transition-opacity hover:opacity-70"
-					style="color: color-mix(in oklab, var(--foreground) 70%, transparent);"
+					style="color: color-mix(in oklab, var(--foreground) 85%, transparent);"
 				>
 					<span aria-hidden="true">←</span> Back to Projects
 				</a>
@@ -89,7 +88,7 @@
 			<a
 				href="/work"
 				class="mb-10 inline-flex items-center gap-2 text-sm font-medium transition-opacity hover:opacity-70"
-				style="color: color-mix(in oklab, var(--foreground) 70%, transparent);"
+				style="color: color-mix(in oklab, var(--foreground) 85%, transparent);"
 			>
 				<span aria-hidden="true">←</span> Projects
 			</a>
@@ -98,7 +97,7 @@
 			<div class="grid grid-cols-1 items-start gap-10 md:grid-cols-[minmax(0,1fr)_auto]">
 				<div>
 					<h1
-						class="font-playfair text-4xl leading-tight font-bold tracking-tight md:text-5xl"
+						class="font-playfair text-3xl leading-tight font-bold tracking-tight md:text-4xl"
 						style="color: var(--foreground);"
 					>
 						{project.title}
@@ -108,20 +107,49 @@
 					{#if project.description}
 						<p
 							class="font-outfit mt-5 text-lg leading-relaxed"
-							style="color: color-mix(in oklab, var(--foreground) 70%, transparent);"
+							style="color: color-mix(in oklab, var(--foreground) 85%, transparent);"
 						>
 							{project.description}
 						</p>
 					{/if}
 
-					<!-- Tech Stack • Timeline -->
-					{#if techLine}
-						<p
-							class="mt-5 text-sm font-medium"
-							style="color: color-mix(in oklab, var(--foreground) 55%, transparent);"
-						>
-							{techLine}
-						</p>
+					<!-- Timeline / Built with -->
+					{#if timeline || tags.length > 0}
+						<div class="mt-5 space-y-3 text-sm">
+							{#if timeline}
+								<p>
+									<span
+										class="font-semibold"
+										style="color: color-mix(in oklab, var(--foreground) 70%, transparent);"
+									>
+										Time:
+									</span>{' '}
+									<span style="color: color-mix(in oklab, var(--foreground) 90%, transparent);">
+										{timeline}
+									</span>
+								</p>
+							{/if}
+							{#if tags.length > 0}
+								<div>
+									<span
+										class="font-semibold"
+										style="color: color-mix(in oklab, var(--foreground) 70%, transparent);"
+									>
+										Built with:
+									</span>
+									<div class="mt-2 flex flex-wrap gap-2">
+										{#each tags as tag (tag)}
+											<span
+												class="rounded-full px-3 py-1 text-xs"
+												style="color: color-mix(in oklab, var(--foreground) 85%, transparent); background-color: color-mix(in oklab, var(--foreground) 5%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent);"
+											>
+												{tag}
+											</span>
+										{/each}
+									</div>
+								</div>
+							{/if}
+						</div>
 					{/if}
 
 					<!-- Live Demo / GitHub -->
@@ -132,12 +160,12 @@
 									href={project.githubLink}
 									target="_blank"
 									rel="noopener noreferrer"
-									class="inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-xs font-bold tracking-wider uppercase transition-colors"
+									class="inline-flex items-center gap-2 rounded-md px-6 py-3 text-sm font-bold tracking-wider uppercase transition-colors"
 									style="color: var(--foreground); background-color: color-mix(in oklab, var(--foreground) 5%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);"
 									onmouseenter={handleGithubMouseEnter}
 									onmouseleave={handleGithubMouseLeave}
 								>
-									<GithubIcon width={14} height={14} />
+									<GithubIcon width={16} height={16} />
 									GitHub
 								</a>
 							{/if}
@@ -152,7 +180,7 @@
 									onmouseleave={handleDemoMouseLeave}
 								>
 									Live Demo
-									<ExternalLinkIcon width={14} height={14} />
+									<ExternalLinkIcon width={16} height={16} />
 								</a>
 							{/if}
 						</div>
@@ -160,7 +188,7 @@
 				</div>
 
 				{#if project.image}
-					<div class="mx-auto w-full max-w-sm md:sticky md:top-28 md:mx-0 md:max-w-80">
+					<div class="mx-auto w-full max-w-md md:sticky md:top-28 md:mx-0">
 						<div
 							class="overflow-hidden rounded-2xl"
 							style="border: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent);"
@@ -193,7 +221,7 @@
 						{#each highlights as highlight (highlight)}
 							<li
 								class="flex gap-3 text-base leading-relaxed"
-								style="color: color-mix(in oklab, var(--foreground) 75%, transparent);"
+								style="color: color-mix(in oklab, var(--foreground) 90%, transparent);"
 							>
 								<span
 									class="mt-[0.6em] h-1.5 w-1.5 flex-shrink-0 rounded-full"
@@ -217,7 +245,7 @@
 					</h2>
 					<p
 						class="font-outfit text-base leading-relaxed"
-						style="color: color-mix(in oklab, var(--foreground) 70%, transparent);"
+						style="color: color-mix(in oklab, var(--foreground) 85%, transparent);"
 					>
 						{project.about}
 					</p>
