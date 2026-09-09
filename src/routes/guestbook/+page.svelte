@@ -291,13 +291,13 @@
 	></div>
 
 	<!-- Main Page Container: pt-32 md:pt-[16vh] matching About/Work/Blogs gap from navbar -->
-	<main class="relative z-20 mx-auto max-w-7xl px-4 pt-32 pb-28 sm:px-6 md:pt-[16vh] lg:px-8">
+	<main class="relative z-20 mx-auto top-5 max-w-7xl px-4 pt-32 pb-28 sm:px-6 md:pt-[16vh] lg:px-8">
 		<!-- Top Section: Header & Sign-in / Welcome Tablet Pill -->
 		<div class="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-center">
 			<!-- Left: Title & description matching About, Work, Blogs style -->
 			<div class="flex flex-col">
 				<h1
-					class="font-playfair mb-1 text-5xl font-bold tracking-tighter select-none md:text-6xl"
+					class="font-playfair mb-1 text-5xl font-bold tracking-tighter select-none md:text-5xl"
 					style="color: var(--foreground);"
 				>
 					Guest book
