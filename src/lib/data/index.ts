@@ -17,6 +17,7 @@ export const navItems = [
     { name: "About", href: "/about" },
     { name: "Work", href: "/work" },
     { name: "Blogs", href: "/blogs" },
+    { name: "Guestbook", href: "/guestbook" },
 ];
 
 export const sideNavItems = [

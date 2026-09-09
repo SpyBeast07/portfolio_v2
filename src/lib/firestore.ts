@@ -80,3 +80,61 @@ export function patchDoc(docId: string, data: Record<string, unknown>): Promise<
 export function deleteDocData(docId: string): Promise<void> {
 	return firestoreDeleteDoc(docRef(docId));
 }
+
+// ─── Guestbook helpers ──────────────────────────────────────────────────────
+
+import { arrayUnion } from 'firebase/firestore';
+import type { GuestbookEntry } from '$lib/data/guestbook';
+
+const GUESTBOOK_DOC = 'guestbook';
+
+/** Append a new entry to the guestbook. Creates the document if it doesn't exist. */
+export async function addGuestbookEntry(entry: GuestbookEntry): Promise<void> {
+	const ref = docRef(GUESTBOOK_DOC);
+	const snap = await getDoc(ref);
+	if (snap.exists()) {
+		await updateDoc(ref, { entries: arrayUnion(entry) });
+	} else {
+		await setDoc(ref, { entries: [entry] });
+	}
+}
+
+/** Remove an entry by ID. Reads the current array, filters, and writes back. */
+export async function deleteGuestbookEntry(entryId: string): Promise<void> {
+	const ref = docRef(GUESTBOOK_DOC);
+	const snap = await getDoc(ref);
+	if (!snap.exists()) return;
+	const data = snap.data() as { entries: GuestbookEntry[] };
+	const filtered = (data.entries ?? []).filter((e) => e.id !== entryId);
+	await setDoc(ref, { entries: filtered });
+}
+
+/** Toggle pinned state of an entry by ID. Reads current array, updates isPinned, writes back. */
+export async function togglePinGuestbookEntry(entryId: string, isPinned: boolean): Promise<void> {
+	const ref = docRef(GUESTBOOK_DOC);
+	const snap = await getDoc(ref);
+	if (!snap.exists()) return;
+	const data = snap.data() as { entries: GuestbookEntry[] };
+	const updated = (data.entries ?? []).map((e) =>
+		e.id === entryId ? { ...e, isPinned } : e
+	);
+	await setDoc(ref, { entries: updated });
+}
+
+/** Real-time subscription to guestbook entries. Returns an unsubscribe fn. */
+export function subscribeGuestbook(
+	onData: (entries: GuestbookEntry[]) => void,
+	onError?: (err: Error) => void
+): () => void {
+	return onSnapshot(docRef(GUESTBOOK_DOC), {
+		next: (snap) => {
+			if (snap.exists()) {
+				const data = snap.data() as { entries: GuestbookEntry[] };
+				onData(data.entries ?? []);
+			} else {
+				onData([]);
+			}
+		},
+		error: (err) => onError?.(err instanceof Error ? err : new Error(String(err)))
+	});
+}

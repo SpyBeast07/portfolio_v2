@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { signIn } from '$lib/auth';
+	import { signIn, isAdmin, ADMIN_EMAIL, signOutUser } from '$lib/auth';
 	import { user, authReady, initAuth } from '$lib/stores/auth';
 
 	let email = $state('');
@@ -14,9 +14,9 @@
 		initAuth();
 	});
 
-	// Already signed in? Go straight to the admin dashboard.
+	// Already signed in as admin? Go straight to the admin dashboard.
 	$effect(() => {
-		if ($authReady && $user && !submitting && !redirecting) {
+		if ($authReady && $user && isAdmin($user) && !submitting && !redirecting) {
 			redirecting = true;
 			goto('/admin');
 		}
@@ -26,7 +26,14 @@
 		error = '';
 		submitting = true;
 		try {
-			await signIn(email, password);
+			if (email.trim().toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+				throw new Error('Access denied. Only the administrator can sign in here.');
+			}
+			const signedInUser = await signIn(email, password);
+			if (!isAdmin(signedInUser)) {
+				await signOutUser();
+				throw new Error('Access denied. Administrator privileges required.');
+			}
 			redirecting = true;
 			await goto('/admin');
 		} catch (err) {

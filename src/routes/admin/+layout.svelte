@@ -3,7 +3,7 @@
 	import type { Snippet } from 'svelte';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import { signOutUser } from '$lib/auth';
+	import { signOutUser, isAdmin } from '$lib/auth';
 	import { user, authReady, initAuth } from '$lib/stores/auth';
 	import '$lib/components/admin/admin.css';
 
@@ -13,9 +13,9 @@
 		initAuth();
 	});
 
-	// Signed out? Bounce to /login.
+	// Signed out or not admin? Bounce to /login.
 	$effect(() => {
-		if ($authReady && !$user) {
+		if ($authReady && (!$user || !isAdmin($user))) {
 			goto('/login');
 		}
 	});
@@ -63,7 +63,7 @@
 			<div class="flex min-h-[50vh] items-center justify-center">
 				<p class="text-sm opacity-60">Checking session…</p>
 			</div>
-		{:else if $user}
+		{:else if $user && isAdmin($user)}
 			<div class="mb-6 flex flex-col items-center justify-between gap-4 md:flex-row">
 				<div>
 					<h1 class="font-playfair text-3xl font-bold md:text-4xl">Admin</h1>
