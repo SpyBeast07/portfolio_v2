@@ -2,7 +2,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { page } from '$app/stores';
 	import { signInWithGoogle, signOutUser, isAdmin, updateUserProfile } from '$lib/auth';
-	import { user, initAuth } from '$lib/stores/auth';
+	import { user, authReady, initAuth } from '$lib/stores/auth';
 	import {
 		addGuestbookEntry,
 		deleteGuestbookEntry,
@@ -120,10 +120,16 @@
 		}
 	}
 
+	// 1. Compute authLoading reactively from $authReady
+	const authLoading = $derived(!$authReady);
+
 	let lastCheckedUid = $state<string | null>(null);
 		
-	// Trigger profile check whenever user auth state resolves
+	// 2. Trigger profile check whenever user auth state resolves
 	$effect(() => {
+		// Wait until Firebase auth is ready before running any checks
+		if (!$authReady) return;
+
 		const currentUid = $user?.uid;
 		
 		if (currentUid) {
@@ -341,9 +347,12 @@
 				</div>
 			</div>
 
-			<!-- Right: Signed-in Tablet Box OR Sign-in Card -->
+						<!-- Right: Signed-in Tablet Box OR Sign-in Card OR Loading Skeleton -->
 			<div class="flex justify-start md:items-center">
-				{#if $user}
+				{#if authLoading}
+					<!-- Loading Skeleton: Shown briefly on reload while checking auth -->
+					<div class="h-14 w-64 animate-pulse rounded-full border border-neutral-800 bg-[#0a0a0a]"></div>
+				{:else if $user}
 					<!-- Tablet Pill Box: Styled as capsule tablet with white circular ring around avatar -->
 					<div
 						class="flex items-center gap-3.5 rounded-full border border-neutral-800 bg-[#0a0a0a] px-5 py-2.5 shadow-2xl transition-all hover:border-neutral-700"
