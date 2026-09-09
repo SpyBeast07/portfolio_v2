@@ -36,7 +36,7 @@
 </script>
 
 <div
-  class="group relative rounded-3xl border border-foreground/30 transition-all duration-500 ease-out overflow-hidden flex flex-col h-full hover:-translate-y-2 hover:border-yellow-500/60 hover:shadow-[0_20px_50px_-18px_rgba(250,204,21,0.45),0_25px_60px_-25px_rgba(0,0,0,0.5)]"
+  class="group relative rounded-3xl border border-foreground/30 transition-all duration-500 ease-out overflow-hidden flex flex-col h-full hover:-translate-y-2 hover:border-yellow-500/60"
   style="background-color: color-mix(in oklab, var(--background) 85%, transparent);"
 >
   <!-- Link to the dedicated project page -->
