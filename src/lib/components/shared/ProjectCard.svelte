@@ -42,6 +42,17 @@
   <!-- Link to the dedicated project page -->
   <a href={href} class="absolute inset-0 z-10" aria-label="View {title} details"></a>
 
+  <!-- Go to link icon -->
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="absolute top-3 right-3 group-hover:opacity-100 opacity-0 transition-opacity duration-300 text-yellow-500 hover:text-yellow-400 z-30"
+    aria-label="Open {title} in new tab"
+  >
+    <ExternalLinkIcon width={20} height={20} />
+  </a>
+
   <!-- Whole-card secondary tint on hover -->
   <div
     class="pointer-events-none absolute inset-0 z-0 bg-gradient-to-br from-yellow-500/15 via-yellow-500/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
