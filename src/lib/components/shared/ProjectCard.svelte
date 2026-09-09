@@ -1,14 +1,18 @@
 <script lang="ts">
   import { ExternalLinkIcon, GithubIcon } from '$lib/components/ui/icons';
+  import { slugify } from '$lib/slug';
 
-  let { title, description, tags, image, githubLink, demoLink }: {
+  let { title, description, tags, image, githubLink, demoLink, slug }: {
     title: string;
     description: string;
     tags: string[];
     image?: string;
     githubLink?: string;
     demoLink?: string;
+    slug?: string;
   } = $props();
+
+  const href = $derived(`/work/${slug || slugify(title)}`);
 
   function handleGithubMouseEnter(e: MouseEvent) {
     const target = e.currentTarget as HTMLElement;
@@ -32,9 +36,12 @@
 </script>
 
 <div
-  class="group relative rounded-3xl transition-all overflow-hidden flex flex-col h-full"
-  style="background-color: color-mix(in oklab, var(--background) 85%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 30%, transparent);"
+  class="group relative rounded-3xl border border-foreground/30 transition-all duration-300 overflow-hidden flex flex-col h-full hover:border-yellow-500/70 hover:shadow-[0_0_35px_-12px_rgba(250,204,21,0.4)]"
+  style="background-color: color-mix(in oklab, var(--background) 85%, transparent);"
 >
+  <!-- Link to the dedicated project page -->
+  <a href={href} class="absolute inset-0 z-10" aria-label="View {title} details"></a>
+
   <!-- Project Image -->
   {#if image}
     <div class="w-full p-4 pb-0 flex items-center justify-center">
@@ -87,7 +94,7 @@
 
     <!-- Action Buttons -->
     <div
-      class="flex items-center gap-3 mt-auto pt-3"
+      class="relative z-20 flex items-center gap-3 mt-auto pt-3"
       style="border-top: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);"
     >
       {#if githubLink}

@@ -109,6 +109,11 @@ interface Project {
 	githubLink?: string;
 	demoLink?: string;
 	category: string;
+	slug?: string;
+	timeline?: string;
+	highlights?: string[];
+	about?: string;
+	screenshots?: string[];
 }
 
 interface Blog {

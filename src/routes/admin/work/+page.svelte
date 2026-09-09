@@ -46,12 +46,17 @@ import { jsonEqual } from '$lib/components/admin/utils';
 
 	const projectSchema = $derived<AdminFieldDef[]>([
 		{ key: 'title', label: 'Title' },
-		{ key: 'description', label: 'Description', type: 'textarea', rows: 4 },
-		{ key: 'tags', label: 'Tags', type: 'tags' },
+		{ key: 'slug', label: 'Slug', hint: 'URL segment for the detail page — must be unique, e.g. "my-project".' },
+		{ key: 'description', label: 'One-line description', type: 'textarea', rows: 2 },
+		{ key: 'tags', label: 'Tech stack', type: 'tags' },
+		{ key: 'timeline', label: 'Timeline', placeholder: 'e.g. Sep 2025 — Jun 2026' },
 		{ key: 'category', label: 'Category', type: 'select', options: categories },
 		{ key: 'image', label: 'Cover image', placeholder: '/my-image.webp' },
 		{ key: 'githubLink', label: 'GitHub link', placeholder: 'https://github.com/…' },
-		{ key: 'demoLink', label: 'Demo link', placeholder: 'https://…' }
+		{ key: 'demoLink', label: 'Demo link', placeholder: 'https://…' },
+		{ key: 'highlights', label: 'Key highlights', type: 'tags' },
+		{ key: 'about', label: 'About', type: 'textarea', rows: 4, hint: 'One short paragraph shown on the project detail page.' },
+		{ key: 'screenshots', label: 'Screenshots', type: 'tags', hint: 'Image paths or URLs shown in the Screenshots section.' }
 	]);
 
 	async function handleSave() {
@@ -146,7 +151,7 @@ import { jsonEqual } from '$lib/components/admin/utils';
 
 		<ItemListEditor
 			label="Projects"
-			hint="Shown on the Work page, filtered by category."
+			hint="Shown on the Work page, filtered by category. Each project also gets a detail page at /work/[slug] — sections with empty content are hidden."
 			items={projects}
 			schema={projectSchema}
 			savedItems={lastSaved ? lastSaved.projects : null}
