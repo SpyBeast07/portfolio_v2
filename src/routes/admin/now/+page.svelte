@@ -39,6 +39,7 @@
 					key: 'links',
 					label: 'Links',
 					type: 'children',
+					addLabel: 'Add link',
 					childrenSchema: [
 						{ key: 'label', label: 'Label' },
 						{ key: 'url', label: 'URL' }
@@ -84,7 +85,7 @@
 	/>
 
 	<div class="grid grid-cols-1 gap-6">
-		<div class="rounded-xl p-6" style={cardStyle}>
+		<div class="rounded-xl p-4" style={cardStyle}>
 			<AdminField label="Last updated" hint='e.g. "February 2026".'>
 				<input
 					type="text"
@@ -92,6 +93,7 @@
 					placeholder="February 2026"
 					class={inputClass}
 					style={inputStyle}
+					data-lenis-prevent
 				/>
 			</AdminField>
 		</div>

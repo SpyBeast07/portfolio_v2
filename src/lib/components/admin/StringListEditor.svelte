@@ -96,6 +96,7 @@
 						placeholder={placeholder}
 						class="{inputClass} break-words"
 						style={inputStyle}
+						data-lenis-prevent
 						oninput={(e) => (items[index] = e.currentTarget.value)}
 					></textarea>
 				</div>

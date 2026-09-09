@@ -9,6 +9,7 @@ export interface AdminFieldDef {
 	rows?: number;
 	options?: string[];
 	childrenSchema?: AdminFieldDef[];
+	addLabel?: string;
 	full?: boolean;
 }
 

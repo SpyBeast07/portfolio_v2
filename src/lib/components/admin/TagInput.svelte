@@ -23,6 +23,7 @@
 <div
 	class="flex flex-wrap items-center gap-2 rounded-xl border px-3 py-2.5"
 	style="border-color: color-mix(in oklab, var(--foreground) 15%, transparent); background-color: transparent;"
+	data-lenis-prevent
 >
 	{#each tags as tag, i}
 		<span

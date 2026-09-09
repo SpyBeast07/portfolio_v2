@@ -142,6 +142,7 @@
 						placeholder="Get to know more about who I am."
 						class={inputClass}
 						style={inputStyle}
+						data-lenis-prevent
 					></textarea>
 				</AdminField>
 				<AdminField label="Photo" hint="Path or URL to your portrait, e.g. /about.webp.">
@@ -151,6 +152,7 @@
 						placeholder="/about.webp"
 						class={inputClass}
 						style={inputStyle}
+						data-lenis-prevent
 					/>
 				</AdminField>
 			</div>

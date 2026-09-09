@@ -99,6 +99,7 @@
 							bind:value={headings.work.title}
 							class={inputClass}
 							style={inputStyle}
+							data-lenis-prevent
 						/>
 					</AdminField>
 					<AdminField label="Work page description">
@@ -107,6 +108,7 @@
 							rows={2}
 							class={inputClass}
 							style={inputStyle}
+							data-lenis-prevent
 						></textarea>
 					</AdminField>
 				</div>
@@ -117,6 +119,7 @@
 							bind:value={headings.blogs.title}
 							class={inputClass}
 							style={inputStyle}
+							data-lenis-prevent
 						/>
 					</AdminField>
 					<AdminField label="Blogs page description">
@@ -125,6 +128,7 @@
 							rows={2}
 							class={inputClass}
 							style={inputStyle}
+							data-lenis-prevent
 						></textarea>
 					</AdminField>
 				</div>

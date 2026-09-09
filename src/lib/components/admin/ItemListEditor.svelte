@@ -12,6 +12,7 @@
 		schema,
 		addLabel = 'Add item',
 		emptyText = 'No items yet.',
+		compact = false,
 		onItemsChange
 	}: {
 		label: string;
@@ -20,12 +21,13 @@
 		schema: AdminFieldDef[];
 		addLabel?: string;
 		emptyText?: string;
+		compact?: boolean;
 		onItemsChange: (items: EditorItems) => void;
 	} = $props();
 
-	function emptyItem(): EditorItem {
+	function emptyItem(childSchema: AdminFieldDef[] = schema): EditorItem {
 		const item: EditorItem = {};
-		for (const field of schema) {
+		for (const field of childSchema) {
 			if (field.type === 'tags' || field.type === 'children') item[field.key] = [];
 		}
 		return item;
@@ -69,10 +71,13 @@
 	}
 </script>
 
-<div class="rounded-xl p-6" style="background-color: color-mix(in oklab, var(--foreground) 4%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);">
+<div
+	class="rounded-xl {compact ? 'p-4' : 'p-6'}"
+	style="background-color: color-mix(in oklab, var(--foreground) 4%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);"
+>
 	<div class="mb-4 flex flex-wrap items-center justify-between gap-3">
 		<div>
-			<h2 class="font-playfair text-xl font-bold">{label}</h2>
+			<h2 class="font-playfair {compact ? 'text-lg' : 'text-xl'} font-bold">{label}</h2>
 			{#if hint}
 				<p class="mt-1 text-sm opacity-60">{hint}</p>
 			{/if}
@@ -80,10 +85,10 @@
 		<button
 			type="button"
 			onclick={addItem}
-			class={primaryButtonClass}
+			class="{primaryButtonClass} {compact ? 'px-4 text-xs' : ''}"
 			style="color: var(--background); background-color: var(--foreground);"
 		>
-			{addLabel}
+			+ {addLabel}
 		</button>
 	</div>
 
@@ -95,10 +100,10 @@
 			{emptyText}
 		</p>
 	{:else}
-		<div class="grid grid-cols-1 gap-4">
+		<div class="grid grid-cols-1 gap-{compact ? '3' : '4'}">
 			{#each items as item, index}
 				<div
-					class="rounded-xl border p-5"
+					class="rounded-xl border p-{compact ? '4' : '5'}"
 					style="background-color: color-mix(in oklab, var(--foreground) 3%, transparent); border-color: color-mix(in oklab, var(--foreground) 10%, transparent);"
 				>
 					<div class="mb-4 flex items-center justify-between gap-3">
@@ -145,6 +150,7 @@
 											placeholder={field.placeholder}
 											class="{inputClass} break-words"
 											style={inputStyle}
+											data-lenis-prevent
 											oninput={(e) => (item[field.key] = e.currentTarget.value)}
 										></textarea>
 									{:else if field.type === 'tags'}
@@ -154,18 +160,38 @@
 											onTagsChange={(v) => (item[field.key] = v)}
 										/>
 									{:else if field.type === 'children'}
-										<ItemListEditor
-											label={field.label}
-											hint={field.hint}
-											items={list(item, field.key)}
-											schema={field.childrenSchema ?? []}
-											onItemsChange={(v) => (item[field.key] = v)}
-										/>
+										{#if list(item, field.key).length === 0}
+											<div
+												class="flex items-center justify-between gap-3 rounded-lg border px-3 py-2"
+												style="border-color: color-mix(in oklab, var(--foreground) 15%, transparent); background-color: color-mix(in oklab, var(--foreground) 3%, transparent);"
+											>
+												<span class="text-sm font-medium">{field.label}</span>
+												<button
+													type="button"
+													onclick={() => (item[field.key] = [emptyItem(field.childrenSchema ?? [])])}
+													class="flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium transition-transform hover:scale-105"
+													style="color: var(--background); background-color: var(--foreground);"
+												>
+													+ {field.addLabel ?? 'Add item'}
+												</button>
+											</div>
+										{:else}
+											<ItemListEditor
+												label={field.label}
+												hint={field.hint}
+												items={list(item, field.key)}
+												schema={field.childrenSchema ?? []}
+												addLabel={field.addLabel ?? 'Add item'}
+												compact
+												onItemsChange={(v) => (item[field.key] = v)}
+											/>
+										{/if}
 									{:else if field.type === 'select'}
 										<select
 											value={raw(item, field.key)}
 											class={inputClass}
 											style={inputStyle}
+											data-lenis-prevent
 											onchange={(e) => (item[field.key] = e.currentTarget.value)}
 										>
 											<option value="">—</option>
@@ -180,6 +206,7 @@
 											placeholder={field.placeholder}
 											class={inputClass}
 											style={inputStyle}
+											data-lenis-prevent
 											oninput={(e) => (item[field.key] = e.currentTarget.value)}
 										/>
 									{/if}
