@@ -1,28 +1,46 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import { page } from '$app/stores';
-	import { signInWithGoogle, signInWithGithub, signOutUser, isAdmin } from '$lib/auth';
+	import { signInWithGoogle, signOutUser, isAdmin, updateUserProfile } from '$lib/auth';
 	import { user, initAuth } from '$lib/stores/auth';
 	import {
 		addGuestbookEntry,
 		deleteGuestbookEntry,
 		togglePinGuestbookEntry,
-		subscribeGuestbook
+		subscribeGuestbook,
+		getGuestbookProfile,
+		saveGuestbookProfile,
+		type UserGuestbookProfile
 	} from '$lib/firestore';
 	import type { GuestbookEntry } from '$lib/data/guestbook';
 
 	let entries = $state<GuestbookEntry[]>([]);
 	let message = $state('');
 	let submitting = $state(false);
-	let signingIn = $state<'google' | 'github' | null>(null);
+	let signingIn = $state(false);
 	let error = $state('');
 	let deleting = $state<string | null>(null);
 	let pinning = $state<string | null>(null);
 	let unsubscribe: (() => void) | null = null;
 
+	// Profile Setup State (Only Display Name, Google Photo used automatically)
+	let userProfile = $state<UserGuestbookProfile | null>(null);
+	let profileChecked = $state(false);
+	let showProfileModal = $state(false);
+	let modalStep = $state<1 | 2>(1);
+	let tempDisplayName = $state('');
+	let savingProfile = $state(false);
+	let modalError = $state('');
+
 	const MAX_MESSAGE_LENGTH = 500;
 
 	const isUserAdmin = $derived(isAdmin($user));
+
+	// Active display name and photo (always Google account photo)
+	const currentDisplayName = $derived(
+		userProfile?.displayName || $user?.displayName || 'Friend'
+	);
+	const currentPhotoURL = $derived($user?.photoURL || '');
 
 	onMount(() => {
 		initAuth();
@@ -45,32 +63,128 @@
 		unsubscribe?.();
 	});
 
-	async function handleGoogleSignIn() {
-		error = '';
-		signingIn = 'google';
+	// Check if the signed-in user has completed their display name setup
+	async function checkUserProfile(uid: string) {
+		profileChecked = false;
 		try {
-			await signInWithGoogle();
+			// Check local cache first for instant response
+			const cached = localStorage.getItem(`guestbook_profile_${uid}`);
+			if (cached) {
+				try {
+					const parsed = JSON.parse(cached) as UserGuestbookProfile;
+					if (parsed?.completed && parsed?.displayName) {
+						userProfile = parsed;
+						showProfileModal = false;
+						profileChecked = true;
+						return;
+					}
+				} catch {
+					// Fall through to Firestore
+				}
+			}
+
+			// Check Firestore
+			const remoteProfile = await getGuestbookProfile(uid);
+			if (remoteProfile && remoteProfile.completed && remoteProfile.displayName) {
+				userProfile = remoteProfile;
+				localStorage.setItem(`guestbook_profile_${uid}`, JSON.stringify(remoteProfile));
+				showProfileModal = false;
+			} else {
+				// Profile not completed! Prompt user to set up display name
+				tempDisplayName = $user?.displayName || '';
+				modalStep = 1;
+				showProfileModal = true;
+			}
 		} catch (err) {
-			error = err instanceof Error ? err.message : 'Unable to sign in with Google.';
+			console.warn('[guestbook] Error checking profile:', err);
+			if (!userProfile?.completed) {
+				tempDisplayName = $user?.displayName || '';
+				modalStep = 1;
+				showProfileModal = true;
+			}
 		} finally {
-			signingIn = null;
+			profileChecked = true;
 		}
 	}
 
-	async function handleGithubSignIn() {
+	// Trigger profile check whenever user auth state resolves
+	$effect(() => {
+		if ($user?.uid) {
+			checkUserProfile($user.uid);
+		} else {
+			userProfile = null;
+			showProfileModal = false;
+			profileChecked = true;
+		}
+	});
+
+	async function handleGoogleSignIn() {
 		error = '';
-		signingIn = 'github';
+		signingIn = true;
 		try {
-			await signInWithGithub();
+			const loggedInUser = await signInWithGoogle();
+			if (loggedInUser) {
+				await checkUserProfile(loggedInUser.uid);
+			}
 		} catch (err) {
-			error = err instanceof Error ? err.message : 'Unable to sign in with GitHub.';
+			error = err instanceof Error ? err.message : 'Unable to sign in with Google.';
 		} finally {
-			signingIn = null;
+			signingIn = false;
 		}
 	}
 
 	async function handleSignOut() {
+		if ($user?.uid) {
+			localStorage.removeItem(`guestbook_profile_${$user.uid}`);
+		}
+		userProfile = null;
+		showProfileModal = false;
 		await signOutUser();
+	}
+
+	function proceedToStep2() {
+		if (!tempDisplayName.trim()) {
+			modalError = 'Please enter your display name.';
+			return;
+		}
+		modalError = '';
+		modalStep = 2;
+	}
+
+	// Final Step: Launch Profile (Stores only display name in Firestore)
+	async function handleLaunchProfile() {
+		if (!$user?.uid) return;
+		savingProfile = true;
+		modalError = '';
+		try {
+			const finalName = tempDisplayName.trim();
+
+			const profileData: UserGuestbookProfile = {
+				displayName: finalName,
+				completed: true,
+				updatedAt: Date.now()
+			};
+
+			// Save in Firestore guestbook collection (only display name & completion status)
+			await saveGuestbookProfile($user.uid, profileData);
+
+			// Also update Firebase Auth display name
+			try {
+				await updateUserProfile(finalName);
+			} catch (authErr) {
+				console.warn('[guestbook] Note: Auth update profile skipped/soft failed:', authErr);
+			}
+
+			// Save to local cache
+			localStorage.setItem(`guestbook_profile_${$user.uid}`, JSON.stringify(profileData));
+
+			userProfile = profileData;
+			showProfileModal = false;
+		} catch (err) {
+			modalError = err instanceof Error ? err.message : 'Failed to launch profile. Please try again.';
+		} finally {
+			savingProfile = false;
+		}
 	}
 
 	async function handleSubmit() {
@@ -81,14 +195,20 @@
 			return;
 		}
 
+		// Ensure profile display name is completed first
+		if (!userProfile?.completed) {
+			showProfileModal = true;
+			return;
+		}
+
 		error = '';
 		submitting = true;
 		try {
 			const entry: GuestbookEntry = {
 				id: crypto.randomUUID(),
-				name: $user.displayName || $user.email?.split('@')[0] || 'Anonymous',
+				name: currentDisplayName,
 				email: $user.email ?? '',
-				photoURL: $user.photoURL ?? '',
+				photoURL: currentPhotoURL, // Always Google account image
 				message: trimmed,
 				createdAt: Date.now(),
 				isPinned: false
@@ -133,13 +253,6 @@
 		const day = d.getDate();
 		return `${month} ${day}`;
 	}
-
-	function getUserHandle(u: { email?: string | null; displayName?: string | null }): string {
-		if (u.email === 'kushagra7503@gmail.com') return 'spybeast07';
-		if (u.email) return u.email.split('@')[0];
-		if (u.displayName) return u.displayName.toLowerCase().replace(/\s+/g, '');
-		return 'visitor';
-	}
 </script>
 
 <svelte:head>
@@ -179,7 +292,7 @@
 
 	<!-- Main Page Container: pt-32 md:pt-[16vh] matching About/Work/Blogs gap from navbar -->
 	<main class="relative z-20 mx-auto max-w-7xl px-4 pt-32 pb-28 sm:px-6 md:pt-[16vh] lg:px-8">
-		<!-- Top Section: Header & Sign-in / Welcome Pill -->
+		<!-- Top Section: Header & Sign-in / Welcome Tablet Pill -->
 		<div class="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-center">
 			<!-- Left: Title & description matching About, Work, Blogs style -->
 			<div class="flex flex-col">
@@ -190,52 +303,58 @@
 					Guest book
 				</h1>
 				<div class="mt-4 flex flex-col text-xl leading-tight font-medium text-neutral-400">
-					<h2>LEAVE YOUR</h2>
+					<h2>Leave Your</h2>
 					<h2
 						class="text-xl font-medium transition-colors duration-300"
 						style="color: var(--foreground)"
 					>
-						SIGNATURE
+						Signature
 					</h2>
 				</div>
 			</div>
 
-			<!-- Right: Signed-in User Pill (vertically centered & bigger) OR Sign-in Card -->
+			<!-- Right: Signed-in Tablet Box OR Sign-in Card -->
 			<div class="flex justify-start md:justify-end">
 				{#if $user}
-					<!-- Signed-in Pill (Bigger and Vertically Centered) -->
+					<!-- Tablet Pill Box: Styled as capsule tablet with white circular ring around avatar -->
 					<div
-						class="flex items-center gap-4 rounded-3xl border border-white/10 bg-[#121212]/90 px-6 py-4 shadow-2xl backdrop-blur-md transition-all"
+						class="flex items-center gap-3.5 rounded-full border border-neutral-800 bg-[#0a0a0a] px-5 py-2.5 shadow-2xl transition-all hover:border-neutral-700"
 					>
-						{#if $user.photoURL}
-							<img
-								src={$user.photoURL}
-								alt={$user.displayName ?? 'User'}
-								class="h-14 w-14 rounded-full border border-white/15 object-cover shadow-sm"
-								referrerpolicy="no-referrer"
-							/>
-						{:else}
-							<div
-								class="flex h-14 w-14 items-center justify-center rounded-full bg-white/10 text-lg font-bold text-white shadow-sm"
-							>
-								{($user.displayName ?? 'U').charAt(0).toUpperCase()}
-							</div>
-						{/if}
-						<div class="flex flex-col pr-2">
-							<span class="text-lg font-bold leading-snug text-white sm:text-xl">
-								Hello {$user.displayName ?? 'Friend'}!
-							</span>
-							<span class="text-sm font-medium text-sky-400">
-								@{getUserHandle($user)}
-							</span>
+						<!-- Google avatar with crisp solid white circular ring border -->
+						<div
+							class="relative flex h-11 w-11 flex-shrink-0 items-center justify-center overflow-hidden rounded-full ring-2 ring-white"
+						>
+							{#if currentPhotoURL}
+								<img
+									src={currentPhotoURL}
+									alt={currentDisplayName}
+									class="h-full w-full object-cover"
+									referrerpolicy="no-referrer"
+								/>
+							{:else}
+								<div
+									class="flex h-full w-full items-center justify-center bg-neutral-800 text-sm font-bold text-white"
+								>
+									{currentDisplayName.charAt(0).toUpperCase()}
+								</div>
+							{/if}
 						</div>
+
+						<!-- Hello <name>! in bold white -->
+						<span
+							class="font-outfit text-base font-bold tracking-tight text-white select-none sm:text-lg"
+						>
+							Hello {currentDisplayName}!
+						</span>
+
+						<!-- Subtle Sign out button -->
 						<button
 							onclick={handleSignOut}
-							class="ml-2 rounded-full border border-white/10 p-2.5 text-neutral-400 transition hover:bg-white/10 hover:text-white"
+							class="ml-1 rounded-full p-1.5 text-neutral-500 transition hover:bg-white/10 hover:text-white"
 							title="Sign out"
 						>
 							<svg
-								class="h-5 w-5"
+								class="h-4 w-4"
 								fill="none"
 								stroke="currentColor"
 								viewBox="0 0 24 24"
@@ -250,7 +369,7 @@
 						</button>
 					</div>
 				{:else}
-					<!-- Sign-in Card (Matching Image 1) -->
+					<!-- Sign-in Card (Google only) -->
 					<div
 						class="w-full max-w-sm rounded-3xl border border-white/10 bg-[#0d0d0d] p-6 shadow-2xl sm:p-7"
 					>
@@ -264,7 +383,7 @@
 						<!-- Google Button -->
 						<button
 							onclick={handleGoogleSignIn}
-							disabled={signingIn !== null}
+							disabled={signingIn}
 							class="flex w-full items-center justify-center gap-3 rounded-full bg-white px-5 py-3 text-sm font-semibold text-black shadow transition hover:bg-neutral-100 disabled:opacity-50"
 						>
 							<svg class="h-4 w-4" viewBox="0 0 24 24">
@@ -285,21 +404,7 @@
 									fill="#EA4335"
 								/>
 							</svg>
-							<span>{signingIn === 'google' ? 'Signing in…' : 'Google'}</span>
-						</button>
-
-						<!-- GitHub Button -->
-						<button
-							onclick={handleGithubSignIn}
-							disabled={signingIn !== null}
-							class="mt-3 flex w-full items-center justify-center gap-3 rounded-full border border-white/10 bg-[#1c1c1c] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#252525] disabled:opacity-50"
-						>
-							<svg class="h-4 w-4 fill-current" viewBox="0 0 24 24">
-								<path
-									d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"
-								/>
-							</svg>
-							<span>{signingIn === 'github' ? 'Signing in…' : 'GitHub'}</span>
+							<span>{signingIn ? 'Signing in…' : 'Google'}</span>
 						</button>
 
 						<p class="mt-4 text-center text-[11px] text-neutral-500">
@@ -310,16 +415,16 @@
 			</div>
 		</div>
 
-		<!-- If Signed In: Compose Message Card (Horizontally smaller & centered) -->
+		<!-- If Signed In: Compose Message Card (Horizontally smaller & clean) -->
 		{#if $user}
 			<div
 				class="mb-14 mx-auto w-full max-w-2xl rounded-2xl border border-white/10 bg-[#0d0d0d] p-5 shadow-2xl"
 			>
 				<div class="flex items-start gap-4">
-					{#if $user.photoURL}
+					{#if currentPhotoURL}
 						<img
-							src={$user.photoURL}
-							alt={$user.displayName ?? 'User'}
+							src={currentPhotoURL}
+							alt={currentDisplayName}
 							class="mt-1 h-9 w-9 flex-shrink-0 rounded-full border border-white/15 object-cover"
 							referrerpolicy="no-referrer"
 						/>
@@ -327,7 +432,7 @@
 						<div
 							class="mt-1 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-xs font-bold text-white"
 						>
-							{($user.displayName ?? 'U').charAt(0).toUpperCase()}
+							{currentDisplayName.charAt(0).toUpperCase()}
 						</div>
 					{/if}
 					<textarea
@@ -548,4 +653,195 @@
 			</div>
 		{/if}
 	</main>
+
+	<!-- 2-Step Profile Setup Pop-up Dialog Modal (Display Name Only, Google Account Picture used) -->
+	{#if showProfileModal}
+		<div
+			class="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-md"
+			style="background-color: rgba(0, 0, 0, 0.75);"
+		>
+			<div
+				class="relative w-full max-w-md rounded-3xl border border-white/15 bg-[#0e0e0e] p-7 shadow-2xl transition-all sm:p-8"
+			>
+				<!-- Steps Indicator Bar -->
+				<div class="mb-6 flex items-center justify-between">
+					<div class="flex items-center gap-2">
+						<span
+							class={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold ${
+								modalStep === 1 ? 'bg-white text-black' : 'bg-blue-500 text-white'
+							}`}
+						>
+							1
+						</span>
+						<span
+							class="h-0.5 w-8 rounded-full transition-colors"
+							style={`background-color: ${modalStep === 2 ? '#3b82f6' : 'rgba(255,255,255,0.15)'};`}
+						></span>
+						<span
+							class={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold ${
+								modalStep === 2 ? 'bg-white text-black' : 'bg-white/10 text-neutral-400'
+							}`}
+						>
+							2
+						</span>
+					</div>
+					<span class="text-xs font-semibold tracking-wider text-neutral-400 uppercase">
+						Step {modalStep} of 2
+					</span>
+				</div>
+
+				{#if modalStep === 1}
+					<!-- Step 1: Display Name Setup (Google photo used automatically) -->
+					<div>
+						<h3 class="font-outfit text-2xl font-bold tracking-tight text-white">
+							Set Your Display Name
+						</h3>
+						<p class="mt-1 mb-6 text-xs leading-relaxed text-neutral-400 sm:text-sm">
+							Choose the name that appears on your signatures and tablet badge.
+						</p>
+
+						<!-- Google Avatar Notice with crisp white ring -->
+						<div class="mb-6 flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+							<div class="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-full ring-2 ring-white">
+								{#if currentPhotoURL}
+									<img
+										src={currentPhotoURL}
+										alt="Google avatar"
+										class="h-full w-full object-cover"
+										referrerpolicy="no-referrer"
+									/>
+								{:else}
+									<div class="flex h-full w-full items-center justify-center bg-neutral-800 text-sm font-bold text-white">
+										{($user?.displayName ?? 'U').charAt(0).toUpperCase()}
+									</div>
+								{/if}
+							</div>
+							<div>
+								<p class="text-xs font-semibold text-white">Google Profile Picture</p>
+								<p class="text-[11px] text-neutral-400">
+									Using your Google account photo for your profile.
+								</p>
+							</div>
+						</div>
+
+						<!-- Display Name Input -->
+						<div class="mb-6">
+							<label for="display-name-input" class="mb-2 block text-xs font-semibold text-neutral-300 uppercase tracking-wider">
+								Display Name <span class="text-red-400">*</span>
+							</label>
+							<input
+								id="display-name-input"
+								type="text"
+								bind:value={tempDisplayName}
+								placeholder="e.g. Parth Sharma"
+								maxlength={40}
+								required
+								class="font-outfit w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-white/40 focus:outline-none focus:ring-1 focus:ring-white/40"
+							/>
+						</div>
+
+						{#if modalError}
+							<p class="mb-4 text-xs text-red-400">{modalError}</p>
+						{/if}
+
+						<div class="flex items-center justify-between border-t border-white/10 pt-5">
+							<button
+								type="button"
+								onclick={handleSignOut}
+								class="text-xs text-neutral-400 transition hover:text-white"
+							>
+								Cancel & Sign out
+							</button>
+							<button
+								type="button"
+								onclick={proceedToStep2}
+								disabled={!tempDisplayName.trim()}
+								class="rounded-full bg-white px-6 py-2.5 text-xs font-bold text-black transition hover:bg-neutral-200 disabled:opacity-40"
+							>
+								Next: Launch Profile →
+							</button>
+						</div>
+					</div>
+				{:else}
+					<!-- Step 2: Confirmation & Launch Profile -->
+					<div>
+						<h3 class="font-outfit text-2xl font-bold tracking-tight text-white">
+							Ready to Launch!
+						</h3>
+						<p class="mt-1 mb-6 text-xs leading-relaxed text-neutral-400 sm:text-sm">
+							Preview how your tablet badge and signature will appear to visitors.
+						</p>
+
+						<!-- Tablet Card Preview (Matching User Image) -->
+						<div class="mb-6 rounded-2xl border border-white/10 bg-[#070707] p-5">
+							<p class="mb-3 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
+								Your Tablet Card Preview
+							</p>
+							<div class="flex items-center justify-center py-3">
+								<div
+									class="flex items-center gap-3.5 rounded-full border border-neutral-800 bg-[#0a0a0a] px-5 py-2.5 shadow-xl"
+								>
+									<div
+										class="relative flex h-11 w-11 flex-shrink-0 items-center justify-center overflow-hidden rounded-full ring-2 ring-white"
+									>
+										{#if currentPhotoURL}
+											<img src={currentPhotoURL} alt={tempDisplayName} class="h-full w-full object-cover" />
+
+											{:else}
+											<div class="flex h-full w-full items-center justify-center bg-neutral-800 text-sm font-bold text-white">
+												{tempDisplayName.charAt(0).toUpperCase()}
+											</div>
+										{/if}
+									</div>
+									<span class="font-outfit text-base font-bold tracking-tight text-white sm:text-lg">
+										Hello {tempDisplayName}!
+									</span>
+								</div>
+							</div>
+						</div>
+
+						<!-- Signature Preview -->
+						<div class="mb-6 rounded-2xl border border-white/10 bg-[#070707] p-4">
+							<p class="mb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
+								Your Signature Preview
+							</p>
+							<p
+								class="font-sacramento text-2xl text-neutral-300"
+								style="font-family: 'Sacramento', 'Dancing Script', cursive;"
+							>
+								— {tempDisplayName}
+							</p>
+						</div>
+
+						{#if modalError}
+							<p class="mb-4 text-xs text-red-400">{modalError}</p>
+						{/if}
+
+						<div class="flex items-center justify-between border-t border-white/10 pt-5">
+							<button
+								type="button"
+								onclick={() => (modalStep = 1)}
+								disabled={savingProfile}
+								class="text-xs font-semibold text-neutral-400 transition hover:text-white"
+							>
+								← Back
+							</button>
+							<button
+								type="button"
+								onclick={handleLaunchProfile}
+								disabled={savingProfile}
+								class="flex items-center gap-2 rounded-full bg-white px-7 py-2.5 text-xs font-bold text-black transition hover:bg-neutral-200 disabled:opacity-50"
+							>
+								<span>{savingProfile ? 'Launching…' : 'Launch Profile'}</span>
+								<svg class="h-4 w-4 fill-current" viewBox="0 0 24 24">
+									<path d="M12 2.5a.75.75 0 01.75.75v10.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3.25a.75.75 0 01.75-.75z" />
+									<path d="M3.75 18a.75.75 0 000 1.5h16.5a.75.75 0 000-1.5H3.75z" />
+								</svg>
+							</button>
+						</div>
+					</div>
+				{/if}
+			</div>
+		</div>
+	{/if}
 </div>

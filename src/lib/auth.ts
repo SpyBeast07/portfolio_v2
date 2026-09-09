@@ -4,6 +4,7 @@ import {
 	signInWithPopup,
 	GoogleAuthProvider,
 	GithubAuthProvider,
+	updateProfile,
 	signOut
 } from 'firebase/auth';
 import type { Auth, User } from 'firebase/auth';
@@ -40,7 +41,9 @@ const AUTH_ERROR_MESSAGES: Record<string, string> = {
 	'auth/too-many-requests': 'Too many tries. Please wait a bit and try again.',
 	'auth/popup-closed-by-user': 'Sign-in popup was closed. Please try again.',
 	'auth/cancelled-popup-request': 'Sign-in was cancelled.',
-	'auth/popup-blocked': 'Sign-in popup was blocked by your browser. Please allow popups.'
+	'auth/popup-blocked': 'Sign-in popup was blocked by your browser. Please allow popups.',
+	'auth/unauthorized-domain':
+		'This domain is not authorized for sign-in. Add it in Firebase Console -> Authentication -> Settings -> Authorized domains.'
 };
 
 export async function signIn(email: string, password: string): Promise<User> {
@@ -78,6 +81,15 @@ export async function signInWithGithub(): Promise<User> {
 		const message = code ? AUTH_ERROR_MESSAGES[code] : undefined;
 		throw new Error(message ?? 'Unable to sign in with GitHub. Please try again.');
 	}
+}
+
+export async function updateUserProfile(displayName: string, photoURL?: string): Promise<void> {
+	const currentUser = getAuthInstance().currentUser;
+	if (!currentUser) throw new Error('No signed-in user');
+	await updateProfile(currentUser, {
+		displayName,
+		photoURL: photoURL ?? currentUser.photoURL
+	});
 }
 
 export async function signOutUser(): Promise<void> {

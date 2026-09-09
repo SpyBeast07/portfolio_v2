@@ -138,3 +138,34 @@ export function subscribeGuestbook(
 		error: (err) => onError?.(err instanceof Error ? err : new Error(String(err)))
 	});
 }
+
+// ─── Guestbook User Profiles ───────────────────────────────────────────────
+
+export interface UserGuestbookProfile {
+	displayName: string;
+	completed: boolean;
+	updatedAt: number;
+}
+
+/** Get a visitor's completed profile by their Firebase UID */
+export async function getGuestbookProfile(uid: string): Promise<UserGuestbookProfile | null> {
+	const ref = docRef(GUESTBOOK_DOC);
+	const snap = await getDoc(ref);
+	if (!snap.exists()) return null;
+	const data = snap.data() as { profiles?: Record<string, UserGuestbookProfile> };
+	return data.profiles?.[uid] ?? null;
+}
+
+/** Save or update a visitor's profile under data/guestbook */
+export async function saveGuestbookProfile(
+	uid: string,
+	profile: UserGuestbookProfile
+): Promise<void> {
+	const ref = docRef(GUESTBOOK_DOC);
+	const snap = await getDoc(ref);
+	if (snap.exists()) {
+		await updateDoc(ref, { [`profiles.${uid}`]: profile });
+	} else {
+		await setDoc(ref, { entries: [], profiles: { [uid]: profile } });
+	}
+}
