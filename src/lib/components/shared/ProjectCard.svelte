@@ -32,49 +32,62 @@
 </script>
 
 <div
-  class="group relative rounded-3xl transition-all overflow-hidden flex flex-col md:flex-row-reverse h-full"
+  class="group relative rounded-3xl transition-all overflow-hidden flex flex-col h-full"
   style="background-color: color-mix(in oklab, var(--background) 85%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 30%, transparent);"
 >
   <!-- Project Image -->
   {#if image}
-    <div class="w-full md:w-1/2 p-6 flex items-center justify-center">
-      <div class="relative w-full h-48 md:h-full min-h-[200px] rounded-3xl overflow-hidden">
+    <div class="w-full p-4 pb-0 flex items-center justify-center">
+      <div class="relative w-full h-36 md:h-44 rounded-2xl overflow-hidden">
         <img
           src={image}
           alt={title}
           class="object-contain transition-transform duration-500 hover:scale-105 absolute inset-0 w-full h-full"
         />
+        <div class="absolute bottom-2 left-2 right-2 flex flex-wrap gap-1.5">
+          {#each tags as tag}
+            <span
+              class="px-2 py-0.5 text-xs rounded-full backdrop-blur-sm"
+              style="color: var(--foreground); background-color: color-mix(in oklab, var(--background) 70%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);"
+            >
+              {tag}
+            </span>
+          {/each}
+        </div>
       </div>
     </div>
   {/if}
 
-  <div class="p-6 flex flex-col flex-1">
+  <div class="p-4 flex flex-col flex-1">
     <h3
-      class="text-xl font-bold font-playfair mb-2"
+      class="text-lg font-bold font-playfair mb-1.5"
       style="color: var(--foreground);"
     >
       {title}
     </h3>
     <p
-      class="text-sm leading-relaxed mb-4 flex-1"
+      class="text-sm leading-relaxed mb-3 flex-1"
       style="color: color-mix(in oklab, var(--foreground) 70%, transparent);"
     >
       {description}
     </p>
-    <div class="flex flex-wrap gap-2 mb-6">
-      {#each tags as tag}
-        <span
-          class="px-2 py-0.5 text-xs rounded-full"
-          style="color: color-mix(in oklab, var(--foreground) 70%, transparent); background-color: color-mix(in oklab, var(--foreground) 5%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);"
-        >
-          {tag}
-        </span>
-      {/each}
-    </div>
+
+    {#if !image}
+      <div class="flex flex-wrap gap-1.5 mb-3">
+        {#each tags as tag}
+          <span
+            class="px-2 py-0.5 text-xs rounded-full"
+            style="color: color-mix(in oklab, var(--foreground) 70%, transparent); background-color: color-mix(in oklab, var(--foreground) 5%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);"
+          >
+            {tag}
+          </span>
+        {/each}
+      </div>
+    {/if}
 
     <!-- Action Buttons -->
     <div
-      class="flex items-center gap-4 mt-auto pt-4"
+      class="flex items-center gap-3 mt-auto pt-3"
       style="border-top: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);"
     >
       {#if githubLink}
