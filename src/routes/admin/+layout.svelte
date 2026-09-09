@@ -22,6 +22,16 @@
 
 	const current = $derived($page.url.pathname);
 
+	const viewSiteHref = $derived(
+		current === '/admin/about'
+			? '/about'
+			: current === '/admin/work'
+				? '/work'
+				: current === '/admin/blogs'
+					? '/blogs'
+					: '/'
+	);
+
 	const tabs = [
 		{ href: '/admin', label: 'Dashboard' },
 		{ href: '/admin/now', label: 'Now' },
@@ -61,7 +71,7 @@
 				</div>
 				<div class="flex items-center gap-3">
 					<a
-						href="/"
+						href={viewSiteHref}
 						class="rounded-full border px-5 py-2 text-sm font-medium transition-opacity hover:opacity-70"
 						style="border-color: color-mix(in oklab, var(--foreground) 20%, transparent);"
 					>
