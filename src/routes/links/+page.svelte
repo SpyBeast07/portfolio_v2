@@ -5,6 +5,7 @@
 	import SectionHeading from '$lib/components/shared/SectionHeading.svelte';
 	import SocialPill from '$lib/components/shared/SocialPill.svelte';
 	import VerticalEmail from '$lib/components/layout/VerticalEmail.svelte';
+	import GuestbookCard from '$lib/components/home/GuestbookCard.svelte';
 	import { GithubIcon, LinkedinIcon, MediumIcon, GmailIcon } from '$lib/components/ui/icons';
 
 	const brandColors: Record<string, string> = {
@@ -192,6 +193,11 @@
 					</a>
 				{/each}
 			</div>
+		</section>
+
+		<section class="scroll-mt-24 pt-12 md:pt-16 lg:pt-24">
+			<SectionHeading class="mb-12 text-4xl lg:text-5xl">Visitors</SectionHeading>
+			<GuestbookCard />
 		</section>
 	</main>
 </div>

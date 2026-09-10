@@ -18,7 +18,7 @@
 
 <a
   {href}
-  class={`inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium transition-all ${className}`}
+  class={`inline-flex w-fit items-center gap-2 px-6 py-3 rounded-full text-sm font-medium whitespace-nowrap transition-all ${className}`}
   style="color: var(--foreground); border: 1px solid color-mix(in oklab, var(--foreground) 15%, transparent); background-color: color-mix(in oklab, var(--background) 85%, transparent);"
   onmouseenter={handleMouseEnter}
   onmouseleave={handleMouseLeave}
