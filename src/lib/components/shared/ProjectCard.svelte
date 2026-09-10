@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
   import { ExternalLinkIcon, GithubIcon } from '$lib/components/ui/icons';
   import { slugify } from '$lib/slug';
 
@@ -13,6 +14,14 @@
   } = $props();
 
   const href = $derived(`/work/${slug || slugify(title)}`);
+
+  function handleCardClick() {
+    goto(href);
+  }
+
+  function stop(e: MouseEvent) {
+    e.stopPropagation();
+  }
 
   function handleGithubMouseEnter(e: MouseEvent) {
     const target = e.currentTarget as HTMLElement;
@@ -35,13 +44,12 @@
   }
 </script>
 
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
-  class="group relative rounded-3xl border border-foreground/30 transition-all duration-500 ease-out overflow-hidden flex flex-col h-full hover:-translate-y-2 hover:border-yellow-500/60"
+  class="group relative rounded-3xl border border-foreground/30 transition-all duration-500 ease-out overflow-hidden flex flex-col h-full hover:-translate-y-2 hover:border-yellow-500/60 cursor-pointer"
   style="background-color: color-mix(in oklab, var(--background) 85%, transparent);"
+  onclick={handleCardClick}
 >
-  <!-- Link to the dedicated project page -->
-  <a href={href} class="absolute inset-0 z-10" aria-label="View {title} details"></a>
-
   <!-- Go to link icon -->
   <a
     href={href}
@@ -49,6 +57,7 @@
     rel="noopener noreferrer"
     class="absolute top-3 right-3 group-hover:opacity-100 opacity-0 transition-opacity duration-300 text-yellow-500 hover:text-yellow-400 z-30"
     aria-label="Open {title} in new tab"
+    onclick={stop}
   >
     <ExternalLinkIcon width={20} height={20} />
   </a>
@@ -126,6 +135,7 @@
           style="color: var(--foreground); background-color: color-mix(in oklab, var(--foreground) 5%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);"
           onmouseenter={handleGithubMouseEnter}
           onmouseleave={handleGithubMouseLeave}
+          onclick={stop}
         >
           <GithubIcon width={14} height={14} />
           GitHub
@@ -140,6 +150,7 @@
           style="color: var(--background); background-color: var(--foreground);"
           onmouseenter={handleDemoMouseEnter}
           onmouseleave={handleDemoMouseLeave}
+          onclick={stop}
         >
           Live Demo
           <ExternalLinkIcon width={14} height={14} />
