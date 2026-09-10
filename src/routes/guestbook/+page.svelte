@@ -336,7 +336,7 @@
 				>
 					Guest book
 				</h1>
-				<div class="mt-4 flex flex-col text-xl leading-tight font-medium text-neutral-400">
+				<div class="mt-4 flex flex-col text-xl leading-tight font-medium" style="color: color-mix(in oklab, var(--foreground) 45%, transparent);">
 					<h2>Leave Your</h2>
 					<h2
 						class="text-xl font-medium transition-colors duration-300"
@@ -351,11 +351,15 @@
 			<div class="flex justify-start md:items-center">
 				{#if authLoading}
 					<!-- Loading Skeleton: Shown briefly on reload while checking auth -->
-					<div class="h-14 w-64 animate-pulse rounded-full border border-neutral-800 bg-[#0a0a0a]"></div>
+					<div
+					class="h-14 w-64 animate-pulse rounded-full"
+					style="border: 1px solid color-mix(in oklab, var(--foreground) 15%, transparent); background-color: color-mix(in oklab, var(--foreground) 5%, var(--background));"
+				></div>
 				{:else if $user}
 					<!-- Tablet Pill Box: Styled as capsule tablet with white circular ring around avatar -->
 					<div
-						class="flex items-center gap-3.5 rounded-full border border-neutral-800 bg-[#0a0a0a] px-5 py-2.5 shadow-2xl transition-all hover:border-neutral-700"
+						class="flex items-center gap-3.5 rounded-full px-5 py-2.5 shadow-2xl transition-all"
+						style="border: 1px solid color-mix(in oklab, var(--foreground) 15%, transparent); background-color: color-mix(in oklab, var(--foreground) 5%, var(--background));"
 					>
 						<!-- Google avatar with crisp solid white circular ring border -->
 						<div
@@ -370,7 +374,8 @@
 								/>
 							{:else}
 								<div
-									class="flex h-full w-full items-center justify-center bg-neutral-800 text-sm font-bold text-white"
+									class="flex h-full w-full items-center justify-center text-sm font-bold"
+									style="background-color: color-mix(in oklab, var(--foreground) 15%, var(--background)); color: var(--foreground);"
 								>
 									{currentDisplayName.charAt(0).toUpperCase()}
 								</div>
@@ -379,7 +384,8 @@
 
 						<!-- Hello <name>! in bold white -->
 						<span
-							class="font-outfit text-base font-bold tracking-tight text-white select-none sm:text-lg"
+							class="font-outfit text-base font-bold tracking-tight select-none sm:text-lg"
+							style="color: var(--foreground);"
 						>
 							Hello {currentDisplayName}!
 						</span>
@@ -387,7 +393,7 @@
 						<!-- Subtle Sign out button -->
 						<button
 							onclick={handleSignOut}
-							class="ml-1 rounded-full p-1.5 text-neutral-500 transition hover:bg-white/10 hover:text-white"
+							class="ml-1 rounded-full p-1.5 text-foreground/40 transition hover:bg-foreground/10 hover:text-foreground"
 							title="Sign out"
 						>
 							<svg
@@ -408,12 +414,13 @@
 				{:else}
 					<!-- Sign-in Card (Google only) -->
 					<div
-						class="w-full max-w-sm rounded-3xl border border-white/10 bg-[#0d0d0d] p-6 shadow-2xl sm:p-7"
+						class="w-full max-w-sm rounded-3xl p-6 shadow-2xl sm:p-7"
+						style="border: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent); background-color: color-mix(in oklab, var(--foreground) 5%, var(--background));"
 					>
-						<h2 class="font-outfit text-2xl font-bold tracking-tight text-white sm:text-3xl">
-							Leave your <span class="font-playfair font-normal italic text-neutral-300">Signature!</span>
+						<h2 class="font-outfit text-2xl font-bold tracking-tight sm:text-3xl" style="color: var(--foreground);">
+							Leave your <span class="font-playfair font-normal italic" style="color: color-mix(in oklab, var(--foreground) 70%, transparent);">Signature!</span>
 						</h2>
-						<p class="mt-2.5 mb-6 text-xs leading-relaxed text-neutral-400 sm:text-sm">
+						<p class="mt-2.5 mb-6 text-xs leading-relaxed sm:text-sm" style="color: color-mix(in oklab, var(--foreground) 40%, transparent);">
 							Sign in to leave your mark, customize your profile, and connect with other visitors.
 						</p>
 
@@ -444,7 +451,7 @@
 							<span>{signingIn ? 'Signing in…' : 'Google'}</span>
 						</button>
 
-						<p class="mt-4 text-center text-[11px] text-neutral-500">
+						<p class="mt-4 text-center text-[11px]" style="color: color-mix(in oklab, var(--foreground) 35%, transparent);">
 							By joining, you agree to our Terms of Service.
 						</p>
 					</div>
@@ -455,19 +462,22 @@
 		<!-- If Signed In: Compose Message Card (Horizontally smaller & clean) -->
 		{#if $user}
 			<div
-				class="mb-14 mx-auto w-full max-w-2xl rounded-2xl border border-white/10 bg-[#0d0d0d] p-5 shadow-2xl"
+				class="mb-14 mx-auto w-full max-w-2xl rounded-2xl p-5 shadow-2xl"
+				style="border: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent); background-color: color-mix(in oklab, var(--foreground) 5%, var(--background));"
 			>
 				<div class="flex items-start gap-4">
 					{#if currentPhotoURL}
 						<img
 							src={currentPhotoURL}
 							alt={currentDisplayName}
-							class="mt-1 h-9 w-9 flex-shrink-0 rounded-full border border-white/15 object-cover"
+							class="mt-1 h-9 w-9 flex-shrink-0 rounded-full object-cover"
+							style="border: 1px solid color-mix(in oklab, var(--foreground) 15%, transparent);"
 							referrerpolicy="no-referrer"
 						/>
 					{:else}
 						<div
-							class="mt-1 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-xs font-bold text-white"
+							class="mt-1 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold"
+							style="background-color: color-mix(in oklab, var(--foreground) 10%, var(--background)); color: var(--foreground);"
 						>
 							{currentDisplayName.charAt(0).toUpperCase()}
 						</div>
@@ -477,22 +487,24 @@
 						placeholder="Leave a message for Kushagra, @spybeast07..."
 						maxlength={MAX_MESSAGE_LENGTH}
 						rows={3}
-						class="font-outfit w-full resize-none border-0 bg-transparent text-sm leading-relaxed text-white placeholder:text-neutral-500 focus:outline-none focus:ring-0"
+						class="font-outfit w-full resize-none border-0 bg-transparent text-sm leading-relaxed placeholder:text-foreground/45 focus:outline-none focus:ring-0"
+						style="caret-color: var(--foreground); color: var(--foreground);"
 					></textarea>
 				</div>
-				<div class="mt-4 flex items-center justify-between border-t border-white/5 pt-3">
-					<span class="font-mono text-xs text-neutral-500">
+				<div class="mt-4 flex items-center justify-between pt-3" style="border-top: 1px solid color-mix(in oklab, var(--foreground) 8%, transparent);">
+					<span class="font-mono text-xs" style="color: color-mix(in oklab, var(--foreground) 45%, transparent);">
 						{message.trim().length}/{MAX_MESSAGE_LENGTH}
 					</span>
 					<button
 						type="button"
 						onclick={handleSubmit}
 						disabled={submitting || !message.trim()}
-						class="flex items-center gap-2 rounded-full border border-white/15 bg-[#1c1c1c] px-5 py-2 text-xs font-semibold text-white transition-all hover:scale-[1.02] hover:bg-white hover:text-black disabled:opacity-40 disabled:hover:scale-100 disabled:hover:bg-[#1c1c1c] disabled:hover:text-white"
+						class="flex items-center gap-2 rounded-full px-5 py-2 text-xs font-semibold transition-all hover:scale-[1.02] disabled:opacity-40 disabled:hover:scale-100"
+						style="border: 1px solid color-mix(in oklab, var(--foreground) 15%, transparent); background-color: color-mix(in oklab, var(--foreground) 10%, var(--background)); color: var(--foreground);"
 					>
 						<span>{submitting ? 'Signing…' : 'Sign Guestbook'}</span>
 						<svg
-							class="h-3.5 w-3.5 -translate-y-0.5 rotate-45 fill-current"
+							class="h-3.5 w-3.5 -rotate-45 fill-current"
 							viewBox="0 0 24 24"
 						>
 							<path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
@@ -512,18 +524,19 @@
 		<div class="relative my-14 flex items-center justify-center">
 			<div class="absolute inset-0 flex items-center">
 				<div
-					class="h-[1px] w-full bg-gradient-to-r from-transparent via-white/20 to-transparent"
+					class="h-[1px] w-full bg-gradient-to-r from-transparent via-foreground/15 to-transparent"
 				></div>
 			</div>
 			<!-- Center Glow Flare -->
-			<div
-				class="absolute h-[2px] w-64 blur-[1px] bg-gradient-to-r from-transparent via-white/60 to-transparent"
-			></div>
-			<div
-				class="relative bg-background px-6 py-1 text-[11px] font-semibold tracking-[0.25em] text-neutral-400 uppercase"
-			>
-				Recent Signatures
-			</div>
+<div
+					class="absolute h-[2px] w-64 blur-[1px] bg-gradient-to-r from-transparent via-foreground/60 to-transparent"
+				></div>
+<div
+					class="relative bg-background px-6 py-1 text-[11px] font-semibold tracking-[0.25em] uppercase"
+					style="color: color-mix(in oklab, var(--foreground) 50%, transparent);"
+				>
+					Recent Signatures
+				</div>
 		</div>
 
 		<!-- Signatures Grid (4 columns, Matching Cards in Image 1 & Image 2) -->
@@ -531,11 +544,12 @@
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 sm:gap-5">
 				{#each entries as entry (entry.id)}
 					<article
-						class={`relative flex flex-col justify-between rounded-2xl bg-[#0a0a0a] p-5 transition-all duration-300 ${
+						class={`relative flex flex-col justify-between rounded-2xl p-5 transition-all duration-300 ${
 							entry.isPinned
 								? 'border border-blue-500/40 ring-1 ring-blue-500/20 shadow-[0_0_20px_rgba(59,130,246,0.12)]'
-								: 'border border-white/10 hover:border-white/20'
+								: 'border border-foreground/10 hover:border-foreground/20'
 						}`}
+						style="background-color: color-mix(in oklab, var(--foreground) 7%, var(--background));"
 					>
 						<!-- Top Right Pin Badge if Pinned (Matching Image 1) -->
 						{#if entry.isPinned}
@@ -558,19 +572,21 @@
 										<img
 											src={entry.photoURL}
 											alt={entry.name}
-											class="h-10 w-10 rounded-full border border-white/10 object-cover"
+											class="h-10 w-10 rounded-full object-cover"
+											style="border: 1px solid color-mix(in oklab, var(--foreground) 15%, transparent);"
 											referrerpolicy="no-referrer"
 										/>
 									{:else}
 										<div
-											class="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-xs font-bold text-white"
+											class="flex h-10 w-10 items-center justify-center rounded-full text-xs font-bold"
+											style="background-color: color-mix(in oklab, var(--foreground) 10%, var(--background)); color: var(--foreground);"
 										>
 											{entry.name.charAt(0).toUpperCase()}
 										</div>
 									{/if}
 									<div class="flex flex-col">
 										<div class="flex items-center gap-1.5">
-											<span class="font-outfit text-sm font-bold text-white">
+											<span class="font-outfit text-sm font-bold" style="color: var(--foreground);">
 												{entry.name}
 											</span>
 											<!-- Verified Badge for Admin / Kushagra or verified accounts -->
@@ -588,7 +604,8 @@
 											{/if}
 										</div>
 										<span
-											class="text-[11px] font-semibold tracking-wider text-neutral-500 uppercase"
+											class="text-[11px] font-semibold tracking-wider uppercase"
+											style="color: color-mix(in oklab, var(--foreground) 45%, transparent);"
 										>
 											{formatDate(entry.createdAt)}
 										</span>
@@ -596,7 +613,7 @@
 								</div>
 
 								<!-- Stylized Quotation Mark SVG (Matching Image 1) -->
-								<div class="flex-shrink-0 text-neutral-800 select-none">
+								<div class="flex-shrink-0 select-none" style="color: color-mix(in oklab, var(--foreground) 20%, transparent);">
 									<svg class="h-9 w-9 fill-current" viewBox="0 0 24 24">
 										<path
 											d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"
@@ -607,7 +624,8 @@
 
 							<!-- Message Body -->
 							<p
-								class="font-outfit my-4 min-h-[40px] text-sm leading-relaxed text-neutral-200 whitespace-pre-line"
+								class="font-outfit my-4 min-h-[40px] text-sm leading-relaxed whitespace-pre-line"
+								style="color: color-mix(in oklab, var(--foreground) 85%, transparent);"
 							>
 								{entry.message}
 							</p>
@@ -617,8 +635,8 @@
 						<div>
 							<div class="flex items-center justify-between">
 								<p
-									class="font-sacramento text-2xl text-neutral-400 select-none"
-									style="font-family: 'Sacramento', 'Dancing Script', cursive;"
+									class="font-sacramento text-2xl select-none"
+									style="font-family: 'Sacramento', 'Dancing Script', cursive; color: color-mix(in oklab, var(--foreground) 55%, transparent);"
 								>
 									— {entry.name}
 								</p>
@@ -633,7 +651,7 @@
 											class={`rounded-lg p-1.5 text-xs transition ${
 												entry.isPinned
 													? 'bg-blue-500/20 text-blue-400 hover:bg-blue-500/30'
-													: 'text-neutral-400 hover:bg-white/10 hover:text-white'
+													: 'text-foreground/45 hover:bg-foreground/10 hover:text-foreground'
 											}`}
 											title={entry.isPinned ? 'Unpin message' : 'Pin message'}
 										>
@@ -670,7 +688,7 @@
 							<!-- Pinned Bottom Label (Matching Image 1) -->
 							{#if entry.isPinned}
 								<div
-									class="mt-3 flex items-center gap-1.5 border-t border-white/10 pt-2.5 text-xs font-medium text-blue-400"
+									class="mt-3 flex items-center gap-1.5 border-t border-foreground/10 pt-2.5 text-xs font-medium text-blue-400"
 								>
 									<svg class="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
 										<path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z" />
@@ -684,7 +702,7 @@
 			</div>
 		{:else}
 			<div class="py-20 text-center">
-				<p class="text-sm text-neutral-500">
+				<p class="text-sm" style="color: color-mix(in oklab, var(--foreground) 50%, transparent);">
 					No signatures yet. Be the first to leave your mark!
 				</p>
 			</div>
@@ -697,9 +715,10 @@
 			class="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-md"
 			style="background-color: rgba(0, 0, 0, 0.75);"
 		>
-			<div
-				class="relative w-full max-w-md rounded-3xl border border-white/15 bg-[#0e0e0e] p-7 shadow-2xl transition-all sm:p-8"
-			>
+<div
+					class="relative w-full max-w-md rounded-3xl p-7 shadow-2xl transition-all sm:p-8"
+					style="border: 1px solid color-mix(in oklab, var(--foreground) 15%, transparent); background-color: color-mix(in oklab, var(--foreground) 5%, var(--background));"
+				>
 				<!-- Steps Indicator Bar -->
 				<div class="mb-6 flex items-center justify-between">
 					<div class="flex items-center gap-2">
@@ -712,17 +731,17 @@
 						</span>
 						<span
 							class="h-0.5 w-8 rounded-full transition-colors"
-							style={`background-color: ${modalStep === 2 ? '#3b82f6' : 'rgba(255,255,255,0.15)'};`}
+							style={`background-color: ${modalStep === 2 ? '#3b82f6' : 'color-mix(in oklab, var(--foreground) 15%, transparent)'};`}
 						></span>
 						<span
 							class={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold ${
-								modalStep === 2 ? 'bg-white text-black' : 'bg-white/10 text-neutral-400'
+								modalStep === 2 ? 'bg-white text-black' : 'bg-foreground/10 text-foreground/40'
 							}`}
 						>
 							2
 						</span>
 					</div>
-					<span class="text-xs font-semibold tracking-wider text-neutral-400 uppercase">
+					<span class="text-xs font-semibold tracking-wider uppercase" style="color: color-mix(in oklab, var(--foreground) 45%, transparent);">
 						Step {modalStep} of 2
 					</span>
 				</div>
@@ -730,15 +749,15 @@
 				{#if modalStep === 1}
 					<!-- Step 1: Display Name Setup (Google photo used automatically) -->
 					<div>
-						<h3 class="font-outfit text-2xl font-bold tracking-tight text-white">
+						<h3 class="font-outfit text-2xl font-bold tracking-tight" style="color: var(--foreground);">
 							Set Your Display Name
 						</h3>
-						<p class="mt-1 mb-6 text-xs leading-relaxed text-neutral-400 sm:text-sm">
+						<p class="mt-1 mb-6 text-xs leading-relaxed sm:text-sm" style="color: color-mix(in oklab, var(--foreground) 45%, transparent);">
 							Choose the name that appears on your signatures and tablet badge.
 						</p>
 
 						<!-- Google Avatar Notice with crisp white ring -->
-						<div class="mb-6 flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+						<div class="mb-6 flex items-center gap-4 rounded-2xl p-4" style="border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent); background-color: color-mix(in oklab, var(--foreground) 3%, var(--background));">
 							<div class="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-full ring-2 ring-white">
 								{#if currentPhotoURL}
 									<img
@@ -748,14 +767,14 @@
 										referrerpolicy="no-referrer"
 									/>
 								{:else}
-									<div class="flex h-full w-full items-center justify-center bg-neutral-800 text-sm font-bold text-white">
+									<div class="flex h-full w-full items-center justify-center text-sm font-bold" style="background-color: color-mix(in oklab, var(--foreground) 15%, var(--background)); color: var(--foreground);">
 										{($user?.displayName ?? 'U').charAt(0).toUpperCase()}
 									</div>
 								{/if}
 							</div>
 							<div>
-								<p class="text-xs font-semibold text-white">Google Profile Picture</p>
-								<p class="text-[11px] text-neutral-400">
+								<p class="text-xs font-semibold" style="color: var(--foreground);">Google Profile Picture</p>
+								<p class="text-[11px]" style="color: color-mix(in oklab, var(--foreground) 45%, transparent);">
 									Using your Google account photo for your profile.
 								</p>
 							</div>
@@ -763,7 +782,7 @@
 
 						<!-- Display Name Input -->
 						<div class="mb-6">
-							<label for="display-name-input" class="mb-2 block text-xs font-semibold text-neutral-300 uppercase tracking-wider">
+							<label for="display-name-input" class="mb-2 block text-xs font-semibold uppercase tracking-wider" style="color: color-mix(in oklab, var(--foreground) 70%, transparent);">
 								Display Name <span class="text-red-400">*</span>
 							</label>
 							<input
@@ -773,7 +792,8 @@
 								placeholder="e.g. Parth Sharma"
 								maxlength={40}
 								required
-								class="font-outfit w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-white/40 focus:outline-none focus:ring-1 focus:ring-white/40"
+								class="font-outfit w-full rounded-xl px-4 py-3 text-sm placeholder:text-foreground/45 focus:outline-none focus:ring-1 focus:ring-foreground/40"
+								style="border: 1px solid color-mix(in oklab, var(--foreground) 15%, transparent); background-color: color-mix(in oklab, var(--foreground) 5%, var(--background)); color: var(--foreground); caret-color: var(--foreground);"
 							/>
 						</div>
 
@@ -781,11 +801,11 @@
 							<p class="mb-4 text-xs text-red-400">{modalError}</p>
 						{/if}
 
-						<div class="flex items-center justify-between border-t border-white/10 pt-5">
+						<div class="flex items-center justify-between border-t border-foreground/10 pt-5">
 							<button
 								type="button"
 								onclick={handleSignOut}
-								class="text-xs text-neutral-400 transition hover:text-white"
+								class="text-xs text-foreground/45 transition hover:text-foreground"
 							>
 								Cancel & Sign out
 							</button>
@@ -802,21 +822,22 @@
 				{:else}
 					<!-- Step 2: Confirmation & Launch Profile -->
 					<div>
-						<h3 class="font-outfit text-2xl font-bold tracking-tight text-white">
+						<h3 class="font-outfit text-2xl font-bold tracking-tight" style="color: var(--foreground);">
 							Ready to Launch!
 						</h3>
-						<p class="mt-1 mb-6 text-xs leading-relaxed text-neutral-400 sm:text-sm">
+						<p class="mt-1 mb-6 text-xs leading-relaxed sm:text-sm" style="color: color-mix(in oklab, var(--foreground) 45%, transparent);">
 							Preview how your tablet badge and signature will appear to visitors.
 						</p>
 
 						<!-- Tablet Card Preview (Matching User Image) -->
-						<div class="mb-6 rounded-2xl border border-white/10 bg-[#070707] p-5">
-							<p class="mb-3 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
+						<div class="mb-6 rounded-2xl p-5" style="border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent); background-color: color-mix(in oklab, var(--foreground) 4%, var(--background));">
+							<p class="mb-3 text-[11px] font-semibold uppercase tracking-wider" style="color: color-mix(in oklab, var(--foreground) 45%, transparent);">
 								Your Tablet Card Preview
 							</p>
 							<div class="flex items-center justify-center py-3">
 								<div
-									class="flex items-center gap-3.5 rounded-full border border-neutral-800 bg-[#0a0a0a] px-5 py-2.5 shadow-xl"
+									class="flex items-center gap-3.5 rounded-full px-5 py-2.5 shadow-xl"
+									style="border: 1px solid color-mix(in oklab, var(--foreground) 15%, transparent); background-color: color-mix(in oklab, var(--foreground) 5%, var(--background));"
 								>
 									<div
 										class="relative flex h-11 w-11 flex-shrink-0 items-center justify-center overflow-hidden rounded-full ring-2 ring-white"
@@ -825,12 +846,12 @@
 											<img src={currentPhotoURL} alt={tempDisplayName} class="h-full w-full object-cover" />
 
 											{:else}
-											<div class="flex h-full w-full items-center justify-center bg-neutral-800 text-sm font-bold text-white">
+											<div class="flex h-full w-full items-center justify-center text-sm font-bold" style="background-color: color-mix(in oklab, var(--foreground) 15%, var(--background)); color: var(--foreground);">
 												{tempDisplayName.charAt(0).toUpperCase()}
 											</div>
 										{/if}
 									</div>
-									<span class="font-outfit text-base font-bold tracking-tight text-white sm:text-lg">
+									<span class="font-outfit text-base font-bold tracking-tight sm:text-lg" style="color: var(--foreground);">
 										Hello {tempDisplayName}!
 									</span>
 								</div>
@@ -838,13 +859,13 @@
 						</div>
 
 						<!-- Signature Preview -->
-						<div class="mb-6 rounded-2xl border border-white/10 bg-[#070707] p-4">
-							<p class="mb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
+						<div class="mb-6 rounded-2xl p-4" style="border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent); background-color: color-mix(in oklab, var(--foreground) 4%, var(--background));">
+							<p class="mb-2 text-[11px] font-semibold uppercase tracking-wider" style="color: color-mix(in oklab, var(--foreground) 45%, transparent);">
 								Your Signature Preview
 							</p>
 							<p
-								class="font-sacramento text-2xl text-neutral-300"
-								style="font-family: 'Sacramento', 'Dancing Script', cursive;"
+								class="font-sacramento text-2xl"
+								style="font-family: 'Sacramento', 'Dancing Script', cursive; color: color-mix(in oklab, var(--foreground) 75%, transparent);"
 							>
 								— {tempDisplayName}
 							</p>
@@ -854,12 +875,12 @@
 							<p class="mb-4 text-xs text-red-400">{modalError}</p>
 						{/if}
 
-						<div class="flex items-center justify-between border-t border-white/10 pt-5">
+						<div class="flex items-center justify-between border-t border-foreground/10 pt-5">
 							<button
 								type="button"
 								onclick={() => (modalStep = 1)}
 								disabled={savingProfile}
-								class="text-xs font-semibold text-neutral-400 transition hover:text-white"
+								class="text-xs font-semibold text-foreground/45 transition hover:text-foreground"
 							>
 								← Back
 							</button>
