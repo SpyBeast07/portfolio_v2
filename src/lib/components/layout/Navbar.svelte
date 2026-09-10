@@ -152,9 +152,9 @@
 		{/each}
 	</nav>
 {:else}
-	<div class="fixed left-1/2 z-50 -translate-x-1/2">
+	<div class="max-w-[calc(100vw-2rem)] overflow-hidden">
 		<nav
-			class="relative flex items-center gap-1 rounded-full p-1 shadow-lg ring-1 ring-black/5 backdrop-blur-md"
+			class="relative flex items-center gap-0.5 rounded-full p-1 shadow-lg ring-1 ring-black/5 backdrop-blur-md sm:gap-1"
 			style="background-color: color-mix(in oklab, var(--background) 70%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);"
 		>
 			<!-- Sliding Background Indicator -->
@@ -168,7 +168,7 @@
 					href={item.href}
 					bind:this={elements[i]}
 					onclick={(e) => handleLinkClick(e, item)}
-					class={`relative z-10 rounded-full px-3 py-2 text-sm font-medium transition-colors duration-300 min-[375px]:px-6 min-[375px]:py-2.5`}
+					class={`relative z-10 rounded-full px-2 py-1.5 text-xs font-medium transition-colors duration-300 sm:px-3 sm:py-2 sm:text-sm md:px-6 md:py-2.5`}
 					style={`
             color: ${item.active ? 'var(--background)' : 'color-mix(in oklab, var(--foreground) 60%, transparent)'};
           `}
