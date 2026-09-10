@@ -164,7 +164,8 @@ export const siteData = writable<SiteData>({
 	email,
 	quote,
 	resume,
-	socialLinks
+	socialLinks,
+	pageHeadings
 });
 
 // Every store change is mirrored into localStorage so the next reload can
@@ -237,11 +238,31 @@ export async function loadSiteData() {
 	};
 
 	// Each document's fields are already the top-level SiteData keys, so the
-	// store can be extended with a plain spread of the document. The 'shared'
-	// doc is intentionally NOT subscribed here — that data always comes from
-	// src/lib/data/index.ts in the codebase.
+	// store can be extended with a plain spread of the document. Shared fields
+	// (navItems, sideNavItems, role, email, quote, resume, socialLinks,
+	// pageHeadings) always come from the codebase and are never read from
+	// Firestore. The 'shared' doc is intentionally NOT subscribed here.
+	const stripShared = (data: Record<string, unknown>, shared: string[]) => {
+		const rest: Record<string, unknown> = {};
+		for (const [key, value] of Object.entries(data)) {
+			if (!shared.includes(key)) rest[key] = value;
+		}
+		return rest;
+	};
+
+	const sharedKeys = [
+		'navItems',
+		'sideNavItems',
+		'role',
+		'email',
+		'quote',
+		'resume',
+		'socialLinks',
+		'pageHeadings'
+	];
+
 	subscribe('now', (data) => siteData.update((s) => ({ ...s, ...data })));
 	subscribe('about', (data) => siteData.update((s) => ({ ...s, ...data })));
-	subscribe('work', (data) => siteData.update((s) => ({ ...s, ...data })));
+	subscribe('work', (data) => siteData.update((s) => ({ ...s, ...stripShared(data, sharedKeys) })));
 	subscribe('blogs', (data) => siteData.update((s) => ({ ...s, ...data })));
 }
