@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import { onMount, tick } from 'svelte';
 	import { siteData } from '$lib/stores/site-data';
+	import { moreMenuItems } from '$lib/data';
 
 	// Props
 	let { mode = 'floating' }: { mode?: 'floating' | 'sidebar' } = $props();
@@ -18,9 +19,19 @@
 	let navItemsWithActive = $derived(
 		$siteData.navItems.map((item) => ({
 			...item,
-			active: pathname === item.href
+			active: pathname === item.href,
+			isMore: false
 		}))
 	);
+
+	// "More" is active on any of its dropdown routes
+	let moreActive = $derived(moreMenuItems.some((item) => pathname === item.href));
+
+	// Full floating nav: regular items plus the trailing "More" button
+	let floatingItems = $derived([
+		...navItemsWithActive,
+		{ name: 'More', href: '#', active: moreActive, isMore: true }
+	]);
 
 	// Sidebar Mode: Active based on scroll position (Spy)
 	// Logic remains same, just mapping over sideNavItems
@@ -33,7 +44,7 @@
 	);
 
 	function updateIndicator() {
-		const activeIndex = navItemsWithActive.findIndex(item => item.active);
+		const activeIndex = floatingItems.findIndex((item) => item.active);
 		if (activeIndex !== -1 && elements[activeIndex]) {
 			const activeEl = elements[activeIndex];
 			const { offsetLeft, offsetWidth } = activeEl;
@@ -53,7 +64,7 @@
 		// Wait for DOM update then update indicator
 		tick().then(updateIndicator);
 	});
-	
+
 	onMount(() => {
 		if (mode !== 'sidebar') {
 			// Initial update for floating mode
@@ -152,7 +163,7 @@
 		{/each}
 	</nav>
 {:else}
-	<div class="max-w-[calc(100vw-2rem)] overflow-hidden">
+	<div class="max-w-[calc(100vw-2rem)]">
 		<nav
 			class="relative flex items-center gap-0.5 rounded-full p-1 shadow-lg ring-1 ring-black/5 backdrop-blur-md sm:gap-1"
 			style="background-color: color-mix(in oklab, var(--background) 70%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);"
@@ -163,20 +174,84 @@
 				style={`left: ${indicatorStyle.left}; width: ${indicatorStyle.width}; opacity: ${indicatorStyle.opacity};`}
 			></div>
 
-			{#each navItemsWithActive as item, i (item.name)}
-				<a
-					href={item.href}
-					bind:this={elements[i]}
-					onclick={(e) => handleLinkClick(e, item)}
-					class={`relative z-10 rounded-full px-2 py-1.5 text-xs font-medium transition-colors duration-300 sm:px-3 sm:py-2 sm:text-sm md:px-6 md:py-2.5`}
-					style={`
-            color: ${item.active ? 'var(--background)' : 'color-mix(in oklab, var(--foreground) 60%, transparent)'};
-          `}
-					onmouseenter={(e) => handleFloatingMouseEnter(e, item.active)}
-					onmouseleave={(e) => handleFloatingMouseLeave(e, item.active)}
-				>
-					{item.name}
-				</a>
+			{#each floatingItems as item, i (item.name)}
+				{#if item.isMore}
+					<div class="group relative" bind:this={elements[i]}>
+						<button
+							type="button"
+							aria-haspopup="menu"
+							class={`relative z-10 flex items-center gap-1 rounded-full px-2 py-1.5 text-xs font-medium transition-colors duration-300 sm:px-3 sm:py-2 sm:text-sm md:px-6 md:py-2.5`}
+							style={`
+					            color: ${item.active ? 'var(--background)' : 'color-mix(in oklab, var(--foreground) 60%, transparent)'};
+					          `}
+							onmouseenter={(e) => handleFloatingMouseEnter(e, item.active)}
+							onmouseleave={(e) => handleFloatingMouseLeave(e, item.active)}
+						>
+							{item.name}
+							<svg
+								class="h-3 w-3 transition-transform duration-300 group-hover:rotate-180"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="m6 9 6 6 6-6"></path>
+							</svg>
+						</button>
+
+						<!-- Dropdown -->
+						<div
+							class="absolute top-full left-1/2 z-50 hidden -translate-x-1/2 pt-2 group-focus-within:block group-hover:block"
+						>
+							<div
+								class="min-w-44 rounded-2xl p-1.5 shadow-lg ring-1 ring-black/5 backdrop-blur-md"
+								style="background-color: color-mix(in oklab, var(--background) 85%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);"
+								role="menu"
+							>
+								{#each moreMenuItems as m (m.href)}
+									{@const active = pathname === m.href}
+									<a
+										href={m.href}
+										onclick={(e) => handleLinkClick(e, m)}
+										role="menuitem"
+										class={`flex items-center justify-between rounded-xl px-4 py-2 text-sm font-medium transition-colors duration-300 ${active ? 'bg-foreground text-background' : ''}`}
+										style={active
+											? ''
+											: 'color: color-mix(in oklab, var(--foreground) 70%, transparent)'}
+										onmouseenter={(e) => {
+											if (!active)
+												(e.currentTarget as HTMLElement).style.color = 'var(--foreground)';
+										}}
+										onmouseleave={(e) => {
+											if (!active)
+												(e.currentTarget as HTMLElement).style.color =
+													'color-mix(in oklab, var(--foreground) 70%, transparent)';
+										}}
+									>
+										{m.name}
+									</a>
+								{/each}
+							</div>
+						</div>
+					</div>
+				{:else}
+					<a
+						href={item.href}
+						bind:this={elements[i]}
+						onclick={(e) => handleLinkClick(e, item)}
+						class={`relative z-10 rounded-full px-2 py-1.5 text-xs font-medium transition-colors duration-300 sm:px-3 sm:py-2 sm:text-sm md:px-6 md:py-2.5`}
+						style={`
+			            color: ${item.active ? 'var(--background)' : 'color-mix(in oklab, var(--foreground) 60%, transparent)'};
+			          `}
+						onmouseenter={(e) => handleFloatingMouseEnter(e, item.active)}
+						onmouseleave={(e) => handleFloatingMouseLeave(e, item.active)}
+					>
+						{item.name}
+					</a>
+				{/if}
 			{/each}
 		</nav>
 	</div>

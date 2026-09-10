@@ -13,59 +13,64 @@
 // ─── Navigation ───────────────────────────────────────────────────────────────
 
 export const navItems = [
-    { name: "Home", href: "/" },
-    { name: "About", href: "/about" },
-    { name: "Work", href: "/work" },
-    { name: "Blogs", href: "/blogs" },
-    { name: "Guestbook", href: "/guestbook" },
+	{ name: 'Home', href: '/' },
+	{ name: 'About', href: '/about' },
+	{ name: 'Work', href: '/work' },
+	{ name: 'Blogs', href: '/blogs' }
+];
+
+// Items nested under the "More" dropdown in the floating navbar
+export const moreMenuItems = [
+	{ name: 'Guestbook', href: '/guestbook' },
+	{ name: 'Links', href: '/links' }
 ];
 
 export const sideNavItems = [
-    { name: "Home", href: "#" },
-    { name: "Now", href: "#now" },
-    { name: "Blogs", href: "#blogs" },
+	{ name: 'Home', href: '#' },
+	{ name: 'Now', href: '#now' },
+	{ name: 'Blogs', href: '#blogs' }
 ];
 
 // ─── Identity ─────────────────────────────────────────────────────────────────
 
 export const role = {
-    line1: "Developer &",
-    line2: "AI Enthusiast",
+	line1: 'Developer &',
+	line2: 'AI Enthusiast'
 };
 
-export const email = "kggupta.work@gmail.com";
+export const email = 'kggupta.work@gmail.com';
 
-export const quote = "Experiences are what that makes you, You.";
+export const quote = 'Experiences are what that makes you, You.';
 
 export const resume = {
-    url: "/Kushagra_Gupta_updated_Resume.pdf",
-    filename: "Kushagra_Gupta_Resume.pdf",
+	url: '/Kushagra_Gupta_updated_Resume.pdf',
+	filename: 'Kushagra_Gupta_Resume.pdf'
 };
 
 // ─── Social Links ─────────────────────────────────────────────────────────────
 
 export interface SocialLink {
-    label: string;
-    href: string;
+	label: string;
+	href: string;
 }
 
 export const socialLinks: SocialLink[] = [
-    {
-        label: "GitHub",
-        href: "https://github.com/SpyBeast07",
-    },
-    {
-        label: "LinkedIn",
-        href: "https://www.linkedin.com/in/spybeast07/",
-    },
-    {
-        label: "Email",
-        href: "mailto:kggupta.work@gmail.com",
-    },
-    {
-        label: "Medium",
-        href: "https://medium.com/@SpyBeast07",
-    },
+	{
+		label: 'GitHub',
+		href: 'https://github.com/SpyBeast07'
+	},
+	{
+		label: 'LinkedIn',
+		href: 'https://www.linkedin.com/in/spybeast07/'
+	},
+	{
+		label: 'Email',
+		href: 'mailto:kggupta.work@gmail.com'
+	},
+	{
+		label: 'Medium',
+		href: 'https://medium.com/@SpyBeast07'
+	}
 ];
 
 // ─── Re-exports ───────────────────────────────────────────────────────────────
