@@ -54,7 +54,7 @@
 					class="font-playfair text-xl font-bold sm:text-2xl md:text-3xl"
 					style="color: var(--foreground);"
 				>
-					Leave your Signature
+					Leave your <span class="text-yellow-500">Signature</span>
 				</h3>
 				<p
 					class="font-outfit text-xs sm:text-sm"

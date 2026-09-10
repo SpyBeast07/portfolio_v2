@@ -207,8 +207,8 @@
 							class="absolute top-full left-1/2 z-50 hidden -translate-x-1/2 pt-2 group-focus-within:block group-hover:block"
 						>
 							<div
-								class="min-w-44 rounded-2xl p-1.5 shadow-lg ring-1 ring-black/5 backdrop-blur-md"
-								style="background-color: color-mix(in oklab, var(--background) 85%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);"
+								class="min-w-44 rounded-2xl p-1.5 shadow-lg ring-1 ring-black/5"
+								style="background-color: var(--background); border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);"
 								role="menu"
 							>
 								{#each moreMenuItems as m (m.href)}

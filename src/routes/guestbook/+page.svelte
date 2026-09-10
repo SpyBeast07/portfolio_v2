@@ -418,7 +418,7 @@
 						style="border: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent); background-color: color-mix(in oklab, var(--foreground) 5%, var(--background));"
 					>
 						<h2 class="font-outfit text-2xl font-bold tracking-tight sm:text-3xl" style="color: var(--foreground);">
-							Leave your <span class="font-playfair font-normal italic" style="color: color-mix(in oklab, var(--foreground) 70%, transparent);">Signature!</span>
+							Leave your <span class="font-playfair font-normal italic text-yellow-500">Signature!</span>
 						</h2>
 						<p class="mt-2.5 mb-6 text-xs leading-relaxed sm:text-sm" style="color: color-mix(in oklab, var(--foreground) 40%, transparent);">
 							Sign in to leave your mark, customize your profile, and connect with other visitors.
