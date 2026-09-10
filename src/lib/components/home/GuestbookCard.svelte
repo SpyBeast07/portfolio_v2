@@ -5,24 +5,25 @@
 	import type { GuestbookEntry } from '$lib/data/guestbook';
 
 	const MAX_AVATARS = 3;
-	const OWNER_PHOTO = '/about.webp';
+	const OWNER_NAME = 'Kushagra Gupta';
 
 	let entries = $state<GuestbookEntry[]>([]);
 	let unsubscribe: (() => void) | undefined;
 
 	const avatars = $derived.by(() => {
-		const withPhoto = entries
-			.filter((e) => e.photoURL)
-			.slice(0, MAX_AVATARS);
+		const withPhoto = entries.filter((e) => e.photoURL);
 
-		const remaining = MAX_AVATARS - withPhoto.length;
+		const guests = withPhoto.filter((e) => e.name !== OWNER_NAME);
+		const owner = withPhoto.find((e) => e.name === OWNER_NAME);
 
-		const result = withPhoto.map((e) => ({ src: e.photoURL, alt: e.name }));
+		if (guests.length >= MAX_AVATARS) {
+			return guests.slice(0, MAX_AVATARS).map((e) => ({ src: e.photoURL, alt: e.name }));
+		}
 
-		if (remaining > 0) {
-			for (let i = 0; i < remaining; i++) {
-				result.push({ src: OWNER_PHOTO, alt: 'Kushagra' });
-			}
+		const result = guests.map((e) => ({ src: e.photoURL, alt: e.name }));
+
+		if (owner && result.length < MAX_AVATARS) {
+			result.push({ src: owner.photoURL, alt: owner.name });
 		}
 
 		return result;
