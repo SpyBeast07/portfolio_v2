@@ -11,6 +11,7 @@
 	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import BlogsSection from '$lib/components/home/BlogsSection.svelte';
 	import NowSection from '$lib/components/home/NowSection.svelte';
+	import GuestbookCard from '$lib/components/home/GuestbookCard.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
 	import SocialPill from '$lib/components/shared/SocialPill.svelte';
 	import HeroTitle from '$lib/components/home/HeroTitle.svelte';
@@ -234,6 +235,7 @@
 
 				<NowSection />
 				<BlogsSection />
+				<GuestbookCard />
 				<Footer />
 			</main>
 		</div>

@@ -71,6 +71,7 @@
 		Coded in Visual Studio Code by yours truly. Built with SvelteKit and Tailwind CSS, deployed
 		with Vercel.
 		<br />
-		Interested in working together? Feel free to reach out on LinkedIn or email.
+		Interested in working together? Feel free to reach out on any of the social links, or shoot me an
+		email.
 	</p>
 </footer>
