@@ -321,7 +321,7 @@
 	></div>
 
 	<!-- Main Page Container: pt-32 md:pt-[16vh] matching About/Work/Blogs gap from navbar -->
-	<main class="relative z-20 mx-auto top-5 max-w-7xl px-4 pt-32 pb-28 sm:px-6 md:pt-[16vh] lg:px-8">
+	<main class="relative z-20 mx-auto top-5 max-w-7xl px-4 pt-32 pb-40 sm:px-6 md:pt-[16vh] lg:px-8">
 		<!-- Top Section: Header & Sign-in / Welcome Tablet Pill -->
 		<div
 			class={`mb-12 flex flex-col justify-between gap-8 md:flex-row ${

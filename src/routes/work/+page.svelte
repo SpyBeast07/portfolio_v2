@@ -159,6 +159,8 @@
 	<main class="relative z-20 px-6 pt-28 pb-24 md:ml-[40%] md:w-[60%] md:px-16 md:pt-24 lg:pr-32">
 		<!-- Projects -->
 		<section id="projects" class="mb-24 scroll-mt-28 pt-4 md:pt-16 lg:pt-24 lg:mb-40">
+			<SectionHeading class="mb-12 text-4xl lg:text-5xl">Projects</SectionHeading>
+
 			<p
 				class="font-playfair mb-12 text-4xl font-bold"
 				style="color: var(--foreground);"
