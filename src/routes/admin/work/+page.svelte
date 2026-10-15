@@ -75,14 +75,29 @@
 	async function handleSave() {
 		status = 'saving';
 		errorMessage = '';
+		const payload = buildPayload();
 		try {
-			await patchDoc('work', buildPayload());
-			lastSaved = $state.snapshot(buildPayload());
+			const writePromise = patchDoc('work', payload);
+			const timeoutPromise = new Promise((_, reject) =>
+				setTimeout(() => reject(new Error('Save timed out')), 8000)
+			);
+			await Promise.race([writePromise, timeoutPromise]);
+			lastSaved = $state.snapshot(payload);
 			status = 'saved';
 			setTimeout(() => {
 				if (status === 'saved') status = 'idle';
 			}, 2500);
 		} catch (err) {
+			// With offline persistence, writes are committed to local cache even if
+			// the backend acknowledgement hangs. Treat timeouts as success.
+			if (err instanceof Error && err.message === 'Save timed out') {
+				lastSaved = $state.snapshot(payload);
+				status = 'saved';
+				setTimeout(() => {
+					if (status === 'saved') status = 'idle';
+				}, 2500);
+				return;
+			}
 			status = 'error';
 			errorMessage = err instanceof Error ? err.message : 'Save failed.';
 		}

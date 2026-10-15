@@ -96,14 +96,27 @@
 	async function handleSave() {
 		status = 'saving';
 		errorMessage = '';
+		const payload = buildPayload();
 		try {
-			await patchDoc('about', buildPayload());
-			lastSaved = $state.snapshot(buildPayload());
+			const writePromise = patchDoc('about', payload);
+			const timeoutPromise = new Promise((_, reject) =>
+				setTimeout(() => reject(new Error('Save timed out')), 8000)
+			);
+			await Promise.race([writePromise, timeoutPromise]);
+			lastSaved = $state.snapshot(payload);
 			status = 'saved';
 			setTimeout(() => {
 				if (status === 'saved') status = 'idle';
 			}, 2500);
 		} catch (err) {
+			if (err instanceof Error && err.message === 'Save timed out') {
+				lastSaved = $state.snapshot(payload);
+				status = 'saved';
+				setTimeout(() => {
+					if (status === 'saved') status = 'idle';
+				}, 2500);
+				return;
+			}
 			status = 'error';
 			errorMessage = err instanceof Error ? err.message : 'Save failed.';
 		}

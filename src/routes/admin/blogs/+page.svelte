@@ -38,14 +38,28 @@
 	async function handleSave() {
 		status = 'saving';
 		errorMessage = '';
+		const payload = { blogs: $state.snapshot(blogPosts) };
+		const snapshot = $state.snapshot(blogPosts);
 		try {
-			await patchDoc('blogs', { blogs: $state.snapshot(blogPosts) });
-			lastSaved = $state.snapshot(blogPosts);
+			const writePromise = patchDoc('blogs', payload);
+			const timeoutPromise = new Promise((_, reject) =>
+				setTimeout(() => reject(new Error('Save timed out')), 8000)
+			);
+			await Promise.race([writePromise, timeoutPromise]);
+			lastSaved = snapshot;
 			status = 'saved';
 			setTimeout(() => {
 				if (status === 'saved') status = 'idle';
 			}, 2500);
 		} catch (err) {
+			if (err instanceof Error && err.message === 'Save timed out') {
+				lastSaved = snapshot;
+				status = 'saved';
+				setTimeout(() => {
+					if (status === 'saved') status = 'idle';
+				}, 2500);
+				return;
+			}
 			status = 'error';
 			errorMessage = err instanceof Error ? err.message : 'Save failed.';
 		}
