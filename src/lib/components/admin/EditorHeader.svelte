@@ -24,13 +24,13 @@
 	} = $props();
 </script>
 
-<div class="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+<div class="mb-4 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
 	<div>
-		<h1 class="font-playfair text-3xl font-bold">{title}</h1>
+		<h1 class="font-playfair text-2xl font-bold">{title}</h1>
 		{#if hint}
-			<p class="mt-2 max-w-xl text-sm opacity-70">{hint}</p>
+			<p class="mt-1 max-w-2xl text-xs opacity-70">{hint}</p>
 		{/if}
-		<p class="mt-3 text-sm">
+		<p class="mt-1.5 text-xs">
 			{#if status === 'saving'}
 				<span class="opacity-70">Saving…</span>
 			{:else if status === 'saved'}
@@ -44,7 +44,7 @@
 			{/if}
 		</p>
 	</div>
-	<div class="flex shrink-0 items-center gap-3">
+	<div class="flex shrink-0 items-center gap-2">
 		<button
 			type="button"
 			onclick={onReset}

@@ -98,8 +98,8 @@
 		onReset={handleReset}
 	/>
 
-	<div class="grid grid-cols-1 gap-6">
-		<div class="rounded-xl p-4" style={cardStyle}>
+	<div class="grid grid-cols-1 gap-4">
+		<div class="rounded-lg p-3" style={cardStyle}>
 			<AdminField label="Last updated" hint='e.g. "February 2026".'>
 				<input
 					type="text"

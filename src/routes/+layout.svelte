@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 	import ThemeBulb from '$lib/components/ui/ThemeBulb.svelte';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import Lenis from 'lenis';
@@ -8,6 +9,11 @@
 
 	onMount(() => {
 		loadSiteData();
+
+		const isAdminRoute = $page.url.pathname.startsWith('/admin');
+		if (isAdminRoute) {
+			return;
+		}
 
 		const lenis = new Lenis();
 

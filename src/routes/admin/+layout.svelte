@@ -58,28 +58,28 @@
 		class="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_center,transparent_20%,var(--background)_90%)]"
 	></div>
 
-	<div class="relative z-10 container mx-auto max-w-4xl px-4 pb-20 pt-24 md:px-6">
+	<div class="relative z-10 container mx-auto max-w-5xl px-4 pb-12 pt-16 md:px-6">
 		{#if !$authReady}
 			<div class="flex min-h-[50vh] items-center justify-center">
 				<p class="text-sm opacity-60">Checking session…</p>
 			</div>
 		{:else if $user && isAdmin($user)}
-			<div class="mb-6 flex flex-col items-center justify-between gap-4 md:flex-row">
+			<div class="mb-4 flex flex-col items-center justify-between gap-3 md:flex-row">
 				<div>
-					<h1 class="font-playfair text-3xl font-bold md:text-4xl">Admin</h1>
-					<p class="mt-2 text-sm opacity-70">Signed in as {$user.email}</p>
+					<h1 class="font-playfair text-2xl font-bold md:text-3xl">Admin</h1>
+					<p class="mt-1 text-xs opacity-70">Signed in as {$user.email}</p>
 				</div>
-				<div class="flex items-center gap-3">
+				<div class="flex items-center gap-2">
 					<a
 						href={viewSiteHref}
-						class="rounded-full border px-5 py-2 text-sm font-medium transition-opacity hover:opacity-70"
+						class="rounded-full border px-4 py-1.5 text-xs font-medium transition-opacity hover:opacity-70"
 						style="border-color: color-mix(in oklab, var(--foreground) 20%, transparent);"
 					>
 						View site
 					</a>
 					<button
 						onclick={handleSignOut}
-						class="rounded-full px-5 py-2 text-sm font-medium transition-transform hover:scale-105"
+						class="rounded-full px-4 py-1.5 text-xs font-medium transition-transform hover:scale-105"
 						style="color: var(--background); background-color: var(--foreground);"
 					>
 						Sign out
@@ -87,11 +87,11 @@
 				</div>
 			</div>
 
-			<nav class="mb-10 flex flex-wrap gap-2">
+			<nav class="mb-6 flex flex-wrap gap-1.5">
 				{#each tabs as tab}
 					<a
 						href={tab.href}
-						class="rounded-full px-4 py-2 text-sm font-medium transition-colors"
+						class="rounded-full px-3 py-1 text-xs font-medium transition-colors"
 						style={current === tab.href
 							? 'color: var(--background); background-color: var(--foreground); border: 1px solid var(--foreground);'
 							: 'color: var(--foreground); background-color: transparent; border: 1px solid color-mix(in oklab, var(--foreground) 20%, transparent);'}

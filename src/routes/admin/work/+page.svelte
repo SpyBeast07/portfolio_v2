@@ -123,8 +123,8 @@
 		onReset={handleReset}
 	/>
 
-	<div class="grid grid-cols-1 gap-6">
-		<div class="rounded-xl p-6" style={cardStyle}>
+	<div class="grid grid-cols-1 gap-4">
+		<div class="rounded-lg p-4" style={cardStyle}>
 			<AdminField
 				label="Filter categories"
 				hint="Used by the category filter on the Work page. Keep 'All' as the first item."

@@ -79,20 +79,20 @@
 </script>
 
 <div
-	class="rounded-xl {compact ? 'p-4' : 'p-6'}"
+	class="rounded-lg {compact ? 'p-3' : 'p-4'}"
 	style="background-color: color-mix(in oklab, var(--foreground) 4%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);"
 >
-	<div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+	<div class="mb-3 flex flex-wrap items-center justify-between gap-2">
 		<div>
-			<h2 class="font-playfair {compact ? 'text-lg' : 'text-xl'} font-bold">{label}</h2>
+			<h2 class="font-playfair {compact ? 'text-base' : 'text-lg'} font-bold">{label}</h2>
 			{#if hint}
-				<p class="mt-1 text-sm opacity-60">{hint}</p>
+				<p class="mt-0.5 text-xs opacity-60">{hint}</p>
 			{/if}
 		</div>
 		<button
 			type="button"
 			onclick={addItem}
-			class="{primaryButtonClass} {compact ? 'px-4 text-xs' : ''}"
+			class="{primaryButtonClass} {compact ? 'px-3' : ''}"
 			style="color: var(--background); background-color: var(--foreground);"
 		>
 			+ {addLabel}
@@ -112,12 +112,12 @@
 				{@const savedItem = savedItems !== null ? savedItems?.[index] : undefined}
 				{@const itemDirty = savedItems !== null && savedItem === undefined}
 				<div
-					class="rounded-xl border p-{compact ? '4' : '5'}{itemDirty ? ' ide-item' : ''}"
+					class="rounded-lg border p-{compact ? '3' : '4'}{itemDirty ? ' ide-item' : ''}"
 					style="background-color: color-mix(in oklab, var(--foreground) 3%, transparent); border-color: color-mix(in oklab, var(--foreground) 10%, transparent);"
 				>
-					<div class="mb-4 flex items-center justify-between gap-3">
-						<span class="truncate text-sm font-semibold">{index + 1}. {headerTitle(item) ?? 'New item'}</span>
-						<div class="flex shrink-0 items-center gap-1">
+					<div class="mb-3 flex items-center justify-between gap-2">
+						<span class="truncate text-xs font-semibold">{index + 1}. {headerTitle(item) ?? 'New item'}</span>
+						<div class="flex shrink-0 items-center gap-0.5">
 							<button
 								type="button"
 								onclick={() => moveItem(index, -1)}
@@ -147,7 +147,7 @@
 						</div>
 					</div>
 
-					<div class="grid grid-cols-1 gap-x-5 sm:grid-cols-2">
+					<div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
 						{#each schema as field}
 							{@const full = isFull(field)}
 							{@const savedVal = field.type === 'children' || field.type === 'tags' ? savedChildList(savedItem, field.key) : savedItem?.[field.key]}

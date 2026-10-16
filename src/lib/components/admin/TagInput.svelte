@@ -22,13 +22,13 @@
 </script>
 
 <div
-	class="admin-box flex flex-wrap items-center gap-2 rounded-xl border px-3 py-2.5{dirty ? ' ide-dirty' : ''}"
+	class="admin-box flex flex-wrap items-center gap-1.5 rounded-lg border px-2.5 py-1.5{dirty ? ' ide-dirty' : ''}"
 	style="background-color: transparent;"
 	data-lenis-prevent
 >
 	{#each tags as tag, i}
 		<span
-			class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium"
+			class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium"
 			style="background-color: color-mix(in oklab, var(--foreground) 12%, transparent);"
 		>
 			{tag}
@@ -49,7 +49,7 @@
 		bind:value={draft}
 		placeholder={placeholder}
 		autocomplete="off"
-		class="min-w-[10rem] flex-1 bg-transparent text-sm outline-none placeholder:opacity-40"
+		class="min-w-[8rem] flex-1 bg-transparent text-xs outline-none placeholder:opacity-40"
 		onkeydown={(e) => {
 			if (e.key === 'Enter') {
 				e.preventDefault();
