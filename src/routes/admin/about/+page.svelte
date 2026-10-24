@@ -17,6 +17,10 @@
 	let synced = $state(false);
 	let status = $state<'idle' | 'saving' | 'saved' | 'error'>('idle');
 	let errorMessage = $state('');
+	let bioOpen = $state(true);
+	let expOpen = $state(true);
+	let eduOpen = $state(true);
+	let skillsOpen = $state(true);
 
 	type AboutPayload = {
 		about: SiteData['about'];
@@ -145,69 +149,134 @@
 		onReset={handleReset}
 	/>
 
-	<div class="grid grid-cols-1 gap-4">
-		<div class="rounded-lg p-4" style={cardStyle}>
-			<div class="grid grid-cols-1 gap-x-5 sm:grid-cols-2">
-				<AdminField label="Headline" hint="The one-liner shown at the top of the About page.">
-					<textarea
-						bind:value={aboutState.headline}
-						rows={3}
-						placeholder="Get to know more about who I am."
-						class="{inputClass}{lastSaved !== null && aboutState.headline !== lastSaved.about.headline ? ' ide-dirty' : ''}"
-						data-lenis-prevent
-					></textarea>
-				</AdminField>
-				<AdminField label="Photo" hint="Path or URL to your portrait, e.g. /about.webp.">
-					<input
-						type="text"
-						bind:value={aboutState.photo}
-						placeholder="/about.webp"
-						class="{inputClass}{lastSaved !== null && aboutState.photo !== lastSaved.about.photo ? ' ide-dirty' : ''}"
-						data-lenis-prevent
+	<div class="grid grid-cols-1 gap-2">
+		<div class="rounded-lg" style={cardStyle}>
+			<button
+				type="button"
+				class="flex w-full items-center justify-between px-3 py-2 text-left"
+				onclick={() => (bioOpen = !bioOpen)}
+			>
+				<div>
+					<span class="text-xs font-semibold">Bio</span>
+				</div>
+				<span class="text-xs opacity-50">{bioOpen ? '▾' : '▸'}</span>
+			</button>
+			{#if bioOpen}
+				<div class="px-3 pb-3 pt-1">
+					<div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+						<AdminField label="Headline" hint="The one-liner shown at the top of the About page.">
+							<textarea
+								bind:value={aboutState.headline}
+								rows={2}
+								placeholder="Get to know more about who I am."
+								class="{inputClass}{lastSaved !== null && aboutState.headline !== lastSaved.about.headline ? ' ide-dirty' : ''}"
+								data-lenis-prevent
+							></textarea>
+						</AdminField>
+						<AdminField label="Photo" hint="Path or URL to your portrait, e.g. /about.webp.">
+							<input
+								type="text"
+								bind:value={aboutState.photo}
+								placeholder="/about.webp"
+								class="{inputClass}{lastSaved !== null && aboutState.photo !== lastSaved.about.photo ? ' ide-dirty' : ''}"
+								data-lenis-prevent
+							/>
+						</AdminField>
+					</div>
+					<StringListEditor
+						label="Bio paragraphs"
+						hint="Each item is one paragraph. Empty paragraphs are shown as visual breaks on the page."
+						items={aboutState.long}
+						placeholder="A paragraph about you…"
+						savedItems={lastSaved ? lastSaved.about.long : null}
+						onItemsChange={(v) => (aboutState.long = v)}
 					/>
-				</AdminField>
-			</div>
-			<StringListEditor
-				label="Bio paragraphs"
-				hint="Each item is one paragraph. Empty paragraphs are shown as visual breaks on the page."
-				items={aboutState.long}
-				placeholder="A paragraph about you…"
-				savedItems={lastSaved ? lastSaved.about.long : null}
-				onItemsChange={(v) => (aboutState.long = v)}
-			/>
+				</div>
+			{/if}
 		</div>
 
-		<ItemListEditor
-			label="Experiences"
-			hint="Work history cards — ordered oldest to newest on the page."
-			items={experiences}
-			schema={experienceSchema}
-			savedItems={lastSaved ? lastSaved.experiences : null}
-			onItemsChange={(v) => (experiences = v)}
-			addLabel="Add experience"
-			emptyText="No experiences yet."
-		/>
+		<div class="rounded-lg" style={cardStyle}>
+			<button
+				type="button"
+				class="flex w-full items-center justify-between px-3 py-2 text-left"
+				onclick={() => (expOpen = !expOpen)}
+			>
+				<div>
+					<span class="text-xs font-semibold">Experiences</span>
+					<span class="ml-2 text-xs opacity-50">({experiences.length})</span>
+				</div>
+				<span class="text-xs opacity-50">{expOpen ? '▾' : '▸'}</span>
+			</button>
+			{#if expOpen}
+				<div class="p-2 pt-0">
+					<ItemListEditor
+						label="Experiences"
+						hint="Work history cards — ordered oldest to newest on the page."
+						items={experiences}
+						schema={experienceSchema}
+						savedItems={lastSaved ? lastSaved.experiences : null}
+						onItemsChange={(v) => (experiences = v)}
+						addLabel="Add experience"
+						emptyText="No experiences yet."
+					/>
+				</div>
+			{/if}
+		</div>
 
-		<ItemListEditor
-			label="Education"
-			hint="Degrees and exchange programs. Use 'Related entries' to nest entries like the IIT/IIIT exchanges."
-			items={educationItems}
-			schema={educationEntryFields}
-			savedItems={lastSaved ? lastSaved.education : null}
-			onItemsChange={(v) => (educationItems = v)}
-			addLabel="Add education"
-			emptyText="No education entries yet."
-		/>
+		<div class="rounded-lg" style={cardStyle}>
+			<button
+				type="button"
+				class="flex w-full items-center justify-between px-3 py-2 text-left"
+				onclick={() => (eduOpen = !eduOpen)}
+			>
+				<div>
+					<span class="text-xs font-semibold">Education</span>
+					<span class="ml-2 text-xs opacity-50">({educationItems.length})</span>
+				</div>
+				<span class="text-xs opacity-50">{eduOpen ? '▾' : '▸'}</span>
+			</button>
+			{#if eduOpen}
+				<div class="p-2 pt-0">
+					<ItemListEditor
+						label="Education"
+						hint="Degrees and exchange programs. Use 'Related entries' to nest entries like the IIT/IIIT exchanges."
+						items={educationItems}
+						schema={educationEntryFields}
+						savedItems={lastSaved ? lastSaved.education : null}
+						onItemsChange={(v) => (educationItems = v)}
+						addLabel="Add education"
+						emptyText="No education entries yet."
+					/>
+				</div>
+			{/if}
+		</div>
 
-		<ItemListEditor
-			label="Skills"
-			hint="Each entry is a category with its list of skills."
-			items={skillsEntries}
-			schema={skillsSchema}
-			savedItems={lastSaved ? Object.entries(lastSaved.skills).map(([category, tags]) => ({ category, tags })) : null}
-			onItemsChange={(v) => (skillsEntries = v)}
-			addLabel="Add category"
-			emptyText="No skills yet."
-		/>
+		<div class="rounded-lg" style={cardStyle}>
+			<button
+				type="button"
+				class="flex w-full items-center justify-between px-3 py-2 text-left"
+				onclick={() => (skillsOpen = !skillsOpen)}
+			>
+				<div>
+					<span class="text-xs font-semibold">Skills</span>
+					<span class="ml-2 text-xs opacity-50">({skillsEntries.length})</span>
+				</div>
+				<span class="text-xs opacity-50">{skillsOpen ? '▾' : '▸'}</span>
+			</button>
+			{#if skillsOpen}
+				<div class="p-2 pt-0">
+					<ItemListEditor
+						label="Skills"
+						hint="Each entry is a category with its list of skills."
+						items={skillsEntries}
+						schema={skillsSchema}
+						savedItems={lastSaved ? Object.entries(lastSaved.skills).map(([category, tags]) => ({ category, tags })) : null}
+						onItemsChange={(v) => (skillsEntries = v)}
+						addLabel="Add category"
+						emptyText="No skills yet."
+					/>
+				</div>
+			{/if}
+		</div>
 	</div>
 </div>

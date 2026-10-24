@@ -15,6 +15,8 @@
 	let synced = $state(false);
 	let status = $state<'idle' | 'saving' | 'saved' | 'error'>('idle');
 	let errorMessage = $state('');
+	let updatedOpen = $state(true);
+	let sectionsOpen = $state(true);
 
 	// Pre-fill the form from the live Firestore data (via siteData).
 	$effect(() => {
@@ -98,28 +100,59 @@
 		onReset={handleReset}
 	/>
 
-	<div class="grid grid-cols-1 gap-4">
-		<div class="rounded-lg p-3" style={cardStyle}>
-			<AdminField label="Last updated" hint='e.g. "February 2026".'>
-				<input
-					type="text"
-					bind:value={now.lastUpdated}
-					placeholder="February 2026"
-					class="{inputClass}{lastSaved !== null && now.lastUpdated !== lastSaved.lastUpdated ? ' ide-dirty' : ''}"
-					data-lenis-prevent
-				/>
-			</AdminField>
+	<div class="grid grid-cols-1 gap-2">
+		<div class="rounded-lg" style={cardStyle}>
+			<button
+				type="button"
+				class="flex w-full items-center justify-between px-3 py-2 text-left"
+				onclick={() => (updatedOpen = !updatedOpen)}
+			>
+				<div>
+					<span class="text-xs font-semibold">Last updated</span>
+				</div>
+				<span class="text-xs opacity-50">{updatedOpen ? '▾' : '▸'}</span>
+			</button>
+			{#if updatedOpen}
+				<div class="px-3 pb-3 pt-1">
+					<AdminField label="Last updated" hint='e.g. "February 2026".'>
+						<input
+							type="text"
+							bind:value={now.lastUpdated}
+							placeholder="February 2026"
+							class="{inputClass}{lastSaved !== null && now.lastUpdated !== lastSaved.lastUpdated ? ' ide-dirty' : ''}"
+							data-lenis-prevent
+						/>
+					</AdminField>
+				</div>
+			{/if}
 		</div>
 
-		<ItemListEditor
-			label="Sections"
-			hint="Each section groups a title with its bullet items (items can carry optional links)."
-			items={now.sections}
-			schema={sectionSchema}
-			savedItems={lastSaved ? lastSaved.sections : null}
-			onItemsChange={(v) => (now.sections = v)}
-			addLabel="Add section"
-			emptyText="No sections yet — add one to get started."
-		/>
+		<div class="rounded-lg" style={cardStyle}>
+			<button
+				type="button"
+				class="flex w-full items-center justify-between px-3 py-2 text-left"
+				onclick={() => (sectionsOpen = !sectionsOpen)}
+			>
+				<div>
+					<span class="text-xs font-semibold">Sections</span>
+					<span class="ml-2 text-xs opacity-50">({now.sections.length})</span>
+				</div>
+				<span class="text-xs opacity-50">{sectionsOpen ? '▾' : '▸'}</span>
+			</button>
+			{#if sectionsOpen}
+				<div class="p-2 pt-0">
+					<ItemListEditor
+						label="Sections"
+						hint="Each section groups a title with its bullet items (items can carry optional links)."
+						items={now.sections}
+						schema={sectionSchema}
+						savedItems={lastSaved ? lastSaved.sections : null}
+						onItemsChange={(v) => (now.sections = v)}
+						addLabel="Add section"
+						emptyText="No sections yet — add one to get started."
+					/>
+				</div>
+			{/if}
+		</div>
 	</div>
 </div>

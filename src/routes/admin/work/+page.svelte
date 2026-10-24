@@ -16,6 +16,8 @@
 	let synced = $state(false);
 	let status = $state<'idle' | 'saving' | 'saved' | 'error'>('idle');
 	let errorMessage = $state('');
+	let categoriesOpen = $state(true);
+	let projectsOpen = $state(true);
 
 	function buildPayload(): Pick<SiteData, 'projectCategories' | 'projects'> {
 		return {
@@ -123,30 +125,62 @@
 		onReset={handleReset}
 	/>
 
-	<div class="grid grid-cols-1 gap-4">
-		<div class="rounded-lg p-4" style={cardStyle}>
-			<AdminField
-				label="Filter categories"
-				hint="Used by the category filter on the Work page. Keep 'All' as the first item."
+	<div class="grid grid-cols-1 gap-2">
+		<div class="rounded-lg" style={cardStyle}>
+			<button
+				type="button"
+				class="flex w-full items-center justify-between px-3 py-2 text-left"
+				onclick={() => (categoriesOpen = !categoriesOpen)}
 			>
-				<TagInput
-					tags={categories}
-					dirty={categoriesDirty}
-					onTagsChange={(v) => (categories = v)}
-					placeholder="Add category…"
-				/>
-			</AdminField>
+				<div>
+					<span class="text-xs font-semibold">Filter categories</span>
+					<span class="ml-2 text-xs opacity-50">({categories.length})</span>
+				</div>
+				<span class="text-xs opacity-50">{categoriesOpen ? '▾' : '▸'}</span>
+			</button>
+			{#if categoriesOpen}
+				<div class="px-3 pb-3 pt-1">
+					<AdminField
+						label="Filter categories"
+						hint="Used by the category filter on the Work page. Keep 'All' as the first item."
+					>
+						<TagInput
+							tags={categories}
+							dirty={categoriesDirty}
+							onTagsChange={(v) => (categories = v)}
+							placeholder="Add category…"
+						/>
+					</AdminField>
+				</div>
+			{/if}
 		</div>
 
-		<ItemListEditor
-			label="Projects"
-			hint="Shown on the Work page, filtered by category. Each project also gets a detail page at /work/[slug] — sections with empty content are hidden."
-			items={projects}
-			schema={projectSchema}
-			savedItems={lastSaved ? lastSaved.projects : null}
-			onItemsChange={(v) => (projects = v)}
-			addLabel="Add project"
-			emptyText="No projects yet."
-		/>
+		<div class="rounded-lg" style={cardStyle}>
+			<button
+				type="button"
+				class="flex w-full items-center justify-between px-3 py-2 text-left"
+				onclick={() => (projectsOpen = !projectsOpen)}
+			>
+				<div>
+					<span class="text-xs font-semibold">Projects</span>
+					<span class="ml-2 text-xs opacity-50">({projects.length})</span>
+				</div>
+				<span class="text-xs opacity-50">{projectsOpen ? '▾' : '▸'}</span>
+			</button>
+			{#if projectsOpen}
+				<div class="p-2 pt-0">
+					<ItemListEditor
+						label="Projects"
+						hint="Shown on the Work page, filtered by category. Each project also gets a detail page at /work/[slug] — sections with empty content are hidden."
+						items={projects}
+						schema={projectSchema}
+						savedItems={lastSaved ? lastSaved.projects : null}
+						onItemsChange={(v) => (projects = v)}
+						addLabel="Add project"
+						emptyText="No projects yet."
+					/>
+				</div>
+			{/if}
+		</div>
 	</div>
 </div>

@@ -28,6 +28,22 @@
 		onItemsChange: (items: EditorItems) => void;
 	} = $props();
 
+	let collapsed = $state(new Set<number>());
+	$effect(() => {
+		const all = new Set<number>();
+		for (let i = 0; i < items.length; i++) all.add(i);
+		collapsed = all;
+	});
+	function toggleItem(index: number) {
+		const next = new Set(collapsed);
+		if (next.has(index)) next.delete(index);
+		else next.add(index);
+		collapsed = next;
+	}
+	function isCollapsed(index: number) {
+		return collapsed.has(index);
+	}
+
 	function emptyItem(childSchema: AdminFieldDef[] = schema): EditorItem {
 		const item: EditorItem = {};
 		for (const field of childSchema) {
@@ -37,10 +53,17 @@
 	}
 
 	function addItem() {
-		onItemsChange([...items, emptyItem()]);
+		const newItems = [...items, emptyItem()];
+		onItemsChange(newItems);
+		const next = new Set(collapsed);
+		next.add(newItems.length - 1);
+		collapsed = next;
 	}
 
 	function removeItem(index: number) {
+		const next = new Set(collapsed);
+		next.delete(index);
+		collapsed = next;
 		onItemsChange(items.filter((_, i) => i !== index));
 	}
 
@@ -107,16 +130,22 @@
 			{emptyText}
 		</p>
 	{:else}
-		<div class="grid grid-cols-1 gap-{compact ? '3' : '4'}">
+		<div class="grid grid-cols-1 gap-2">
 			{#each items as item, index}
 				{@const savedItem = savedItems !== null ? savedItems?.[index] : undefined}
 				{@const itemDirty = savedItems !== null && savedItem === undefined}
 				<div
-					class="rounded-lg border p-{compact ? '3' : '4'}{itemDirty ? ' ide-item' : ''}"
+					class="rounded-lg border {itemDirty ? ' ide-item' : ''}"
 					style="background-color: color-mix(in oklab, var(--foreground) 3%, transparent); border-color: color-mix(in oklab, var(--foreground) 10%, transparent);"
 				>
-					<div class="mb-3 flex items-center justify-between gap-2">
-						<span class="truncate text-xs font-semibold">{index + 1}. {headerTitle(item) ?? 'New item'}</span>
+					<div class="flex w-full items-center justify-between px-2.5 py-1">
+						<button
+							type="button"
+							class="flex-1 truncate text-left text-xs font-semibold"
+							onclick={() => toggleItem(index)}
+						>
+							<span class="mr-1 opacity-50">{isCollapsed(index) ? '▸' : '▾'}</span>{index + 1}. {headerTitle(item) ?? 'New item'}
+						</button>
 						<div class="flex shrink-0 items-center gap-0.5">
 							<button
 								type="button"
@@ -147,7 +176,7 @@
 						</div>
 					</div>
 
-					<div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+					<div class="grid grid-cols-1 gap-x-4 px-2.5 pb-2.5 pt-1 sm:grid-cols-2 {isCollapsed(index) ? 'hidden' : ''}">
 						{#each schema as field}
 							{@const full = isFull(field)}
 							{@const savedVal = field.type === 'children' || field.type === 'tags' ? savedChildList(savedItem, field.key) : savedItem?.[field.key]}
@@ -173,14 +202,14 @@
 									{:else if field.type === 'children'}
 										{#if list(item, field.key).length === 0}
 											<div
-												class="admin-box flex items-center justify-between gap-3 rounded-lg border px-3 py-2{dirty ? ' ide-dirty' : ''}"
+												class="admin-box flex items-center justify-between gap-2 rounded-lg border px-2 py-1{dirty ? ' ide-dirty' : ''}"
 												style="background-color: color-mix(in oklab, var(--foreground) 3%, transparent);"
 											>
-												<span class="text-sm font-medium">{field.label}</span>
+												<span class="text-xs font-medium">{field.label}</span>
 												<button
 													type="button"
 													onclick={() => (item[field.key] = [emptyItem(field.childrenSchema ?? [])])}
-													class="flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium transition-transform hover:scale-105"
+													class="flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium transition-transform hover:scale-105"
 													style="color: var(--background); background-color: var(--foreground);"
 												>
 													+ {field.addLabel ?? 'Add item'}

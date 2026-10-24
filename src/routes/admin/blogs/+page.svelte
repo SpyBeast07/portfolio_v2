@@ -2,6 +2,7 @@
 	import EditorHeader from '$lib/components/admin/EditorHeader.svelte';
 	import ItemListEditor from '$lib/components/admin/ItemListEditor.svelte';
 	import type { AdminFieldDef } from '$lib/components/admin/types';
+	import { cardStyle } from '$lib/components/admin/style';
 	import { siteData } from '$lib/stores/site-data';
 	import type { SiteData } from '$lib/stores/site-data';
 	import { patchDoc } from '$lib/firestore';
@@ -11,6 +12,7 @@
 	let synced = $state(false);
 	let status = $state<'idle' | 'saving' | 'saved' | 'error'>('idle');
 	let errorMessage = $state('');
+	let postsOpen = $state(true);
 
 	// Pre-fill the form from the live Firestore data (via siteData).
 	$effect(() => {
@@ -84,14 +86,31 @@
 		onReset={handleReset}
 	/>
 
-	<ItemListEditor
-		label="Posts"
-		hint="Ordered newest-first on the Blogs page."
-		items={blogPosts}
-		schema={blogSchema}
-		savedItems={lastSaved}
-		onItemsChange={(v) => (blogPosts = v)}
-		addLabel="Add blog post"
-		emptyText="No blog posts yet."
-	/>
+	<div class="rounded-lg" style={cardStyle}>
+		<button
+			type="button"
+			class="flex w-full items-center justify-between px-3 py-2 text-left"
+			onclick={() => (postsOpen = !postsOpen)}
+		>
+			<div>
+				<span class="text-xs font-semibold">Posts</span>
+				<span class="ml-2 text-xs opacity-50">({blogPosts.length})</span>
+			</div>
+			<span class="text-xs opacity-50">{postsOpen ? '▾' : '▸'}</span>
+		</button>
+		{#if postsOpen}
+			<div class="p-2 pt-0">
+				<ItemListEditor
+					label="Posts"
+					hint="Ordered newest-first on the Blogs page."
+					items={blogPosts}
+					schema={blogSchema}
+					savedItems={lastSaved}
+					onItemsChange={(v) => (blogPosts = v)}
+					addLabel="Add blog post"
+					emptyText="No blog posts yet."
+				/>
+			</div>
+		{/if}
+	</div>
 </div>
